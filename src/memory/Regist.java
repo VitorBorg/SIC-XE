@@ -28,7 +28,7 @@ public class Regist {
                 //registrador A
                 return;
             case 1:
-                //registrador B
+                //registrador X
                 return;
             case 2:
                 //registrador L
