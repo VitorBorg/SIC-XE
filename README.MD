@@ -1,6 +1,6 @@
 SIMULADOR SIC/XE
 
-entrada_frontEnd (1 pessoa)
+entrada_frontEnd (Artur)
 É a interface. (No pdf sic sim tem uma interface de exemplo).
 
 Execution (2 pessoas)
@@ -16,5 +16,5 @@ Classe de modelagem da memoria principal e registradores.
 Montador(Vitor, Lucas)
 Recebe o arquivo .asm, monta tabelas, e preenche a memoria com a tabela.
 
-Tradutor
+Tradutor ()
 classe para conversão: decimal para binario, binario pra hexa, etc... (nao esqueça dos sinais)
