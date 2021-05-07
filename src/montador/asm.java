@@ -1,9 +1,11 @@
 package src.montador;
+import src.main;
 
 import java.io.File;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Scanner;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,11 +13,11 @@ public class asm {
 
 
     //MONTADOR
-    public static void asmReader(String asm)
+    public void asmReader(String asm)
     {
         List<String> simbols = new ArrayList<>();
 
-        HashMap<String, String> simbolsTable = new HashMap<String, String>();
+        HashMap<String, Integer> simbolsTable = new HashMap<String, Integer>();
 
         String[] reservedWords = {"ADD","ADDR","AND","CLEAR","COMP","COMPR","DIV",
         "J","JEQ","JGT","JLT","JSUB","LDA","LDB","LDCH","LDL","LDS","LDT","LDX",
@@ -49,6 +51,8 @@ public class asm {
                 }
             }       
         }
+
+        scanner.close();
     } catch (Exception ex){
     }
 
