@@ -12,6 +12,7 @@ public class Memory {
     public Memory(){
         HashMap<String, Byte> value = new HashMap<String, Byte>();
 
+        //preenche a memória com as posições (tem que traduzir ainda pra hexa), e os valores em null
         for(int position = 0; position != SIZEMEMORY; position ++){
             value.put(String.valueOf(position), null);
             memory.add(value);
