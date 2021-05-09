@@ -1,5 +1,5 @@
 package src.montador;
-import src.main;
+import src.Ligador;
 
 import java.io.File;
 import java.util.List;
@@ -16,7 +16,6 @@ public class asm {
     public void asmReader(String asm)
     {
         List<String> simbols = new ArrayList<>();
-
         HashMap<String, Integer> simbolsTable = new HashMap<String, Integer>();
 
         String[] reservedWords = {"ADD","ADDR","AND","CLEAR","COMP","COMPR","DIV",
@@ -24,20 +23,28 @@ public class asm {
         "MUL","MULR","OR","RMO","RSUB","SHIFTL","SHIFTR","STA","STB","STCH","STL",
         "STS","STT","STX","SUB","SUBR","TIX","TIXR", "SPACE", "CONST"};
         
-        int ln = stepOne(asm, reservedWords);
-        stepTwo(asm, reservedWords, ln);
+        try{
+            File textFile = new File(asm);
+            Scanner scanner = new Scanner(textFile);
+
+            int ln = stepOne(scanner, reservedWords);
+
+            String[] codigoTabela = new String[ln];
+
+            stepTwo(scanner, reservedWords, ln);
+
+            scanner.close();
+
+        } catch (Exception exception){}
 
     }
 
 
-   static int stepOne(String asm, String[] reservedWords){
+   static int stepOne(Scanner scanner, String[] reservedWords){
     System.out.println("\n Passo 1\n");
     int ln = 0;
 
     try{
-        File textFile = new File(asm);
-        Scanner scanner = new Scanner(textFile);
-
         while(scanner.hasNextLine()){
             String line = scanner.nextLine();
             String[] lines = line.split(" ");
@@ -53,20 +60,16 @@ public class asm {
         }
 
         scanner.close();
-    } catch (Exception ex){
-    }
+    } catch (Exception ex){}
 
     return ln;
     
    }
 
-   static void stepTwo(String asm, String[] reservedWords, int ln){
+   static void stepTwo(Scanner scanner, String[] reservedWords, int ln){
     System.out.println("\n Passo 2\n");
 
     try{
-        File textFile = new File(asm);
-        Scanner scanner = new Scanner(textFile);
-
         //array para que identifica o opcode de cada linha
         int[] opcodes = new int[ln];   
 
