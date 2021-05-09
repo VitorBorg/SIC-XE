@@ -3,7 +3,7 @@ package src;
 import src.memory.Regist;
 import src.montador.asm;
 
-public class main {
+public class Ligador {
 
     public static Regist registradores = new Regist();
 
