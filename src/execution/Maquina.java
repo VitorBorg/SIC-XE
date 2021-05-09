@@ -1,5 +1,5 @@
 package src.execution;
 
-public class Execution {
+public class Maquina {
     
 }
