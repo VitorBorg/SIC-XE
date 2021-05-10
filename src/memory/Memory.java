@@ -1,6 +1,9 @@
 package src.memory;
+
+import src.Translate;
 import java.util.HashMap;
 import java.util.List;
+import java.lang.management.MemoryType;
 import java.util.ArrayList;
 //import java.util.Arrays;
 
@@ -12,23 +15,31 @@ public class Memory {
     public Memory(){
         HashMap<String, Byte> value = new HashMap<String, Byte>();
 
-        //preenche a memória com as posições (tem que traduzir ainda pra hexa), e os valores em null
+        //preenche a memória com as posições, e os valores em null
         for(int position = 0; position != SIZEMEMORY; position ++){
-            value.put(String.valueOf(position), null);
+            value.put(Translate.DecToHex(position), null);
             memory.add(value);
         }
     }
 
-    int getByte(int addr){
-        return 0;
+    HashMap<String, Byte> getByte(int addr){
+        //String address = Translate.DecToHex(addr);
+        return memory.get(addr);
     }
 
-    void setByte(int addr, int v){
+    void setByte(int addr, int bt){
+        String address = Translate.DecToHex(addr);
+        Byte transBt = (byte) Translate.DecToBin(bt);
+
+        HashMap<String, Byte> value = new HashMap<String, Byte>();
+        value.put(address, transBt);
+
+        memory.set(addr, value);
         return;
     }
 
-    int getWord(int addr){
-        return 0;
+    HashMap<String, Byte> getWord(int addr){
+        return memory.get(addr);
     }
 
     void setWord(int addr, int v){
@@ -42,4 +53,6 @@ public class Memory {
     void setFloat(int addr, double v){
         return;     
     }
+
+    //private find
 }
