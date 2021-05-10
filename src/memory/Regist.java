@@ -21,64 +21,64 @@ public class Regist {
         hashValue.put("SW", 0); regs.add(hashValue);
     }
 
-    public HashMap<String, Integer> getRegName(String value){
+    public int getRegName(String value){
         switch (value){
             case "A":
-                return regs.get(0);
+                return regs.get(0).get("A");
             case "X":
-                return regs.get(1);
+                return regs.get(1).get("X");
             case "L":
-                return regs.get(2);
+                return regs.get(2).get("L");
             case "B":
-                return regs.get(3);
+                return regs.get(3).get("B");
             case "S":
-                return regs.get(4);
+                return regs.get(4).get("S");
             case "PC":
-                return regs.get(5);
+                return regs.get(5).get("PC");
             case "SW":
-                return regs.get(6);
+                return regs.get(6).get("SW");
             default:
-                return null;
+                return (Integer) null;
         }
 
     }
 
-    public HashMap<String, Double> getRegNameF(){
-        return regF;
+    public Double getRegNameF(){
+        return regF.get("F");
     }
 
-    public HashMap<String, Integer> getRegIndex(int index){
+    public int getRegIndex(int index){
         
         switch(index){
             case 0:
-                return regs.get(0);
+                return regs.get(0).get("A");
                 //registrador A
             case 1:
-                return regs.get(1);
+                return regs.get(1).get("X");
                 //registrador X
             case 2:
-                return regs.get(2);
+                return regs.get(2).get("L");
                 //registrador L
             case 3:
-                return regs.get(3);
+                return regs.get(3).get("B");
                 //registrador B
             case 4:
-                return  regs.get(4);
+                return  regs.get(4).get("S");
                 //registrador S
             case 7:
-                return regs.get(5);
+                return regs.get(5).get("PC");
                 //registrador PC
             case 9:
-                return regs.get(6);
+                return regs.get(6).get("SW");
                 //registrador SW
             default:
-                return null;
+                return (Integer) null;
         }
 
     }
 
-    public HashMap<String, Double> getRegIndexF(){
-        return regF;
+    public Double getRegIndexF(){
+        return regF.get("F");
         //registrador F
     }
 
