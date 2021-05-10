@@ -1,3 +1,5 @@
+package src;
+
 public class Translate {
 
     public static int BinToDec(String bin){ //recebe uma string binaria e retorna um int decimal
@@ -19,7 +21,7 @@ public class Translate {
         int BinF = Integer.parseInt(DecS);
         return BinF;
     }
-    public static String DecToHex(int Dec){ // recebe um int decimal e retorna um string hexadec, hexdec só é possivel em formato string
+    public static String DecToHex(int Dec){ // recebe um int decimal e retorna um string hexadec, hexdec sï¿½ ï¿½ possivel em formato string
         String HexS = Integer.toHexString(Dec);
         return HexS;
     }
