@@ -3,7 +3,6 @@ package src.memory;
 import src.Translate;
 import java.util.HashMap;
 import java.util.List;
-import java.lang.management.MemoryType;
 import java.util.ArrayList;
 //import java.util.Arrays;
 
@@ -19,15 +18,19 @@ public class Memory {
         for(int position = 0; position != SIZEMEMORY; position ++){
             value.put(Translate.DecToHex(position), null);
             memory.add(value);
+
+            setByte(position, 0);
         }
     }
 
-    HashMap<String, Byte> getByte(int addr){
+    public Byte getByte(int addr){
         //String address = Translate.DecToHex(addr);
-        return memory.get(addr);
+        //return memory.get(addr);
+
+        return memory.get(addr).get(Translate.DecToHex(addr));
     }
 
-    void setByte(int addr, int bt){
+    public void setByte(int addr, int bt){
         String address = Translate.DecToHex(addr);
         Byte transBt = (byte) Translate.DecToBin(bt);
 
@@ -38,21 +41,32 @@ public class Memory {
         return;
     }
 
-    HashMap<String, Byte> getWord(int addr){
-        return memory.get(addr);
+    public Byte[] getWord(int addr){
+        Byte[] word = new Byte[3];
+
+        word[0] = getByte(addr);
+        word[1] = getByte(addr + 1);
+        word[2] = getByte(addr + 2);
+
+        return word;
     }
 
-    void setWord(int addr, int v){
+    public void setWord(int addr, int v){
         return;
     }
 
-    double getFloat(int addr){
+    public double getFloat(int addr){
         return 0;
     }
 
-    void setFloat(int addr, double v){
+    public void setFloat(int addr, double v){
         return;     
     }
 
-    //private find
+    public void printMemory(){
+        System.out.println("\n\n MEMORIA");
+
+        for(int i = 0; i < 100; i++)
+            System.out.println(memory.get(i));
+    }
 }
