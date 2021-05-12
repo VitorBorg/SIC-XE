@@ -5,14 +5,17 @@ import java.io.File;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Scanner;
+import src.Translate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class asm {
 
-    List<HashMap<String, Integer>> simbolsTable = new ArrayList<HashMap<String, Integer>>();
-    List<int[]> tabelaCodigo = new ArrayList<int[]>();
+    List<HashMap<String, String>> simbolsTable = new ArrayList<HashMap<String, String>>();
+
+    //OPCODE, OP1, OP2
+    List<ArrayList<String>> code = new ArrayList<ArrayList<String>>();
 
     String[] reservedWords = {"ADD","ADDR","AND","CLEAR","COMP","COMPR","DIV",
     "J","JEQ","JGT","JLT","JSUB","LDA","LDB","LDCH","LDL","LDS","LDT","LDX",
@@ -21,251 +24,207 @@ public class asm {
 
     String[] reservedDesv = {"J","JEQ","JGT","JLT"};
 
+    String[] reservedregs = {"A", "X", "L", "B", "S", "PC", "SW"};
 
 
     //MONTADOR
-    public void asmReader(String asm)
-    {
-        //List<String> simbols = new ArrayList<>();
-        
-        try{
-            File textFile = new File(asm);
-            Scanner scanner = new Scanner(textFile);
+    public List<ArrayList<String>> asmReader(String asm)
+    {    
+            processo(asm, reservedWords);
+            setMemory();
 
-            //inicializa tabela codigo
 
-            int ln = stepOne(scanner, reservedWords);
+            System.out.println("\n\n");
+            for(int i = 0; i < simbolsTable.size(); i++)
+                System.out.println("Variavel: " + simbolsTable.get(i));
 
-            stepTwo(scanner, reservedWords, ln);
+            System.out.println("\nTABELA DE CODIGO:");
+            for(int i = 0; i < code.size(); i++)
+                //System.out.println(code.get(i));
+                if(code.get(i).size() < 3)
+                    System.out.println(code.get(i).get(0) + ", " + code.get(i).get(1));
+                else 
+                    System.out.println(code.get(i).get(0) + ", " + code.get(i).get(1) + ", " + code.get(i).get(2));
+            
 
-            scanner.close();
-
-            //chama a classe de instrucoes com a entrada sendo a tabela de codigo
-
-        } catch (Exception exception){}
+            return code;
 
     }
 
 
-    int stepOne(Scanner scanner, String[] reservedWords){
-    System.out.println("\n Passo 1\n");
-    int ln = 0; // TEM QUE TIRAR ESSSA MERDA
-
+    int processo(String asm, String[] reservedWords){
     try{
+        File textFile = new File(asm);
+        Scanner scanner = new Scanner(textFile);
+
         while(scanner.hasNextLine()){
             String line = scanner.nextLine();
+            line = line.replace(",", "");
             String[] lines = line.split(" ");
-            ln += 1; 
-            Ligador.registradores.setRegs("PC", Ligador.registradores.getRegName("PC").get("PC") + 1);
+
+            Ligador.registradores.setRegs("PC", Ligador.registradores.getRegName("PC") + 1);
+
             int passo = 0;
-        
-            //é palavra reservada?
-            boolean isRes = Arrays.stream(reservedWords).anyMatch(lines[passo]::equals);
-            boolean isDesvio = Arrays.stream(reservedDesv).anyMatch(lines[passo]::equals);
+            String operacao, operador1 = "null", operador2 = "null";
 
-            //identifica se tem label ou nao
-            if(!isRes){
-                //verifica se existe na tabela, insere
-                if(search(lines[passo]) != 99999)
-                    simbolsTable.get(0).put(lines[passo], null);
+            //System.out.println(line);
+            //verificao so pra nao tentar ler linha vazia
+            if(lines.length > 1){
+                boolean isRes = Arrays.stream(reservedWords).anyMatch(lines[passo]::equals);
+                //boolean isDesvio = Arrays.stream(reservedDesv).anyMatch(lines[passo]::equals);
 
-                passo += 1;
-                isRes = Arrays.stream(reservedWords).anyMatch(lines[passo]::equals);
-                isDesvio = Arrays.stream(reservedDesv).anyMatch(lines[passo]::equals);
-            }
+                //identifica se tem label ou nao
+                if(!isRes){
+                    boolean isRegs = Arrays.stream(reservedregs).anyMatch(lines[passo]::equals);
 
-            //identifica os outros simbolos
-            if(isRes){
-                if(isDesvio){
+                    if(search(lines[passo]) == 99999){
+                        if(isRegs){
+                            System.out.println("ERRO!");
+                        }
+                        HashMap<String, String> variable = new HashMap<>();
+                        variable.put(lines[passo], String.valueOf(Ligador.registradores.getRegName("PC") - 1));
+
+                        simbolsTable.add(variable);
+                    }
+
+                    passo += 1;
+                    isRes = Arrays.stream(reservedWords).anyMatch(lines[passo]::equals);
+                    //isDesvio = Arrays.stream(reservedDesv).anyMatch(lines[passo]::equals);
+                }
+
+                if(isRes){
+                    operacao = operacao(lines[passo]);
                     passo += 1;
 
-                    //pega o valor da linha, e (busca na tabela por nome) seta o valor do simbolo para o valor da linha
-                    if(search(lines[passo]) == 99999)
-                        simbolsTable.get(0).put(lines[passo], Ligador.registradores.getRegName("PC"));
-
-                } else {
-                    passo += 1;
+                    boolean isRegs = Arrays.stream(reservedregs).anyMatch(lines[passo]::equals);
+                                    
+                    int busca = search(lines[passo]);
                     //le o proximo valor, que sera um simbolo
                     //verifica se existe na tabela
                     //insere na tabela de simbolos se nao houver
-                    if(search(lines[passo]) == 99999)
-                        simbolsTable.get(0).put(lines[passo], null);
-         
-                    //verifica se existe um proximo valor desse lido (pelo tamanho do array)
-                    //verifica se existe na tabela
-                    //insere na tabela de simbolos se nao houver
-                    if(passo < lines.length - 1){
-                        if(search(lines[passo]) == 99999)
-                            simbolsTable.get(0).put(lines[passo + 1], null);
+                    if(busca == 99999 && !isRegs){
+                        if(lines[passo].substring(0,1).equals("#")){
+                            operador1 = String.valueOf(lines[passo]);
+                        } else{
+                            HashMap<String, String> variable = new HashMap<>();
+                            variable.put(lines[passo], null);
+
+                            simbolsTable.add(variable);
+                            operador1 = String.valueOf(simbolsTable.size() - 1);
+                        }
+                    } else if(!isRegs){
+                        operador1 = String.valueOf(busca);   
+                    } else if (isRegs){
+                        operador1 = lines[passo];
+                        
+                        if(lines.length - 1 == passo + 1)
+                            operador2 = lines[passo + 1];        
                     }
-                }
 
+                    //INSERE NO ARRAY SEPARADO
+                    ArrayList<String> lineCode = new ArrayList<String>();
+                    lineCode.add(operacao);
+                    lineCode.add(operador1);
 
-            } else{
-                //ERRO INSTRUCAO NAO ENCONTRADA
-            }        
-                //System.out.println("\n Simbolo: " + lines[i]);
-                   
+                    if(isRegs && (lines.length - 1 == passo + 1)){
+                        lineCode.add(operador2);
+                        code.add(lineCode);
+                    } else{
+                        code.add(lineCode);
+                    }
+
+                } else{
+                    System.out.println("\n\nERRO! TOKEN: " + lines[passo] + "\n\n");
+                } 
+            }
         }
 
         scanner.close();
     } catch (Exception ex){}
 
-    return ln;
-    
+    return 0;
    }
 
-   void stepTwo(Scanner scanner, String[] reservedWords, int ln){
-    System.out.println("\n Passo 2\n");
-
-    try{
-        //array para que identifica o opcode de cada linha
-        int[] opcodes = new int[ln];   
-
-        while(scanner.hasNextLine()){
-            String line = scanner.nextLine();
-            String[] lines = line.split(" ");
-        
-            //Identifica os tokens e monta o enderecamento
-            for(int i = 0; i < lines.length; i++){
-                //é palavra reservada?
-                boolean isRes = Arrays.stream(reservedWords).anyMatch(lines[i]::equals);
-
-                if(isRes){
-                    //System.out.println("instrucao: " + lines[i]);
-                    //Faz switch para identificar a instrucao
-
-                    switch (lines[i].toUpperCase()) {
-                        case "ADD":
-                        opcodes[i] = 0;
-                        //coloca na tabela de codigo, com o respectivo codigo da operacao
-                            break;
-                        case "ADDR":
-                        opcodes[i] = 0;
-                            break;
-                        case "AND":
-                        opcodes[i] = 0;
-                            break;
-                        case "CLEAR":
-                        opcodes[i] = 0;
-                            break;
-                        case "COMP":
-                        opcodes[i] = 0;
-                            break;
-                        case "COMPR":
-                        opcodes[i] = 0;
-                            break;
-                        case "DIV":
-                        opcodes[i] = 0;
-                            break;
-                        case "J":
-                        opcodes[i] = 0;
-                            break;
-                        case "JEQ":
-                        opcodes[i] = 0;
-                            break;
-                        case "JGT":
-                        opcodes[i] = 0;
-                            break;
-                        case "JLT":
-                        opcodes[i] = 0;
-                            break;
-                        case "JSUB":
-                        opcodes[i] = 0;
-                            break;
-                        case "LDA":
-                        opcodes[i] = 0;
-                            break;
-                        case "LDB":
-                        opcodes[i] = 0;
-                            break;
-                        case "LDCH":
-                        opcodes[i] = 6;
-                            break;
-                        case "LDL":
-                        opcodes[i] = 0;
-                            break;
-                        case "LDS":
-                        opcodes[i] = 0;
-                            break;
-                        case "LDT":
-                        opcodes[i] = 0;
-                            break;
-                        case "LDX":
-                        opcodes[i] = 0;
-                            break;
-                        case "MUL":
-                        opcodes[i] = 0;
-                            break;
-                        case "MULR":
-                        opcodes[i] = 0;
-                            break;
-                        case "OR":
-                        opcodes[i] = 0;
-                            break;
-                        case "RMO":
-                        opcodes[i] = 0;
-                            break;
-                        case "RSUB":
-                        opcodes[i] = 0;
-                            break;
-                        case "SHIFTL":
-                        opcodes[i] = 0;
-                            break;
-                        case "STA":
-                        opcodes[i] = 0;
-                            break;
-                        case "STB":
-                        opcodes[i] = 0;
-                            break;
-                        case "STCH":
-                        opcodes[i] = 0;
-                            break;
-                        case "STS":
-                        opcodes[i] = 0;
-                            break;
-                        case "STL":
-                        opcodes[i] = 0;
-                            break;
-                        case "STT":
-                        opcodes[i] = 0;
-                            break;
-                        case "STX":
-                        opcodes[i] = 0;
-                            break;
-                        case "SUB":
-                        opcodes[i] = 0;
-                            break;
-                        case "SUBR":
-                        opcodes[i] = 0;
-                            break;
-                        case "TIX":
-                        opcodes[i] = 0;
-                            break;
-                        case "TIXR":
-                        opcodes[i] = 0;
-                            break;                                                                          
-                        case "CONST":
-                        //some
-                            break;
-                        case "SPACE":
-                        //some
-                            break;
-                        default:
-                            break;
-                    }
-                } else{
-                    System.out.println("\nSIMBOLOS");
-                    System.out.println("Simbolo: " + lines[i]);
-                    //vai buscar o endereco e coloca na tabela
-                }
-            }       
+   String operacao(String op){
+        switch (op.toUpperCase()) {
+            case "ADD":
+                return "18";
+            case "ADDR":
+                return "90";
+            case "AND":
+                return "40";
+            case "CLEAR":
+                return "4";
+            case "COMP":
+                return "28";
+            case "COMPR":
+                return "A0";
+            case "DIV":
+                return "24";
+            case "DIVR":
+                return "9C";
+            case "J":
+                return "3C";
+            case "JEQ":
+                return "30";
+            case "JGT":
+                return "34";
+            case "JLT":
+                return "38";
+            case "JSUB":
+                return "48";
+            case "LDA":
+                return "0";
+            case "LDB":
+                return "68";
+            case "LDCH":
+                return "50";
+            case "LDL":
+                return "8";
+            case "LDS":
+                return "6C";
+            case "LDT":
+                return "74";
+            case "LDX":
+                return "4";
+            case "MUL":
+                return "20";
+            case "MULR":
+                return "98";
+            case "OR":
+                return "44";
+            case "RMO":
+                return "AC";
+            case "RSUB":
+                return "4C";
+            case "SHIFTL":
+                return "A4";
+            case "STA":
+                return "0C";
+            case "STB":
+                return "78";
+            case "STCH":
+                return "54";
+            case "STS":
+                return "7C";
+            case "STL":
+                return "14";
+            case "STT":
+                return "84";
+            case "STX":
+                return "10";
+            case "SUB":
+                return "1C";
+            case "SUBR":
+                return "94";
+            case "TIX":
+                return "2C";
+            case "TIXR":
+                return "B8";                                                                          
+            default:
+                return "null";
         }
-    } catch (Exception ex){
-    }
-
    }
-
 
    int search(String simbolo){
         //HashMap<String, Integer> value = new HashMap<String, Integer>();
@@ -277,9 +236,19 @@ public class asm {
                 return i;
         }
 
-        if(simbolo.substring(0,1) == "#")
-            return 99998;
-        else 
-            return 99999; //valor definido para ser "null"
+        return 99999; //valor definido para ser "null"
    }
+
+   void setMemory(){
+    for(int i = 0; i < simbolsTable.size(); i++){
+        String value = simbolsTable.get(i).values().toString();
+        value = value.replace("[", "");
+        value = value.replace("]", "");
+
+        if(!value.equals("null"))
+            Ligador.memoria.setByte(i, Integer.parseInt(value)); 
+    }
+
+   }
+
 }
