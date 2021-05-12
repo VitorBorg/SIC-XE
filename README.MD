@@ -6,11 +6,11 @@ OBS2: A CLASSE MAIN É O LIGADOR!
 entrada_frontEnd (Artur)
 É a interface. (No pdf sic sim tem uma interface de exemplo).
 
-Maquina (2 pessoas)
+Maquina (Vini, Gabriel)
 É a execução do programa. Nesse momento a memória já está preenchida com a tabela de simbolos, e logo depois as instrucoes codificadas, portanto deve-se: ler a memoria e executar as instrucoes.
 Deve-se ler a memória encontrando os opcodes (nesse ponto sabe-se quando bytes precisa-se ler). E classe de execucao de instrucoes.
 
-Instrucoes (2 pessoa)
+Instrucoes (Adriano, Felipe)
 Classe de modelagem das instrucoes. E classe de enderecamento de instrucoes.
 
 Memory (Vitor)
@@ -23,6 +23,9 @@ Memory (Vitor)
 
         Obs: para o registrador de numeros flutuantes, as chamadas de funcoes sao diferentes, mas fazem a mesma coisa.
         getRegNameF(String), getRegIndexF(int) e setRegsF(String, int).
+
+    Memoria
+        
 
 
 
