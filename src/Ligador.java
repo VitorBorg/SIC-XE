@@ -27,6 +27,9 @@ public class Ligador {
 
         memoria.printMemory();
 
+        System.out.println("\n\n\n");
+        System.out.println("    0: " + memoria.getByte(0) + "    1: " + memoria.getByte(1) + "    2: " + memoria.getByte(2));
+
         //endereca o codigo e coloca na memoria
 
         //executa as instrucoes na memoria
