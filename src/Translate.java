@@ -1,5 +1,6 @@
 package src;
 
+
 public class Translate {
 
     public static int BinToDec(String bin){ //recebe uma string binaria e retorna um int decimal
@@ -16,10 +17,11 @@ public class Translate {
         int BinF = Integer.parseInt(Bin);
         return BinF;
     }
-    public static int DecToBin(String Dec){ // recebe string dec retorna int binario
-        String DecS = String.valueOf(Dec);
-        int BinF = Integer.parseInt(DecS);
-        return BinF;
+    public static String DecToBin(String Dec){ // recebe string dec retorna int binario
+        // String DecS = String.valueOf(Dec);
+        // int BinF = Integer.parseInt(DecS);
+        // return BinF;
+        return Integer.toBinaryString(Integer.parseInt(Dec));
     }
     public static String DecToHex(int Dec){ // recebe um int decimal e retorna um string hexadec, hexdec s� � possivel em formato string
         String HexS = Integer.toHexString(Dec);

@@ -30,7 +30,7 @@ public class Ligador {
         instruction = new Instruction(code, memoria);
         instruction.loadInstruction();
         // memoria.printMemory();
-
+        
         //endereca o codigo e coloca na memoria
 
         //executa as instrucoes na memoria

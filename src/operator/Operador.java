@@ -153,8 +153,12 @@ public class Operador {
     }
 
     public int getFormat(String opcode, int instructionLength){
-        String operador = getOperatorFromOpcode(opcode, instructionLength);
-        return operadores.get(operador).intValue();
+        String operador = getOperatorFromOpcode(opcode.replace("+", ""), instructionLength);
+        if(opcode.contains("+")){
+            return operadores.get("+"+operador).intValue();
+        } else {            
+            return operadores.get(operador).intValue();
+        }
     }
     
     String getOperatorFromOpcode(String operator, int instructionLength){
