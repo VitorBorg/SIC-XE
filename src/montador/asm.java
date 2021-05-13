@@ -80,6 +80,7 @@ public class asm {
                     if(search(lines[passo]) == 99999){
                         if(isRegs){
                             System.out.println("ERRO!");
+                            return 0;
                         }
                         HashMap<String, String> variable = new HashMap<>();
                         variable.put(lines[passo], String.valueOf(Ligador.registradores.getRegName("PC") - 1));
@@ -105,9 +106,11 @@ public class asm {
                     if(busca == 99999 && !isRegs){
                         if(lines[passo].substring(0,1).equals("#")){
                             operador1 = String.valueOf(lines[passo]);
-                        } else{
+                        }else{
                             HashMap<String, String> variable = new HashMap<>();
                             variable.put(lines[passo], null);
+
+                            //if(lines[passo].substring(0,1).equals("+"))
 
                             simbolsTable.add(variable);
                             operador1 = String.valueOf(simbolsTable.size() - 1);
@@ -135,6 +138,7 @@ public class asm {
 
                 } else{
                     System.out.println("\n\nERRO! TOKEN: " + lines[passo] + "\n\n");
+                    return 0;
                 } 
             }
         }
@@ -142,7 +146,7 @@ public class asm {
         scanner.close();
     } catch (Exception ex){}
 
-    return 0;
+    return 1;
    }
 
    String operacao(String op){
