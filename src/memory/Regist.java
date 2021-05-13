@@ -22,7 +22,7 @@ public class Regist {
     }
 
     public int getRegName(String value){
-        switch (value){
+        switch (value.toUpperCase()){
             case "A":
                 return regs.get(0).get("A");
             case "X":
