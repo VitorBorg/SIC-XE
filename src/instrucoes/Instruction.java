@@ -59,7 +59,6 @@ public class Instruction {
     }
 
     void decodeFormat2(ArrayList<String> instruction) {
-        System.out.println("instruction" + instruction);
         String[] codeSplit = instruction.get(0).split("");
         String r1 = Helper.getRegisterNumber(instruction.get(1)).toString();
         String r2 = Helper.getRegisterNumber(instruction.get(2)).toString();
@@ -105,7 +104,7 @@ public class Instruction {
             i = "1";
         }
 
-        if (instruction.get(1).toUpperCase().contains("X") || instruction.get(2).toUpperCase().contains("X")) { // DUVIDA ???? se contem X é instrução indexada ?????
+        if (instruction.get(1).toUpperCase().contains("X")) { // DUVIDA ???? se contem X é instrução indexada ?????
             x = "1";
         }        
 
@@ -116,8 +115,12 @@ public class Instruction {
         int PC  = baseAddress + (n.equals("1") ? 4 : 3);
 
         if(isLabel(instruction.get(1))){
-            int displacement = Translate.BinToDec(getTargetAddress(instruction.get(1))) -  Translate.BinToDec(PC);
-            System.out.println("test " + displacement);
+            int displacement = Translate.HexToDec("0030") -  Translate.HexToDec("0003");
+            String displacementHex = Translate.DecToHex(displacement);
+
+            deslocamento = Helper.fillXBits(displacementHex, 4);
+
+
             // System.out.println(displacement);
             // System.out.println(Translate.DecToHex(displacement));
             // if (isPCRelative(displacement)) {
@@ -173,25 +176,28 @@ public class Instruction {
         // System.out.println(opcode.toString()+ n+i+x+b+p+e+deslocamento);
 
         // System.out.println("FORMATO 3: " + instruction);
-        StringBuilder fullBinary24bits = new StringBuilder();
-        fullBinary24bits.append(opcode.toString());
-        fullBinary24bits.append(n);
-        fullBinary24bits.append(i);
-        fullBinary24bits.append(x);
-        fullBinary24bits.append(b);
-        fullBinary24bits.append(p);
-        fullBinary24bits.append(e);
-        fullBinary24bits.append(deslocamento);
-        String part1 = fullBinary24bits.substring(0, 8);
-        String part2 = fullBinary24bits.substring(8, 16);
-        String part3 = fullBinary24bits.substring(16, 24);
-        storeMemory(part1, part2, part3);
+
+        // store in memory
+        // StringBuilder fullBinary24bits = new StringBuilder();
+        // fullBinary24bits.append(opcode.toString());
+        // fullBinary24bits.append(n);
+        // fullBinary24bits.append(i);
+        // fullBinary24bits.append(x);
+        // fullBinary24bits.append(b);
+        // fullBinary24bits.append(p);
+        // fullBinary24bits.append(e);
+        // fullBinary24bits.append(deslocamento);
+        // String part1 = fullBinary24bits.substring(0, 8);
+        // String part2 = fullBinary24bits.substring(8, 16);
+        // String part3 = fullBinary24bits.substring(16, 24);
+        // storeMemory(part1, part2, part3);
 
     }
 
     Boolean isLabel(String label){
         List<String> listaDeLabels = new ArrayList<String>();
         listaDeLabels.add("RETADR");
+        listaDeLabels.add("1");
 
         return listaDeLabels.contains(label);
     }
@@ -199,12 +205,13 @@ public class Instruction {
     String getTargetAddress(String instrucao){
         HashMap<String, String> listaDeLabels = new HashMap<String, String>();
         listaDeLabels.put("RETADR", "0030");
+        listaDeLabels.put("1", "0030");
 
         if(listaDeLabels.containsValue(instrucao)){
             return listaDeLabels.get(instrucao);
         }
 
-        return "";
+        return "0030";
     }
 
     void storeMemory(String... values) {
@@ -265,7 +272,6 @@ public class Instruction {
             String valorImediato4Bits = Helper.parseTo4Bits(Integer.parseInt(Translate.DecToBin(viq)));
             imediato.append(valorImediato4Bits);
         }
-        System.out.println("imediato" + imediato);
 
         return Helper.fillXBits(imediato.toString(), 12);
 
