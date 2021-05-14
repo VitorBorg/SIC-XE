@@ -23,12 +23,12 @@ public class Ligador {
         asm file = new asm();
 
         //gera a tabela de codigo, e coloca variaveis na memoria
-        code = file.asmReader("C:\\ex1.asm");
+        code = file.asmReader("ex1.asm");
 
         memoria.printMemory();
 
         System.out.println("\n\n\n");
-        System.out.println("    0: " + memoria.getByte(0) + "    1: " + memoria.getByte(1) + "    2: " + memoria.getByte(2));
+        //System.out.println("    0: " + memoria.getByte(0) + "    1: " + memoria.getByte(1) + "    2: " + memoria.getByte(2));
 
         //endereca o codigo e coloca na memoria
 

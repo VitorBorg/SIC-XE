@@ -17,10 +17,11 @@ public class asm {
     //OPCODE, OP1, OP2
     List<ArrayList<String>> code = new ArrayList<ArrayList<String>>();
 
-    String[] reservedWords = {"ADD","ADDR","AND","CLEAR","COMP","COMPR","DIV",
-    "J","JEQ","JGT","JLT","JSUB","LDA","LDB","LDCH","LDL","LDS","LDT","LDX",
-    "MUL","MULR","OR","RMO","RSUB","SHIFTL","SHIFTR","STA","STB","STCH","STL",
-    "STS","STT","STX","SUB","SUBR","TIX","TIXR", "SPACE", "CONST", "START", "END"};
+    String[] reservedWords = {"ADD","+ADD","ADDR","AND","+AND","CLEAR","COMP","+COMP","COMPR","DIV","+DIV",
+    "J","+J","JEQ","+JEQ","JGT","+JGT","JLT","+JLT","JSUB","+JSUB","LDA","+LDA","LDB","+LDB","LDCH","+LDCH",
+    "LDL","+LDL","LDS","+LDS","LDT","+LDT","LDX","+LDX","MUL","+MUL","MULR","OR","+OR","RMO","RSUB","+RSUB",
+    "SHIFTL","SHIFTR","STA","+STA","STB","+STB","STCH","+STCH","STL","+STL","STS","+STS","STT","+STT","STX",
+    "+STX","SUB","+SUB","SUBR","TIX","+TIX","TIXR"};
 
     String[] reservedDesv = {"J","JEQ","JGT","JLT"};
 
@@ -32,6 +33,8 @@ public class asm {
     {    
             processo(asm, reservedWords);
             setMemory();
+
+            Ligador.variablesSize = simbolsTable.size();
 
 
             System.out.println("\n\n");
@@ -62,6 +65,8 @@ public class asm {
             line = line.replace(",", "");
             String[] lines = line.split(" ");
 
+            String label = "";
+
             Ligador.registradores.setRegs("PC", Ligador.registradores.getRegName("PC") + 1);
 
             int passo = 0;
@@ -70,6 +75,7 @@ public class asm {
             //System.out.println(line);
             //verificao so pra nao tentar ler linha vazia
             if(lines.length > 1){
+
                 boolean isRes = Arrays.stream(reservedWords).anyMatch(lines[passo]::equals);
                 //boolean isDesvio = Arrays.stream(reservedDesv).anyMatch(lines[passo]::equals);
 
@@ -86,6 +92,10 @@ public class asm {
                         variable.put(lines[passo], String.valueOf(Ligador.registradores.getRegName("PC") - 1));
 
                         simbolsTable.add(variable);
+
+                        label = (simbolsTable.size() - 1) + "";
+                    } else {
+                        label = search(lines[passo]) + "";
                     }
 
                     passo += 1;
@@ -94,7 +104,15 @@ public class asm {
                 }
 
                 if(isRes){
-                    operacao = operacao(lines[passo]);
+                    //verificacao tipo 3/4
+                    if(lines[passo].substring(0,1).equals("+")){
+                        String newLine = lines[passo].replace("+", "");
+
+                        operacao = operacao(newLine);
+                        operacao = "+" + operacao;
+                    } else
+                        operacao = operacao(lines[passo]);
+
                     passo += 1;
 
                     boolean isRegs = Arrays.stream(reservedregs).anyMatch(lines[passo]::equals);
@@ -110,8 +128,6 @@ public class asm {
                             HashMap<String, String> variable = new HashMap<>();
                             variable.put(lines[passo], null);
 
-                            //if(lines[passo].substring(0,1).equals("+"))
-
                             simbolsTable.add(variable);
                             operador1 = String.valueOf(simbolsTable.size() - 1);
                         }
@@ -126,6 +142,7 @@ public class asm {
 
                     //INSERE NO ARRAY SEPARADO
                     ArrayList<String> lineCode = new ArrayList<String>();
+                    lineCode.add(label);
                     lineCode.add(operacao);
                     lineCode.add(operador1);
 
@@ -244,15 +261,13 @@ public class asm {
    }
 
    void setMemory(){
-    for(int i = 0; i < simbolsTable.size(); i++){
-        String value = simbolsTable.get(i).values().toString();
-        value = value.replace("[", "");
-        value = value.replace("]", "");
+        for(int i = 0; i < simbolsTable.size(); i++){
+            String value = simbolsTable.get(i).values().toString();
+            value = value.replace("[", "");
+            value = value.replace("]", "");
 
-        if(!value.equals("null"))
-            Ligador.memoria.setByte(i, Integer.parseInt(value)); 
-    }
-
+            if(!value.equals("null"))
+                Ligador.memoria.setByte(i, Integer.parseInt(value)); 
+        }
    }
-
 }
