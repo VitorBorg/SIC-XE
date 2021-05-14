@@ -1,6 +1,8 @@
 package com.ps;
 
+import com.ps.Carregador.Carregador;
 import com.ps.Helpers.ParseSourceLine;
+import com.ps.Memory.Memory;
 import com.ps.Montador.Montador;
 import com.ps.Table.Table;
 
@@ -20,6 +22,8 @@ public class App
     static Integer endereco = 0;
     static List<ParseSourceLine> listaCodigoFonte;
     static Montador montador;
+    static Carregador carregador;
+    static Memory memoria;
 
     static Table table;
 
@@ -27,6 +31,7 @@ public class App
     {
         listaCodigoFonte = new ArrayList<ParseSourceLine>();
         table = new Table();
+        memoria = new Memory();
 
         Scanner in = new Scanner(new FileReader("D:\\workspace\\ps\\simulador\\simulador\\src\\main\\java\\com\\ps\\Inputs\\exemplo.txt"));
         while (in.hasNextLine()) {
@@ -39,7 +44,11 @@ public class App
 
         table.printTable();
 
-        montador = new Montador(listaCodigoFonte);
+        montador = new Montador(listaCodigoFonte, memoria);
         montador.start();
+
+        // CARREGADOR
+        carregador = new Carregador(memoria);
+        memoria.printMemory();
     }
 }

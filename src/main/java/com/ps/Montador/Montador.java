@@ -3,8 +3,10 @@ package com.ps.Montador;
 // INPUT: LDA #3
 // OUTPUT: 2ARB
 
+import com.ps.Carregador.Carregador;
 import com.ps.Helpers.Helpers;
 import com.ps.Helpers.ParseSourceLine;
+import com.ps.Memory.Memory;
 import com.ps.Operador.Operador;
 import com.ps.Translate.Translate;
 
@@ -15,12 +17,14 @@ public class Montador {
 
     private String opcode = "";
     private Operador operador;
+    private Memory memoria;
 
     List<ParseSourceLine> tabelaCodigoFonte;
 
-    public Montador(List<ParseSourceLine> tcf){
+    public Montador(List<ParseSourceLine> tcf, Memory memoria){
         this.tabelaCodigoFonte = tcf;
         this.operador = new Operador();
+        this.memoria = memoria;
     }
 
     public void start(){
@@ -41,6 +45,8 @@ public class Montador {
             else if (formatOfInstruction == 3 || formatOfInstruction == 4) { // format 3 (opcode) X Y - 3 BYTES - 24BITS
 //                decodeFormat3or4(opcode);
             }
+
+
 
         }
     }
@@ -84,6 +90,8 @@ public class Montador {
 
         System.out.println("Binario: " + part1 + part2);
         System.out.println("Codigo Objeto: " + Helpers.getCodObjeto(part1 + part2));
+
+        memoria.save(Helpers.getCodObjeto(part1 + part2));
         // System.out.println("Full binary 16 bits: " + fullBinary16bits);
         // System.out.println("Codigo objeto: " + instruction.get(0) + r1 + r2);
 
