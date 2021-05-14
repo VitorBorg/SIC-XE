@@ -18,20 +18,32 @@ public class Memory {
 
     public void save(String codObjeto){
 
-        // A0B1
-        if(codObjeto.length() == 4){ // FORMAT 2
-            MemoryBlock data = new MemoryBlock(codObjeto, 4);
-            HashMap<String, MemoryBlock> dataAddress = new HashMap<String, MemoryBlock>();
-            dataAddress.put(address, data);
-            memory.add(dataAddress);
+            if(codObjeto.length() == 8) { // SE FOR TIPO 4 PRECISA QUEBRAR EM 2 PALAVRAS
+                MemoryBlock data = new MemoryBlock(codObjeto.substring(0,4));
+                HashMap<String, MemoryBlock> dataAddress = new HashMap<String, MemoryBlock>();
+                dataAddress.put(address, data);
+                memory.add(dataAddress);
 
-            upgradeMemoryAddress(2);
-        }
+                MemoryBlock data2 = new MemoryBlock(codObjeto.substring(4,6));
+                HashMap<String, MemoryBlock> dataAddress2 = new HashMap<String, MemoryBlock>();
+                dataAddress.put(address, data2);
+                memory.add(dataAddress);
+
+            } else {
+                MemoryBlock data = new MemoryBlock(codObjeto);
+                HashMap<String, MemoryBlock> dataAddress = new HashMap<String, MemoryBlock>();
+                dataAddress.put(address, data);
+                memory.add(dataAddress);
+            }
+
+            upgradeMemoryAddress();
+
+
     }
 
-    private void upgradeMemoryAddress(int formatOperation){
+    private void upgradeMemoryAddress(){
         int addressInt = Integer.parseInt(address);
-        addressInt += formatOperation;
+        addressInt += maxBitsOnWord;
 
         this.address = Helpers.fillXBits(String.valueOf(addressInt),5);
     }
