@@ -3,15 +3,15 @@ SIMULADOR SIC/XE
 OBSERVAÇÃO: ACESSEM A MEMÓRIA E OS REGISTRADORES PELA INSTÂNCIA DA MAIN!
 OBS2: A CLASSE MAIN É O LIGADOR!
 
-entrada_frontEnd (Artur)
+src.entrada_frontEnd (Artur)
 É a interface. (No pdf sic sim tem uma interface de exemplo).
 
 Maquina (Vini, Gabriel)
-É a execução do programa. Nesse momento a memória já está preenchida com a tabela de simbolos, e logo depois as instrucoes codificadas, portanto deve-se: ler a memoria e executar as instrucoes.
-Deve-se ler a memória encontrando os opcodes (nesse ponto sabe-se quando bytes precisa-se ler). E classe de execucao de instrucoes.
+É a execução do programa. Nesse momento a memória já está preenchida com a tabela de simbolos, e logo depois as src.instrucoes codificadas, portanto deve-se: ler a memoria e executar as src.instrucoes.
+Deve-se ler a memória encontrando os opcodes (nesse ponto sabe-se quando bytes precisa-se ler). E classe de execucao de src.instrucoes.
 
 Instrucoes (Adriano, Felipe)
-Classe de modelagem das instrucoes. E classe de enderecamento de instrucoes.
+Classe de modelagem das src.instrucoes. E classe de enderecamento de src.instrucoes.
 
 Memory (Vitor)
     Classe de modelagem da memoria principal e registradores.

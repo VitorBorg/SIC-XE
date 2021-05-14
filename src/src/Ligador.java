@@ -23,7 +23,7 @@ public class Ligador {
         asm file = new asm();
 
         //gera a tabela de codigo, e coloca variaveis na memoria
-        code = file.asmReader("C:\\ex1.asm");
+        code = file.asmReader("ex1.asm");
 
         memoria.printMemory();
 
@@ -32,7 +32,7 @@ public class Ligador {
 
         //endereca o codigo e coloca na memoria
 
-        //executa as instrucoes na memoria
+        //executa as src.instrucoes na memoria
         
     }
 }

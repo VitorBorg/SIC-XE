@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Memory {
     List<HashMap<String, Byte>> memory = new ArrayList<HashMap<String, Byte>>();
     final int SIZEMEMORY = 1000;
-    //byte[] memory = new byte[1000];
+    //byte[] src.memory = new byte[1000];
 
     public Memory(){
         HashMap<String, Byte> value = new HashMap<String, Byte>();
@@ -25,9 +25,9 @@ public class Memory {
 
     public String getByte(int addr){
         //String address = Translate.DecToHex(addr);
-        //return memory.get(addr);
+        //return src.memory.get(addr);
 
-        //return memory.get(addr).get(Translate.DecToHex(addr));
+        //return src.memory.get(addr).get(Translate.DecToHex(addr));
         return memory.get(addr).values().toString();
     }
 
