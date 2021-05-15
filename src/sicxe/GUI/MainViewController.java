@@ -1,12 +1,18 @@
 package sicxe.GUI;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import sicxe.App;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import sicxe.Carregador.Carregador;
 import sicxe.Montador.Montador;
+import sicxe.Memory.MemoryBlock;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainViewController {
 
@@ -57,8 +63,10 @@ public class MainViewController {
 
         // CARREGADOR
         App.carregador = new Carregador(App.memoria);
-        App.memoria.printMemory();
+
+        App.addressStringList = App.memoria.getAddress();
+        App.dataStringList = App.memoria.getDatas();;
+
+        App.memoryViewController.updateMemory();
     }
-
-
 }

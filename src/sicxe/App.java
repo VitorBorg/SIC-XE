@@ -42,7 +42,8 @@ public class App extends Application {
     public static File inputFile;
     public static FileChooser fileChooser = new FileChooser();
     public static String inputFileText;
-    public static String memoryFileText;
+    public static List<String> addressStringList;
+    public static List<String> dataStringList;
 
     //Stages (GUI windows)
     public static Stage primaryStage;
@@ -145,7 +146,7 @@ public class App extends Application {
     //opens a new window with information about the project and its members
     public static void showAboutView() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(App.class.getResource("aboutView.fxml"));
+        loader.setLocation(App.class.getResource("GUI/aboutView.fxml"));
         BorderPane aboutWindow = loader.load();
 
         Stage aboutStage = new Stage();
