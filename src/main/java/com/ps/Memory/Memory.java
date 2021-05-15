@@ -64,7 +64,7 @@ public class Memory {
                 }
             }
         }
-        return address;
+        return "";
     }
 
     public List<String> getAddressList(){
