@@ -48,8 +48,11 @@ public class App {
         carregador = new Carregador(memoria);
         memoria.printMemory();
 
+        System.out.println(memoria.getAddress());
+        System.out.println(memoria.getDatas());
+
         // MAQUINA
-        //        maquina = new Maquina(memoria);
+        // maquina = new Maquina(memoria);
 
 //        table.clear();
 //        for(ParseSourceLine sl: listaCodigoFonte){

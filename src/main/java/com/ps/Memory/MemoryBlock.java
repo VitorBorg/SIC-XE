@@ -36,6 +36,6 @@ public class MemoryBlock {
 
     @Override
     public String toString() {
-        return Arrays.toString(block);
+        return block[0] + block[1] + block[2] + block[3] + block[4] + block[5];
     }
 }

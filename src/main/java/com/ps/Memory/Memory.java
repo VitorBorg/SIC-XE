@@ -2,9 +2,7 @@ package com.ps.Memory;
 
 import com.ps.Helpers.Helpers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Memory {
     List<HashMap<String, MemoryBlock>> memory;
@@ -55,6 +53,28 @@ public class Memory {
         for (HashMap<String, MemoryBlock> mem : memory) {
             System.out.println(mem);
         }
+    }
+
+    public List<String> getAddress(){
+        List<String> address = new ArrayList<String>();
+
+        for(HashMap<String, MemoryBlock> line: memory){
+            for (String sigla : line.keySet()) { address.add(sigla); }
+        }
+        return address;
+    }
+
+    public List<String> getDatas(){
+        List<String> datas = new ArrayList<String>();
+
+        for (HashMap<String, MemoryBlock> mem : memory) {
+            for (Map.Entry<String, MemoryBlock> entrada : mem.entrySet()) {
+                datas.add(entrada.getValue().toString());
+            }
+        }
+
+        return datas;
+
     }
 
     public  List<HashMap<String, MemoryBlock>> getMemory() {
