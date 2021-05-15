@@ -72,10 +72,11 @@ public class ParseSourceLine {
     }
 
     public void insereListaDeOperadores() {
-        this.listaDeOperadores.addAll(Arrays.asList("ADD","ADDR","AND","CLEAR","COMP","COMPR","DIV",
-                "J","JEQ","JGT","JLT","JSUB","LDA","+LDA","LDB","LDCH","LDL","LDS","LDT","LDX",
-                "MUL","MULR","OR","RMO","RSUB","SHIFTL","SHIFTR","STA","STB","STCH","STL",
-                "STS","STT","STX","SUB","SUBR","TIX","TIXR", "SPACE", "CONST", "START", "END"));
+        this.listaDeOperadores.addAll(Arrays.asList("ADD","+ADD","ADDR","AND","+AND","CLEAR","COMP","+COMP","COMPR","DIV","+DIV",
+        "J","+J","JEQ","+JEQ","JGT","+JGT","JLT","+JLT","JSUB","+JSUB","LDA","+LDA","LDB","+LDB","LDCH","+LDCH",
+        "LDL","+LDL","LDS","+LDS","LDT","+LDT","LDX","+LDX","MUL","+MUL","MULR","OR","+OR","RMO","RSUB","+RSUB",
+        "SHIFTL","SHIFTR","STA","+STA","STB","+STB","STCH","+STCH","STL","+STL","STS","+STS","STT","+STT","STX",
+        "+STX","SUB","+SUB","SUBR","TIX","+TIX","TIXR", "SPACE", "CONST", "START", "END"));
         // this.listaDeOperadores.add("READ");
         // this.listaDeOperadores.add("READ");
     }

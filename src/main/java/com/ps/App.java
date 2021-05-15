@@ -28,7 +28,7 @@ public class App {
         table = new Table();
         memoria = new Memory();
 
-        Scanner in = new Scanner(new FileReader("D:\\workspace\\ps\\simulador\\simulador\\src\\main\\java\\com\\ps\\Inputs\\exemplo.txt"));
+        Scanner in = new Scanner(new FileReader("src\\main\\java\\com\\ps\\Inputs\\exemplo2.txt"));
         while (in.hasNextLine()) {
             String linhaDoArquivo = in.nextLine();
             ParseSourceLine cfl = new ParseSourceLine(line, endereco, linhaDoArquivo);
