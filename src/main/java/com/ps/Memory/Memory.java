@@ -55,7 +55,19 @@ public class Memory {
         }
     }
 
-    public List<String> getAddress(){
+    public String getAddress(String addressFind){
+
+        for(HashMap<String, MemoryBlock> line: memory){
+            for (String address : line.keySet()) {
+                if(address.equals(addressFind)){
+                    return line.get(address).toString();
+                }
+            }
+        }
+        return address;
+    }
+
+    public List<String> getAddressList(){
         List<String> address = new ArrayList<String>();
 
         for(HashMap<String, MemoryBlock> line: memory){
@@ -64,7 +76,7 @@ public class Memory {
         return address;
     }
 
-    public List<String> getDatas(){
+    public List<String> getValueList(){
         List<String> datas = new ArrayList<String>();
 
         for (HashMap<String, MemoryBlock> mem : memory) {
