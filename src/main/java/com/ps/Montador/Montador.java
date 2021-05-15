@@ -171,7 +171,7 @@ public class Montador {
         }
 
         if (addressType.equals("n")) { // se for indireto
-            //deslocamento = calculaDeslocamentoIndireto(instruction.get(1));
+            deslocamento = calculaDeslocamentoIndireto(instruction.get(1));
         }
 
         if (addressType.equals("x")) { // se for indexado
@@ -252,6 +252,10 @@ public class Montador {
         }
 
         return "n/a";
+    }
+
+    String calculaDeslocamentoIndireto(){
+
     }
 
     String calculaDeslocamentoImediato(String imediato, String typeOfInstruction){
