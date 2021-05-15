@@ -7,6 +7,7 @@ import com.ps.Carregador.Carregador;
 import com.ps.Helpers.Helpers;
 import com.ps.Helpers.ParseSourceLine;
 import com.ps.Memory.Memory;
+import com.ps.Memory.Register;
 import com.ps.Operador.Operador;
 import com.ps.Translate.Translate;
 
@@ -18,13 +19,15 @@ public class Montador {
     private String opcode = "";
     private Operador operador;
     private Memory memoria;
+    private Register register;
     private List<ParseSourceLine> listaCodigoFonte;
     private ParseSourceLine parseSourceLine;
 
 
-    public Montador(Memory memoria, List<ParseSourceLine> listaCodigoFonte) {
+    public Montador(Memory memoria, List<ParseSourceLine> listaCodigoFonte, Register register) {
         this.operador = new Operador();
         this.memoria = memoria;
+        this.register = register;
         this.listaCodigoFonte = listaCodigoFonte;
     }
 
@@ -171,7 +174,7 @@ public class Montador {
         }
 
         if (addressType.equals("n")) { // se for indireto
-            deslocamento = calculaDeslocamentoIndireto(instruction.get(1));
+            deslocamento = calculaDeslocamentoIndireto();
         }
 
         if (addressType.equals("x")) { // se for indexado
@@ -254,8 +257,9 @@ public class Montador {
         return "n/a";
     }
 
-    String calculaDeslocamentoIndireto(){
+    String calculaDeslocamentoIndireto(String label){
 
+        return TA - PC;
     }
 
     String calculaDeslocamentoImediato(String imediato, String typeOfInstruction){
