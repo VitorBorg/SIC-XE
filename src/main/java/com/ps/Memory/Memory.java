@@ -53,4 +53,8 @@ public class Memory {
             System.out.println(mem);
         }
     }
+
+    public  List<HashMap<String, MemoryBlock>> getMemory() {
+       return memory;
+    }
 }

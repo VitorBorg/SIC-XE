@@ -72,7 +72,10 @@ public class ParseSourceLine {
     }
 
     public void insereListaDeOperadores() {
-        this.listaDeOperadores.addAll(Arrays.asList("COPY", "LDA", "+LDA", "COMPR", "READ", "WHRITE", "LOAD", "ADD", "STORE", "SUB", "BRPOS", "BR", "STOP", "SPACE", "CONST"));
+        this.listaDeOperadores.addAll(Arrays.asList("ADD","ADDR","AND","CLEAR","COMP","COMPR","DIV",
+                "J","JEQ","JGT","JLT","JSUB","LDA","+LDA","LDB","LDCH","LDL","LDS","LDT","LDX",
+                "MUL","MULR","OR","RMO","RSUB","SHIFTL","SHIFTR","STA","STB","STCH","STL",
+                "STS","STT","STX","SUB","SUBR","TIX","TIXR", "SPACE", "CONST", "START", "END"));
         // this.listaDeOperadores.add("READ");
         // this.listaDeOperadores.add("READ");
     }
