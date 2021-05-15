@@ -108,4 +108,28 @@ public class ParseSourceLine {
     public String getOperando2() {
         return Helpers.printIfNotNull(operando2);
     }
+
+    public void setLinha(Integer linha) {
+        this.linha = linha;
+    }
+
+    public void setEndereco(Integer endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setRotulo(String rotulo) {
+        this.rotulo = rotulo;
+    }
+
+    public void setOperador(String operador) {
+        this.operador = operador;
+    }
+
+    public void setOperando1(String operando1) {
+        this.operando1 = operando1;
+    }
+
+    public void setOperando2(String operando2) {
+        this.operando2 = operando2;
+    }
 }

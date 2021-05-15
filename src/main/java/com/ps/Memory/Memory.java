@@ -16,13 +16,16 @@ public class Memory {
         this.memory = new ArrayList<HashMap<String, MemoryBlock>>();
     }
 
-    public void save(String codObjeto) {
+    public String save(String codObjeto) {
+        String currentAddres = address;
 
         if (codObjeto.length() == 8) { // SE FOR TIPO 4 PRECISA QUEBRAR EM 2 PALAVRAS
             MemoryBlock data = new MemoryBlock(codObjeto.substring(0, 6));
             HashMap<String, MemoryBlock> dataAddress = new HashMap<String, MemoryBlock>();
             dataAddress.put(address, data);
             memory.add(dataAddress);
+
+            this.address = Helpers.fillXBits(String.valueOf(Integer.parseInt(address) + 24),5);
 
             MemoryBlock data2 = new MemoryBlock(codObjeto.substring(6, 8));
             HashMap<String, MemoryBlock> dataAddress2 = new HashMap<String, MemoryBlock>();
@@ -37,8 +40,7 @@ public class Memory {
         }
 
         upgradeMemoryAddress();
-
-
+        return currentAddres;
     }
 
     private void upgradeMemoryAddress() {

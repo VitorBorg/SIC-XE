@@ -12,9 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-/**
- * Hello world!
- */
 public class App {
     static Integer line = 1;
     static Integer endereco = 0;
@@ -22,6 +19,7 @@ public class App {
     static Montador montador;
     static Carregador carregador;
     static Memory memoria;
+//    static Maquina maquina
 
     static Table table;
 
@@ -34,6 +32,7 @@ public class App {
         while (in.hasNextLine()) {
             String linhaDoArquivo = in.nextLine();
             ParseSourceLine cfl = new ParseSourceLine(line, endereco, linhaDoArquivo);
+            line++;
             listaCodigoFonte.add(cfl);
 
             table.addLine(cfl.getValues());
@@ -41,11 +40,24 @@ public class App {
 
         table.printTable();
 
-        montador = new Montador(listaCodigoFonte, memoria);
+        // MONTADOR
+        montador = new Montador(memoria, listaCodigoFonte);
         montador.start();
 
         // CARREGADOR
         carregador = new Carregador(memoria);
         memoria.printMemory();
+
+        // MAQUINA
+        //        maquina = new Maquina(memoria);
+
+//        table.clear();
+//        for(ParseSourceLine sl: listaCodigoFonte){
+//            table.addLine(sl.getValues());
+//        }
+//
+//        table.printTable();
     }
+
+
 }

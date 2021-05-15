@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Operador {
 
-    private HashMap<String, Integer> operadores = new HashMap<>();
+    public static HashMap<String, Integer> operadores = new HashMap<>();
 
     public Operador() {
         operadores.put("ADD", 3);
@@ -152,7 +152,7 @@ public class Operador {
         operadores.put("+WD", 4);
     }
 
-    public int getFormat(String opcode) {
+    public static int getFormat(String opcode) {
         String operador = getOperatorFromOpcode(opcode.replace("+", ""));
         if (opcode.contains("+")) {
             return operadores.get("+" + operador).intValue();

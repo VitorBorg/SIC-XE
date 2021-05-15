@@ -18,18 +18,19 @@ public class Montador {
     private String opcode = "";
     private Operador operador;
     private Memory memoria;
+    private List<ParseSourceLine> listaCodigoFonte;
+    private ParseSourceLine parseSourceLine;
 
-    List<ParseSourceLine> tabelaCodigoFonte;
 
-    public Montador(List<ParseSourceLine> tcf, Memory memoria) {
-        this.tabelaCodigoFonte = tcf;
+    public Montador(Memory memoria, List<ParseSourceLine> listaCodigoFonte) {
         this.operador = new Operador();
         this.memoria = memoria;
+        this.listaCodigoFonte = listaCodigoFonte;
     }
 
     public void start() {
-        for (ParseSourceLine codigoFonteLinha : tabelaCodigoFonte) {
-
+        for (ParseSourceLine codigoFonteLinha : listaCodigoFonte) {
+            this.parseSourceLine = codigoFonteLinha;
             this.opcode = getCodMachine(codigoFonteLinha.getOperador());
 
             int formatOfInstruction = this.operador.getFormat(opcode);
@@ -85,9 +86,8 @@ public class Montador {
 
 
 
-        memoria.save(Helpers.getCodObjeto(part1 + part2));
-        // System.out.println("Full binary 16 bits: " + fullBinary16bits);
-        // System.out.println("Codigo objeto: " + instruction.get(0) + r1 + r2);
+        String address = memoria.save(Helpers.getCodObjeto(part1 + part2));
+        parseSourceLine.setEndereco(Integer.parseInt(address));
 
     }
 
@@ -97,7 +97,7 @@ public class Montador {
         StringBuilder opcodeBuilder = new StringBuilder();
         String n = "0"; // Indireto
         String i = "0"; // Imediato
-        String x = "0";
+        String x = "0"; // Indexado
         String b = "0";
         String p = "0";
         String e = "0";
@@ -210,7 +210,10 @@ public class Montador {
             fullBinary24or32bits.append(e);
             fullBinary24or32bits.append(deslocamento);
 
-            memoria.save(Helpers.getCodObjeto(fullBinary24or32bits.toString()));
+
+
+        String address = memoria.save(Helpers.getCodObjeto(fullBinary24or32bits.toString()));
+        parseSourceLine.setEndereco(Integer.parseInt(address));
 
         // storeMemory(part1, part2, part3);
 
