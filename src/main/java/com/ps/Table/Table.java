@@ -30,5 +30,9 @@ public class Table {
         System.out.format("+---------------+---------------+---------------+---------------+---------------+---------------+%n");
     }
 
+    public void clear(){
+        this.table = new ArrayList<Line>();
+    }
+
 
 }
