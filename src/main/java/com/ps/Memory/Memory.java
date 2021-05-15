@@ -27,6 +27,7 @@ public class Memory {
 
             this.address = Helpers.fillXBits(String.valueOf(Integer.parseInt(address) + 24),5);
 
+
             MemoryBlock data2 = new MemoryBlock(codObjeto.substring(6, 8));
             HashMap<String, MemoryBlock> dataAddress2 = new HashMap<String, MemoryBlock>();
             dataAddress2.put(address, data2);
