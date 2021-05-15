@@ -4,13 +4,13 @@ import com.ps.Translate.Translate;
 
 public class Helpers {
 
-    public static String printIfNotNull(String value){
-        return value == null ? "": value;
+    public static String printIfNotNull(String value) {
+        return value == null ? "" : value;
     }
 
-    static public String fillXBits(String valor, int fillNumber){
+    static public String fillXBits(String valor, int fillNumber) {
 
-        if(valor.length() > fillNumber){
+        if (valor.length() > fillNumber) {
             int bitsExtras = valor.length() - fillNumber;
             return valor.substring(bitsExtras, valor.length());
         }
@@ -24,7 +24,7 @@ public class Helpers {
         return valorPreenchido.toString();
     }
 
-    static public String parseTo4Bits(int bits){
+    static public String parseTo4Bits(int bits) {
         String bitsToString = String.valueOf(bits);
         StringBuilder sb = new StringBuilder();
         while (sb.length() < 4 - bitsToString.length()) {
@@ -36,7 +36,7 @@ public class Helpers {
     }
 
     static public Integer getRegisterNumber(String register) {
-        switch(register.toUpperCase()){
+        switch (register.toUpperCase()) {
             case "A":
                 return 0;
             case "X":
@@ -60,7 +60,7 @@ public class Helpers {
         }
     }
 
-    static public String getCodObjeto(String binario){
+    static public String getCodObjeto(String binario) {
         int tamanho = binario.length();
 
         String parte1 = "";
@@ -74,11 +74,11 @@ public class Helpers {
 
         StringBuilder codObjeto = new StringBuilder();
 
-        if(tamanho == 16) {
-            parte1 = binario.substring(0,4);
-            parte2 = binario.substring(4,8);
-            parte3 = binario.substring(8,12);
-            parte4 = binario.substring(12,16);
+        if (tamanho == 16) {
+            parte1 = binario.substring(0, 4);
+            parte2 = binario.substring(4, 8);
+            parte3 = binario.substring(8, 12);
+            parte4 = binario.substring(12, 16);
 
             codObjeto.append(Translate.BinToHex(parte1));
             codObjeto.append(Translate.BinToHex(parte2));
@@ -88,6 +88,46 @@ public class Helpers {
             return codObjeto.toString();
         }
 
-         return "";
+        if (tamanho == 24) {
+
+            parte1 = binario.substring(0, 4);
+            parte2 = binario.substring(4, 8);
+            parte3 = binario.substring(8, 12);
+            parte4 = binario.substring(12, 16);
+            parte5 = binario.substring(16, 20);
+            parte6 = binario.substring(20, 24);
+
+            codObjeto.append(Translate.BinToHex(parte1));
+            codObjeto.append(Translate.BinToHex(parte2));
+            codObjeto.append(Translate.BinToHex(parte3));
+            codObjeto.append(Translate.BinToHex(parte4));
+            codObjeto.append(Translate.BinToHex(parte5));
+            codObjeto.append(Translate.BinToHex(parte6));
+
+            return codObjeto.toString();
+        }
+
+        if (tamanho == 32) {
+            parte1 = binario.substring(0, 4);
+            parte2 = binario.substring(4, 8);
+            parte3 = binario.substring(8, 12);
+            parte4 = binario.substring(12, 16);
+            parte5 = binario.substring(16, 20);
+            parte6 = binario.substring(20, 24);
+            parte7 = binario.substring(24, 28);
+            parte8 = binario.substring(28, 32);
+
+            codObjeto.append(Translate.BinToHex(parte1));
+            codObjeto.append(Translate.BinToHex(parte2));
+            codObjeto.append(Translate.BinToHex(parte3));
+            codObjeto.append(Translate.BinToHex(parte4));
+            codObjeto.append(Translate.BinToHex(parte5));
+            codObjeto.append(Translate.BinToHex(parte6));
+            codObjeto.append(Translate.BinToHex(parte7));
+            codObjeto.append(Translate.BinToHex(parte8));
+            return codObjeto.toString();
+        }
+
+        return "";
     }
 }

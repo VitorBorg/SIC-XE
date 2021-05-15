@@ -14,10 +14,10 @@ public class ParseSourceLine {
     List<String> listaDeOperadores;
 
     public ParseSourceLine(
-        Integer linha,
-        Integer endereco,
-        String texto
-    ){
+            Integer linha,
+            Integer endereco,
+            String texto
+    ) {
         this.listaDeOperadores = new ArrayList<String>();
         insereListaDeOperadores();
 
@@ -27,10 +27,10 @@ public class ParseSourceLine {
         String[] partesDoTexto = texto.split(" ");
 
         quebraPartesDoTexto(partesDoTexto);
-            
+
     }
 
-    public void exibeCodigoFonteLinha(){
+    public void exibeCodigoFonteLinha() {
         String leftAlignFormat = "|%15d|%15d|%15s|%15s|%15s|%15s|%n";
         System.out.format("+-----------------------------------------------------------------------------------------------+%n");
         System.out.format("|     Linha     |   Endereco    |     Rotulo    |    Operador   |   Operando1   |   Operando2   |%n");
@@ -39,27 +39,27 @@ public class ParseSourceLine {
         System.out.format("+---------------+---------------+---------------+---------------+---------------+---------------+%n");
     }
 
-    public void quebraPartesDoTexto(String[] partes){
+    public void quebraPartesDoTexto(String[] partes) {
         // PARTE [0] DO TEXTO
-        if(partes.length > 1){
+        if (partes.length > 1) {
             Boolean isRotulo = !this.listaDeOperadores.contains(partes[0].toUpperCase());
-            if(isRotulo){
+            if (isRotulo) {
                 this.rotulo = partes[0];
             } else {
                 this.operador = partes[0];
             }
-    
+
             // PARTE [1] DO TEXTO
             Boolean isOperador = this.listaDeOperadores.contains(partes[1].toUpperCase());
-            if(isOperador){
+            if (isOperador) {
                 this.operador = partes[1];
             } else {
                 this.operando1 = partes[1];
             }
-    
+
             // SE TIVER PARTE [2] NO TEXTO
-            if(partes.length > 2) {
-                if(isOperador){
+            if (partes.length > 2) {
+                if (isOperador) {
                     this.operando1 = partes[2];
                 } else {
                     this.operando2 = partes[2];
@@ -71,13 +71,13 @@ public class ParseSourceLine {
         }
     }
 
-    public void insereListaDeOperadores(){
-        this.listaDeOperadores.addAll(Arrays.asList("COPY","COMPR","READ","WHRITE","LOAD","ADD","STORE","SUB","BRPOS","BR","STOP","SPACE","CONST"));
+    public void insereListaDeOperadores() {
+        this.listaDeOperadores.addAll(Arrays.asList("COPY", "LDA", "+LDA", "COMPR", "READ", "WHRITE", "LOAD", "ADD", "STORE", "SUB", "BRPOS", "BR", "STOP", "SPACE", "CONST"));
         // this.listaDeOperadores.add("READ");
         // this.listaDeOperadores.add("READ");
     }
 
-    public String[] getValues(){
+    public String[] getValues() {
         String[] str = {this.linha.toString(), this.endereco.toString(), this.rotulo, this.operador, this.operando1, this.operando2};
         return str;
     }

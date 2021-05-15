@@ -14,10 +14,8 @@ import java.util.ArrayList;
 
 /**
  * Hello world!
- *
  */
-public class App 
-{
+public class App {
     static Integer line = 1;
     static Integer endereco = 0;
     static List<ParseSourceLine> listaCodigoFonte;
@@ -27,8 +25,7 @@ public class App
 
     static Table table;
 
-    public static void main( String[] args ) throws FileNotFoundException
-    {
+    public static void main(String[] args) throws FileNotFoundException {
         listaCodigoFonte = new ArrayList<ParseSourceLine>();
         table = new Table();
         memoria = new Memory();

@@ -4,7 +4,7 @@ precisa ser feito:
     - getters e setters [v]
 
 - Montador
-    :: Decode format 3 e 4
+    :: Decode format 3[x] e 4
 
 - Carregador
 

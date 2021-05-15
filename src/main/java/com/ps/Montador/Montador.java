@@ -21,14 +21,14 @@ public class Montador {
 
     List<ParseSourceLine> tabelaCodigoFonte;
 
-    public Montador(List<ParseSourceLine> tcf, Memory memoria){
+    public Montador(List<ParseSourceLine> tcf, Memory memoria) {
         this.tabelaCodigoFonte = tcf;
         this.operador = new Operador();
         this.memoria = memoria;
     }
 
-    public void start(){
-        for(ParseSourceLine codigoFonteLinha: tabelaCodigoFonte){
+    public void start() {
+        for (ParseSourceLine codigoFonteLinha : tabelaCodigoFonte) {
 
             this.opcode = getCodMachine(codigoFonteLinha.getOperador());
 
@@ -36,22 +36,17 @@ public class Montador {
 
             if (formatOfInstruction == 1) { // formato 1 (opcode) - 1bye (8bits)
                 decodeFormat1(opcode);
-            }
-
-            else if (formatOfInstruction == 2) { // format 2 (opcode) R1 R2 - 2 bytes (16bits)
+            } else if (formatOfInstruction == 2) { // format 2 (opcode) R1 R2 - 2 bytes (16bits)
                 decodeFormat2(opcode, codigoFonteLinha.getOperando1(), codigoFonteLinha.getOperando2());
+            } else if (formatOfInstruction == 3 || formatOfInstruction == 4) { // format 3 (opcode) X Y - 3 BYTES - 24BITS
+                decodeFormat3or4(opcode, codigoFonteLinha.getOperando1(), codigoFonteLinha.getOperando2(), codigoFonteLinha.getOperador().contains("+"));
             }
-
-            else if (formatOfInstruction == 3 || formatOfInstruction == 4) { // format 3 (opcode) X Y - 3 BYTES - 24BITS
-//                decodeFormat3or4(opcode);
-            }
-
 
 
         }
     }
 
-    private String getCodMachine(String instruction){
+    private String getCodMachine(String instruction) {
         return Operador.getOpcodeFromOperator(instruction);
     }
 
@@ -64,7 +59,7 @@ public class Montador {
             binaryOpCode.append(boc);
         }
 
-       return Helpers.fillXBits(binaryOpCode.toString(), 8);
+        return Helpers.fillXBits(binaryOpCode.toString(), 8);
     }
 
     void decodeFormat2(String operator, String reg1, String reg2) {
@@ -88,13 +83,185 @@ public class Montador {
         String part2 = fullBinary16bits.substring(8, 16);
 
 
-        System.out.println("Binario: " + part1 + part2);
-        System.out.println("Codigo Objeto: " + Helpers.getCodObjeto(part1 + part2));
+
 
         memoria.save(Helpers.getCodObjeto(part1 + part2));
         // System.out.println("Full binary 16 bits: " + fullBinary16bits);
         // System.out.println("Codigo objeto: " + instruction.get(0) + r1 + r2);
 
+    }
+
+    void decodeFormat3or4(String operatorOpcode, String op1, String op2, Boolean format4) {
+
+        String[] opcodeSplit = operatorOpcode.split("");
+        StringBuilder opcodeBuilder = new StringBuilder();
+        String n = "0"; // Indireto
+        String i = "0"; // Imediato
+        String x = "0";
+        String b = "0";
+        String p = "0";
+        String e = "0";
+        String deslocamento = "";
+
+        for (String cs : opcodeSplit) {
+            String binaryOpCode = Helpers.parseTo4Bits(Translate.HexToBin(cs));
+            opcodeBuilder.append(binaryOpCode);
+        }
+        String opcode = Helpers.fillXBits(opcodeBuilder.toString(), 6);
+
+        if (op1.toUpperCase().contains("@")) { // se o operando contem @ é um endereçamento INDIRETO
+            n = "1";
+        }
+
+        if (op1.contains("#")) { // se o operando contem # é um endereçamento IMEDIATO
+            i = "1";
+        }
+
+        if (op1.toUpperCase().contains("X")) { // DUVIDA ???? se contem X é instrução indexada ?????
+            x = "1";
+        }
+
+        if (op1.contains("B")) { // VERIFICAÇÃO SE TEM uso do registrador B
+            b = "1";
+        }
+
+        if (op1.contains("PC")) { // VERIFICAÇÃO SE TEM uso do PC
+            p = "1";
+        }
+
+        if (format4) { // VERIFICAÇÃO SE TEM O + PARA SABER SE É TIPO 3 OU 4
+            e = "1";
+        }
+
+//        int PC  = baseAddress + (n.equals("1") ? 4 : 3);
+//
+//        if(isLabel(instruction.get(1))){
+//            int displacement = Translate.HexToDec("0030") -  Translate.HexToDec("0003");
+//            String displacementHex = Translate.DecToHex(displacement);
+//
+//            deslocamento = Helper.fillXBits(displacementHex, 4);
+//
+//
+//            // System.out.println(displacement);
+//            // System.out.println(Translate.DecToHex(displacement));
+//            // if (isPCRelative(displacement)) {
+//            //     b = '0';
+//            //     p = '1';
+//            //     return String.valueOf(b) + p + e;
+//            // }
+//        }
+
+        /*
+         * if(){ // ??? FAZER VERIFICAÇÃO DE QUANDO É PRA CALCULAR USANDO A BASE E
+         * QUANDO É PARA CALCULAR USANDO PC
+         *
+         * }
+         *
+         * if(){ // ??? quando colocar N para 1
+         *
+         * }
+         */
+
+
+        String[] flags = {n, i, x, b, p, e};
+        String addressType = getAddressType(flags);
+
+        if (addressType.equals("i")) { // se for imediato
+            deslocamento = calculaDeslocamentoImediato(op1, e);
+        }
+
+        if (addressType.equals("n")) { // se for indireto
+            //deslocamento = calculaDeslocamentoIndireto(instruction.get(1));
+        }
+
+        if (addressType.equals("x")) { // se for indexado
+            //deslocamento = calculaDeslocamentoIndexado(instruction.get(1));
+        }
+
+        if (addressType.equals("b")) { // se for calculo de base
+            //deslocamento = calculaDeslocamentoBase(instruction.get(1));
+        }
+
+
+        if (addressType.equals("p")) { // se for calculo de pc
+            //deslocamento = calculaDeslocamentoPc(instruction.get(1));
+        }
+
+        // System.out.println("opcode: " + opcode.toString() );
+        // System.out.println("n: " + n);
+        // System.out.println("i: " + i);
+        // System.out.println("x: " + x);
+        // System.out.println("b: " + b);
+        // System.out.println("p: " + p);
+        // System.out.println("e: " + e);
+        // System.out.println("deslocamento: " + deslocamento);
+        // System.out.println(opcode.toString()+ n+i+x+b+p+e+deslocamento);
+
+        // System.out.println("FORMATO 3: " + instruction);
+
+        // store in memory
+            StringBuilder fullBinary24or32bits = new StringBuilder();
+            fullBinary24or32bits.append(opcode.toString());
+            fullBinary24or32bits.append(n);
+            fullBinary24or32bits.append(i);
+            fullBinary24or32bits.append(x);
+            fullBinary24or32bits.append(b);
+            fullBinary24or32bits.append(p);
+            fullBinary24or32bits.append(e);
+            fullBinary24or32bits.append(deslocamento);
+
+            memoria.save(Helpers.getCodObjeto(fullBinary24or32bits.toString()));
+
+        // storeMemory(part1, part2, part3);
+
+    }
+
+    String getAddressType(String[] flags) {
+        String n = flags[0];
+        String i = flags[1];
+        String x = flags[2];
+        String b = flags[3];
+        String p = flags[4];
+
+        // PC
+        if (n.equals("1") && i.equals("1") && x.equals("0") && b.equals("0") && p.equals("1")) {
+            return "p";
+        }
+
+        // BASE
+        if (n.equals("1") && i.equals("1") && x.equals("0") && b.equals("1") && p.equals("0")) {
+            return "b";
+        }
+
+        // IMEDIATO
+        if (n.equals("0") && i.equals("1") && x.equals("0") && b.equals("0") && p.equals("0")) {
+            return "i";
+        }
+
+        // INDEXADO
+        if (n.equals("1") && i.equals("1") && x.equals("1") && b.equals("1") && p.equals("0")) {
+            return "x";
+        }
+
+        // INDIRETO
+        if (n.equals("1") && i.equals("0") && x.equals("0") && b.equals("0") && p.equals("1")) {
+            return "n";
+        }
+
+        return "n/a";
+    }
+
+    String calculaDeslocamentoImediato(String imediato, String typeOfInstruction){
+        String imediatoBinario = Translate.DecToBin(imediato.replace("#","")); // AJUSTAR PARA QUANDO FOR 11 ou mais de um INTEIRO
+
+        if(typeOfInstruction.equals("0")){ // type 3
+            return Helpers.fillXBits(imediatoBinario, 12);
+        }
+        else if(typeOfInstruction.equals("1")){ // type 4
+            return Helpers.fillXBits(imediatoBinario, 20);
+        }
+
+        return "";
     }
 
 }

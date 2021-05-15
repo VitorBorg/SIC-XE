@@ -1,2 +1,4 @@
 COMPR A S
 COMPR A S
+LDA #9
++LDA #8

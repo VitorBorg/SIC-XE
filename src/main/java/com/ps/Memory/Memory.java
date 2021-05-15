@@ -12,45 +12,45 @@ public class Memory {
 
     int maxBitsOnWord = 24;
 
-    public Memory(){
-       this.memory = new ArrayList<HashMap<String, MemoryBlock>>();
+    public Memory() {
+        this.memory = new ArrayList<HashMap<String, MemoryBlock>>();
     }
 
-    public void save(String codObjeto){
+    public void save(String codObjeto) {
 
-            if(codObjeto.length() == 8) { // SE FOR TIPO 4 PRECISA QUEBRAR EM 2 PALAVRAS
-                MemoryBlock data = new MemoryBlock(codObjeto.substring(0,4));
-                HashMap<String, MemoryBlock> dataAddress = new HashMap<String, MemoryBlock>();
-                dataAddress.put(address, data);
-                memory.add(dataAddress);
+        if (codObjeto.length() == 8) { // SE FOR TIPO 4 PRECISA QUEBRAR EM 2 PALAVRAS
+            MemoryBlock data = new MemoryBlock(codObjeto.substring(0, 6));
+            HashMap<String, MemoryBlock> dataAddress = new HashMap<String, MemoryBlock>();
+            dataAddress.put(address, data);
+            memory.add(dataAddress);
 
-                MemoryBlock data2 = new MemoryBlock(codObjeto.substring(4,6));
-                HashMap<String, MemoryBlock> dataAddress2 = new HashMap<String, MemoryBlock>();
-                dataAddress.put(address, data2);
-                memory.add(dataAddress);
+            MemoryBlock data2 = new MemoryBlock(codObjeto.substring(6, 8));
+            HashMap<String, MemoryBlock> dataAddress2 = new HashMap<String, MemoryBlock>();
+            dataAddress2.put(address, data2);
+            memory.add(dataAddress2);
 
-            } else {
-                MemoryBlock data = new MemoryBlock(codObjeto);
-                HashMap<String, MemoryBlock> dataAddress = new HashMap<String, MemoryBlock>();
-                dataAddress.put(address, data);
-                memory.add(dataAddress);
-            }
+        } else {
+            MemoryBlock data = new MemoryBlock(codObjeto);
+            HashMap<String, MemoryBlock> dataAddress = new HashMap<String, MemoryBlock>();
+            dataAddress.put(address, data);
+            memory.add(dataAddress);
+        }
 
-            upgradeMemoryAddress();
+        upgradeMemoryAddress();
 
 
     }
 
-    private void upgradeMemoryAddress(){
+    private void upgradeMemoryAddress() {
         int addressInt = Integer.parseInt(address);
         addressInt += maxBitsOnWord;
 
-        this.address = Helpers.fillXBits(String.valueOf(addressInt),5);
+        this.address = Helpers.fillXBits(String.valueOf(addressInt), 5);
     }
 
-    public void printMemory(){
-        for(HashMap<String, MemoryBlock> mem: memory){
-            System.out.println("> " + mem);
+    public void printMemory() {
+        for (HashMap<String, MemoryBlock> mem : memory) {
+            System.out.println(mem);
         }
     }
 }

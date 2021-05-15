@@ -13,7 +13,7 @@ public class Line {
     private String column5 = "";
     private String column6 = "";
 
-    public Line(String... columns){
+    public Line(String... columns) {
         this.column1 = columns[0];
         this.column2 = columns[1];
         this.column3 = columns[2];
@@ -22,7 +22,7 @@ public class Line {
         this.column6 = columns[5];
     }
 
-    void addLine(String... columns){
+    void addLine(String... columns) {
         this.column1 = columns[0];
         this.column2 = columns[1];
         this.column3 = columns[2];
