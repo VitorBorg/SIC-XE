@@ -1,9 +1,10 @@
 package com.ps.Memory;
 
+import com.ps.Helpers.ParseSourceLine;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Variables {
     //label name, adress
@@ -24,14 +25,40 @@ public class Variables {
 
     }
 
-//    public String getLabelAdress(){
-//        return label[1];
-//    }
-    public void addVariable(HashMap<String,String> reg){
-        this.vars.add(reg);
+    public void start(List<ParseSourceLine> listaCodigoFonte){
+        for(ParseSourceLine psl: listaCodigoFonte){
+            if(!psl.getRotulo().equals("")){ // se existir um rotulo
+                HashMap<String,String> variable = new HashMap<String,String>();
+                variable.put(psl.getRotulo(), psl.getEndereco());
+                addVariable(variable, psl.getRotulo());
+            }
+        }
     }
 
+    public Boolean addVariable(HashMap<String,String> reg, String varName){
 
+        Boolean exists = false;
+        Boolean added = false;
+        for(HashMap<String,String> _vars: vars){
+            for (String key : _vars.keySet()) {
+                if(key.equals(varName)){
+                    exists = true;
+                }
+            }
+        }
+
+        if(!exists){
+            this.vars.add(reg);
+            added = true;
+        }
+
+        return added;
+
+    }
+
+    public void printVariables(){
+        System.out.println(vars);
+    }
 
 
 }

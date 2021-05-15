@@ -57,6 +57,10 @@ public class App {
         memoria.printMemory();
         System.out.println("**------ ------------ -------**");
 
+        // ADD VARIABLES
+        vars.start(listaCodigoFonte);
+//        vars.printVariables();
+
 //        HashMap<String, String> var = new HashMap<String, String>();
 //        var.put("VAR1","123");
 //
