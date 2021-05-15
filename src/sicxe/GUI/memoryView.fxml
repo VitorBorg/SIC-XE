@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="459.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sicxe.GUI.MemoryViewController">
+   <center>
+      <TableView fx:id="memoryViewTableView">
+        <columns>
+          <TableColumn fx:id="address" prefWidth="142.0" text="Address" />
+          <TableColumn fx:id="data" prefWidth="307.0" text="Data" />
+        </columns>
+      </TableView>
+   </center>
+</BorderPane>

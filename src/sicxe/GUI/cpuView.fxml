@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="459.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sicxe.GUI.CPUViewController">
+   <top>
+        <VBox prefHeight="150.0" prefWidth="550.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="17.0" prefWidth="512.0" VBox.vgrow="NEVER">
+               <children>
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="25.0" text="A" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldA" prefHeight="25.0" />
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="S" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldS" prefHeight="25.0" />
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="T" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldT" prefHeight="25.0" />
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="17.0" prefWidth="512.0" VBox.vgrow="NEVER">
+               <children>
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="25.0" text="L" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldL" prefHeight="25.0" />
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="B" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldB" prefHeight="25.0" />
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="X" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldX" prefHeight="25.0" />
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="17.0" prefWidth="512.0" VBox.vgrow="NEVER">
+               <children>
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="25.0" text="SW" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldSW" prefHeight="25.0" />
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="30.0" text="F" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldF1" prefHeight="25.0" />
+                  <TextField fx:id="textFieldF2" prefHeight="25.0" prefWidth="174.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="17.0" prefWidth="512.0" VBox.vgrow="NEVER">
+               <children>
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="25.0" text="PC" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldPC1" prefHeight="25.0" />
+                  <TextField fx:id="textFieldPC2" prefHeight="25.0" prefWidth="353.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+        </VBox>
+   </top>
+   <center>
+      <TextArea fx:id="cpuViewTextArea" prefHeight="324.0" prefWidth="550.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </TextArea>
+   </center>
+</BorderPane>

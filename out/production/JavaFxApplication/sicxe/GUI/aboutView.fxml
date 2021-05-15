@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <VBox prefHeight="227.0" prefWidth="370.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="227.0" prefWidth="320.0" text="Implementação do trabalho 1 de Programação de Sistemas:&#10;Simulador da máquina SIC/XE&#10;&#10;Integrantes do grupo:&#10;Adriano Hardtke&#10;Artur Melchiori Cerri&#10;Felipe Saraiva&#10;Gabriel Rodrigues&#10;Lucas Garcia&#10;Vinicius Cruz&#10;Vitor Borges" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets left="25.0" right="25.0" />
+               </VBox.margin></Label>
+         </children>
+      </VBox>
+   </top>
+</BorderPane>
