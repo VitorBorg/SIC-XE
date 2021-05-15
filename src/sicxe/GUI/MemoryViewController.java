@@ -10,21 +10,21 @@ import sicxe.App;
 
 public class MemoryViewController {
 
-    @FXML TableView<MemoryExample> memoryViewTableView;
-    @FXML TableColumn<MemoryExample, String> address;
-    @FXML TableColumn<MemoryExample, String> data;
+    @FXML TableView<MemoryObjectGenerator> memoryViewTableView;
+    @FXML TableColumn<MemoryObjectGenerator, String> address;
+    @FXML TableColumn<MemoryObjectGenerator, String> data;
 
-    final ObservableList<MemoryExample> tableData = FXCollections.observableArrayList();
+    final ObservableList<MemoryObjectGenerator> tableData = FXCollections.observableArrayList();
 
     public void updateMemory() {
 
         for (int i = 0; i < App.addressStringList.size(); i++) {
-            MemoryExample currentSlot = new MemoryExample(App.addressStringList.get(i), App.dataStringList.get(i));
+            MemoryObjectGenerator currentSlot = new MemoryObjectGenerator(App.addressStringList.get(i), App.dataStringList.get(i));
             tableData.add(currentSlot);
         }
 
-        address.setCellValueFactory(new PropertyValueFactory<MemoryExample, String>("Address"));
-        data.setCellValueFactory(new PropertyValueFactory<MemoryExample, String>("Data"));
+        address.setCellValueFactory(new PropertyValueFactory<MemoryObjectGenerator, String>("Address"));
+        data.setCellValueFactory(new PropertyValueFactory<MemoryObjectGenerator, String>("Data"));
 
         memoryViewTableView.setItems(tableData);
     }
