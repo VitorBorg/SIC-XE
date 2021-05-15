@@ -130,4 +130,11 @@ public class Helpers {
 
         return "";
     }
+
+    static public String addPcToNextAddress(String address){
+        int addressInt = Integer.parseInt(address);
+        addressInt += 24;
+
+        return Helpers.fillXBits(String.valueOf(addressInt), 5);
+    }
 }

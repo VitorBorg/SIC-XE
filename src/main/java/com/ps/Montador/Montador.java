@@ -93,6 +93,8 @@ public class Montador {
 
 
         String address = memoria.save(Helpers.getCodObjeto(part1 + part2));
+        this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
+
         parseSourceLine.setEndereco(Integer.parseInt(address));
 
     }
@@ -188,6 +190,8 @@ public class Montador {
 
 
         String address = memoria.save(Helpers.getCodObjeto(fullBinary24or32bits.toString()));
+        this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
+
         parseSourceLine.setEndereco(Integer.parseInt(address));
 
 
@@ -260,5 +264,7 @@ public class Montador {
         // DESLOC = TA - PC        TA = TARGET ADDRESS
         return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("PC")));
     }
+
+
 
 }
