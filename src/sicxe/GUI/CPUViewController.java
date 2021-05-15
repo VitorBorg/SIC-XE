@@ -27,29 +27,17 @@ public class CPUViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        textFieldA.setText("0x000000");
         textFieldA.setEditable(false);
-        textFieldS.setText("0x000000");
         textFieldS.setEditable(false);
-        textFieldT.setText("0x000000");
         textFieldT.setEditable(false);
-        textFieldL.setText("0x000000");
         textFieldL.setEditable(false);
-        textFieldB.setText("0x000000");
         textFieldB.setEditable(false);
-        textFieldX.setText("0x000000");
         textFieldX.setEditable(false);
-        textFieldSW.setText("0x000000");
         textFieldSW.setEditable(false);
-        textFieldF1.setText("0x000000");
         textFieldF1.setEditable(false);
-        textFieldF2.setText("0x000000");
         textFieldF2.setEditable(false);
-        textFieldPC1.setText("0x000000");
         textFieldPC1.setEditable(false);
-        textFieldPC2.setText("0x000000");
         textFieldPC2.setEditable(false);
-        cpuViewTextArea.setText("?");
         cpuViewTextArea.setEditable(false);
     }
 

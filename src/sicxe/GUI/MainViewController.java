@@ -1,18 +1,12 @@
 package sicxe.GUI;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import sicxe.App;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import sicxe.App;
 import sicxe.Carregador.Carregador;
 import sicxe.Montador.Montador;
-import sicxe.Memory.MemoryBlock;
 
 import java.io.IOException;
-import java.util.List;
 
 public class MainViewController {
 
@@ -54,6 +48,7 @@ public class MainViewController {
         App.showInputView();
     }
 
+    //executes the machine and updates CPUView and MemoryView
     @FXML
     private void handleStartButton() {
         App.table.printTable();
@@ -61,12 +56,18 @@ public class MainViewController {
         App.montador = new Montador(App.listaCodigoFonte, App.memoria);
         App.montador.start();
 
-        // CARREGADOR
+        //carregador
         App.carregador = new Carregador(App.memoria);
 
+        //update MemoryView columns
         App.addressStringList = App.memoria.getAddress();
         App.dataStringList = App.memoria.getDatas();;
 
         App.memoryViewController.updateMemory();
+    }
+
+    @FXML
+    private void handleStepButton() {
+        //to do
     }
 }

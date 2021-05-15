@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class App extends Application {
     static Integer line = 1;
     static Integer endereco = 0;
