@@ -10,24 +10,22 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sicxe.Carregador.Carregador;
 import sicxe.GUI.CPUViewController;
+import sicxe.GUI.InputViewController;
+import sicxe.GUI.MainViewController;
 import sicxe.GUI.MemoryViewController;
 import sicxe.Helpers.ParseSourceLine;
 import sicxe.Memory.Memory;
 import sicxe.Montador.Montador;
 import sicxe.Table.Table;
-import sicxe.GUI.MainViewController;
-import sicxe.GUI.InputViewController;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
 
 
 public class App extends Application {
@@ -39,8 +37,7 @@ public class App extends Application {
     public static Memory memoria;
 
     public static Table table;
-
-    //GUI
+    
     //input data and memory
     public static File inputFile;
     public static FileChooser fileChooser = new FileChooser();
@@ -67,8 +64,6 @@ public class App extends Application {
         launch(args);
     }
 
-    //GUI ----------------------------------------------------------------------
-    //initializes the stages and scenes and shows the main window
     @Override
     public void start(Stage primaryStage) throws Exception  {
 
