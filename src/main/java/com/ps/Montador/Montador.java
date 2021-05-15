@@ -8,6 +8,7 @@ import com.ps.Helpers.Helpers;
 import com.ps.Helpers.ParseSourceLine;
 import com.ps.Memory.Memory;
 import com.ps.Memory.Register;
+import com.ps.Memory.Variables;
 import com.ps.Operador.Operador;
 import com.ps.Translate.Translate;
 
@@ -20,14 +21,16 @@ public class Montador {
     private Operador operador;
     private Memory memoria;
     private Register register;
+    private Variables variables;
     private List<ParseSourceLine> listaCodigoFonte;
     private ParseSourceLine parseSourceLine;
 
 
-    public Montador(Memory memoria, List<ParseSourceLine> listaCodigoFonte, Register register) {
+    public Montador(Memory memoria, List<ParseSourceLine> listaCodigoFonte, Register register, Variables variables) {
         this.operador = new Operador();
         this.memoria = memoria;
         this.register = register;
+        this.variables = variables;
         this.listaCodigoFonte = listaCodigoFonte;
     }
 
@@ -101,8 +104,8 @@ public class Montador {
         String n = "0"; // Indireto
         String i = "0"; // Imediato
         String x = "0"; // Indexado
-        String b = "0";
-        String p = "0";
+        String b = "0"; // Base
+        String p = "0"; // PC
         String e = "0";
         String deslocamento = "";
 
@@ -136,35 +139,6 @@ public class Montador {
             e = "1";
         }
 
-//        int PC  = baseAddress + (n.equals("1") ? 4 : 3);
-//
-//        if(isLabel(instruction.get(1))){
-//            int displacement = Translate.HexToDec("0030") -  Translate.HexToDec("0003");
-//            String displacementHex = Translate.DecToHex(displacement);
-//
-//            deslocamento = Helper.fillXBits(displacementHex, 4);
-//
-//
-//            // System.out.println(displacement);
-//            // System.out.println(Translate.DecToHex(displacement));
-//            // if (isPCRelative(displacement)) {
-//            //     b = '0';
-//            //     p = '1';
-//            //     return String.valueOf(b) + p + e;
-//            // }
-//        }
-
-        /*
-         * if(){ // ??? FAZER VERIFICAÇÃO DE QUANDO É PRA CALCULAR USANDO A BASE E
-         * QUANDO É PARA CALCULAR USANDO PC
-         *
-         * }
-         *
-         * if(){ // ??? quando colocar N para 1
-         *
-         * }
-         */
-
 
         String[] flags = {n, i, x, b, p, e};
         String addressType = getAddressType(flags);
@@ -174,20 +148,20 @@ public class Montador {
         }
 
         if (addressType.equals("n")) { // se for indireto
-            deslocamento = calculaDeslocamentoIndireto();
+            deslocamento = calculaDeslocamentoIndireto(op1);
         }
 
         if (addressType.equals("x")) { // se for indexado
-            //deslocamento = calculaDeslocamentoIndexado(instruction.get(1));
+            deslocamento = calculaDeslocamentoIndexado(op1);
         }
 
         if (addressType.equals("b")) { // se for calculo de base
-            //deslocamento = calculaDeslocamentoBase(instruction.get(1));
+            deslocamento = calculaDeslocamentoBase(op1);
         }
 
 
         if (addressType.equals("p")) { // se for calculo de pc
-            //deslocamento = calculaDeslocamentoPc(instruction.get(1));
+            deslocamento = calculaDeslocamentoPc(op1);
         }
 
         // System.out.println("opcode: " + opcode.toString() );
@@ -200,9 +174,7 @@ public class Montador {
         // System.out.println("deslocamento: " + deslocamento);
         // System.out.println(opcode.toString()+ n+i+x+b+p+e+deslocamento);
 
-        // System.out.println("FORMATO 3: " + instruction);
 
-        // store in memory
             StringBuilder fullBinary24or32bits = new StringBuilder();
             fullBinary24or32bits.append(opcode.toString());
             fullBinary24or32bits.append(n);
@@ -218,7 +190,6 @@ public class Montador {
         String address = memoria.save(Helpers.getCodObjeto(fullBinary24or32bits.toString()));
         parseSourceLine.setEndereco(Integer.parseInt(address));
 
-        // storeMemory(part1, part2, part3);
 
     }
 
@@ -258,8 +229,8 @@ public class Montador {
     }
 
     String calculaDeslocamentoIndireto(String label){
-
-        return TA - PC;
+        // DESLOC = TA - PC          TA = TARGET ADDRESS
+        return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("PC")));
     }
 
     String calculaDeslocamentoImediato(String imediato, String typeOfInstruction){
@@ -273,6 +244,21 @@ public class Montador {
         }
 
         return "";
+    }
+
+    String calculaDeslocamentoIndexado(String label){
+        // DESLOC = TA - B         TA = TARGET ADDRESS
+        return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("B")));
+    }
+
+    String calculaDeslocamentoBase(String label){
+        // DESLOC = TA - B         TA = TARGET ADDRESS
+        return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("B")));
+    }
+
+    String calculaDeslocamentoPc(String label){
+        // DESLOC = TA - PC        TA = TARGET ADDRESS
+        return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("PC")));
     }
 
 }

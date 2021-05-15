@@ -3,9 +3,12 @@ package com.ps;
 import com.ps.Carregador.Carregador;
 import com.ps.Helpers.ParseSourceLine;
 import com.ps.Memory.Memory;
+import com.ps.Memory.Register;
+import com.ps.Memory.Variables;
 import com.ps.Montador.Montador;
 import com.ps.Table.Table;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
@@ -19,6 +22,8 @@ public class App {
     static Montador montador;
     static Carregador carregador;
     static Memory memoria;
+    static Variables vars;
+    static Register reg;
 //    static Maquina maquina
 
     static Table table;
@@ -27,6 +32,8 @@ public class App {
         listaCodigoFonte = new ArrayList<ParseSourceLine>();
         table = new Table();
         memoria = new Memory();
+        vars = new Variables();
+        reg = new Register();
 
         Scanner in = new Scanner(new FileReader("D:\\workspace\\ps\\simulador\\simulador\\src\\main\\java\\com\\ps\\Inputs\\exemplo.txt"));
         while (in.hasNextLine()) {
@@ -38,29 +45,38 @@ public class App {
             table.addLine(cfl.getValues());
         }
 
-        table.printTable();
+        printTable();
 
         // MONTADOR
-        montador = new Montador(memoria, listaCodigoFonte);
+        montador = new Montador(memoria, listaCodigoFonte, reg, vars);
         montador.start();
 
         // CARREGADOR
         carregador = new Carregador(memoria);
+        System.out.println("**------ Print Memory -------**");
         memoria.printMemory();
+        System.out.println("**------ ------------ -------**");
 
-        System.out.println(memoria.getAddress());
-        System.out.println(memoria.getDatas());
+//        HashMap<String, String> var = new HashMap<String, String>();
+//        var.put("VAR1","123");
+//
+//        vars.addVariable(var);
+//        System.out.println(vars.getAddressFromVarName("VAR1"));
 
         // MAQUINA
         // maquina = new Maquina(memoria);
 
-//        table.clear();
-//        for(ParseSourceLine sl: listaCodigoFonte){
-//            table.addLine(sl.getValues());
-//        }
-//
-//        table.printTable();
+//        printTable();
+
     }
 
+    static void printTable(){
+        table.clear();
+        for(ParseSourceLine sl: listaCodigoFonte){
+            table.addLine(sl.getValues());
+        }
+
+        table.printTable();
+    }
 
 }
