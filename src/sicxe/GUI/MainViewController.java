@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import sicxe.App;
 import sicxe.Carregador.Carregador;
 import sicxe.Helpers.ParseSourceLine;
+import sicxe.Maquina.Maquina;
 import sicxe.Memory.Memory;
 import sicxe.Memory.Register;
 import sicxe.Memory.Variables;
@@ -15,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class MainViewController {
@@ -67,7 +67,7 @@ public class MainViewController {
 
         App.cpuViewController.clearCPUView();
 
-        App.listaCodigoFonte = new ArrayList<ParseSourceLine>();
+        App.listaCodigoFonte = new ArrayList<>();
         App.table = new Table();
         App.memoria = new Memory();
         App.vars = new Variables();
@@ -112,11 +112,12 @@ public class MainViewController {
         //System.out.println(vars.getAddressFromVarName("VAR1"));
 
         // MAQUINA
-        // maquina = new Maquina(memoria);
+        App.maquina = new Maquina();
+        App.maquina.maquinaExecucao();
 
         //update MemoryView columns
         App.addressStringList = App.memoria.getAddressList();
-        App.dataStringList = App.memoria.getValueList();;
+        App.dataStringList = App.memoria.getValueList();
 
         App.memoryViewController.updateMemory();
 

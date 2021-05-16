@@ -19,10 +19,8 @@ public class CPUViewController implements Initializable {
     @FXML TextField textFieldB = new TextField();
     @FXML TextField textFieldX = new TextField();
     @FXML TextField textFieldSW = new TextField();
-    @FXML TextField textFieldF1 = new TextField();
-    @FXML TextField textFieldF2 = new TextField();
-    @FXML TextField textFieldPC1 = new TextField();
-    @FXML  TextField textFieldPC2 = new TextField();
+    @FXML TextField textFieldF = new TextField();
+    @FXML TextField textFieldPC = new TextField();
 
 
     @Override
@@ -35,10 +33,10 @@ public class CPUViewController implements Initializable {
         textFieldB.setText("0");
         textFieldX.setText("0");
         textFieldSW.setText("0");
-        textFieldF1.setText("0");
-        textFieldF2.setText("0");
-        textFieldPC1.setText("0");
-        textFieldPC2.setText("0");
+        textFieldF.setText("0");
+        textFieldF.setText("0");
+        textFieldPC.setText("0");
+        textFieldPC.setText("0");
         cpuViewTextArea.setText("Press start on the main window to run the program.");
         textFieldA.setEditable(false);
         textFieldS.setEditable(false);
@@ -47,10 +45,8 @@ public class CPUViewController implements Initializable {
         textFieldB.setEditable(false);
         textFieldX.setEditable(false);
         textFieldSW.setEditable(false);
-        textFieldF1.setEditable(false);
-        textFieldF2.setEditable(false);
-        textFieldPC1.setEditable(false);
-        textFieldPC2.setEditable(false);
+        textFieldF.setEditable(false);
+        textFieldPC.setEditable(false);
         cpuViewTextArea.setEditable(false);
     }
 
@@ -63,10 +59,8 @@ public class CPUViewController implements Initializable {
         textFieldB.setText(App.reg.getRegisterValue("B"));
         textFieldX.setText(App.reg.getRegisterValue("X"));
         textFieldSW.setText(App.reg.getRegisterValue("SW"));
-        textFieldF1.setText(App.reg.getRegisterValue("F"));
-        textFieldF2.setText(App.reg.getRegisterValue("F"));
-        textFieldPC1.setText(App.reg.getRegisterValue("PC"));
-        textFieldPC2.setText(App.reg.getRegisterValue("PC"));
+        textFieldF.setText(App.reg.getRegisterValue("F"));
+        textFieldPC.setText(App.reg.getRegisterValue("PC"));
         cpuViewTextArea.setText("?");
     }
 
@@ -79,10 +73,8 @@ public class CPUViewController implements Initializable {
         textFieldB.setText("0");
         textFieldX.setText("0");
         textFieldSW.setText("0");
-        textFieldF1.setText("0");
-        textFieldF2.setText("0");
-        textFieldPC1.setText("0");
-        textFieldPC2.setText("0");
+        textFieldF.setText("0");
+        textFieldPC.setText("0");
         cpuViewTextArea.setText("Press start on the main window to run the program.");
     }
 }

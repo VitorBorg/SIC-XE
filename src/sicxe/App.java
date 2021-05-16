@@ -14,6 +14,7 @@ import sicxe.GUI.InputViewController;
 import sicxe.GUI.MainViewController;
 import sicxe.GUI.MemoryViewController;
 import sicxe.Helpers.ParseSourceLine;
+import sicxe.Maquina.Maquina;
 import sicxe.Memory.Memory;
 import sicxe.Memory.Register;
 import sicxe.Memory.Variables;
@@ -38,6 +39,7 @@ public class App extends Application {
     public static Memory memoria;
     public static Register reg;
     public static Variables vars;
+    public static Maquina maquina;
 
     public static Table table;
     

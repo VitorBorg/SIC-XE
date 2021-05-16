@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="459.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sicxe.GUI.CPUViewController">
    <top>
-        <VBox prefHeight="150.0" prefWidth="550.0" BorderPane.alignment="CENTER">
+        <VBox prefHeight="105.0" prefWidth="550.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="17.0" prefWidth="512.0" VBox.vgrow="NEVER">
                <children>
@@ -64,7 +64,13 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="17.0" prefWidth="512.0" VBox.vgrow="NEVER">
                <children>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="25.0" text="SW" textAlignment="CENTER">
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="33.0" text="PC" textAlignment="CENTER">
+                     <padding>
+                        <Insets right="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="textFieldPC" prefHeight="25.0" prefWidth="140.0" />
+                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="27.0" text="SW" textAlignment="CENTER">
                      <padding>
                         <Insets right="5.0" />
                      </padding>
@@ -75,31 +81,13 @@
                         <Insets right="5.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="textFieldF1" prefHeight="25.0" />
-                  <TextField fx:id="textFieldF2" prefHeight="25.0" prefWidth="174.0">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </TextField>
+                  <TextField fx:id="textFieldF" prefHeight="25.0" prefWidth="153.0" />
                </children>
                <padding>
                   <Insets top="10.0" />
                </padding>
             </HBox>
             <HBox alignment="CENTER" prefHeight="17.0" prefWidth="512.0" VBox.vgrow="NEVER">
-               <children>
-                  <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="25.0" prefWidth="25.0" text="PC" textAlignment="CENTER">
-                     <padding>
-                        <Insets right="5.0" />
-                     </padding>
-                  </Label>
-                  <TextField fx:id="textFieldPC1" prefHeight="25.0" />
-                  <TextField fx:id="textFieldPC2" prefHeight="25.0" prefWidth="353.0">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
                <padding>
                   <Insets top="10.0" />
                </padding>
