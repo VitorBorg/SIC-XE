@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App extends Application {
-    static Integer line = 1;
-    static Integer endereco = 0;
+    public static Integer line = 1;
+    public static Integer endereco = 0;
     public static List<ParseSourceLine> listaCodigoFonte;
     public static Montador montador;
     public static Carregador carregador;
@@ -164,26 +164,15 @@ public class App extends Application {
     //opens the file dialog to select the input file
     public static void openFileDialog() throws IOException {
         fileChooser.setTitle("Select ASM file to load");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("ASM Files", "*.asm"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("ASM Files", "*.asm", ".txt"));
         Stage primaryStage = (Stage) App.primaryStage.getScene().getWindow();
 
         inputFile = fileChooser.showOpenDialog(primaryStage);
         inputFileText = Files.readString(Paths.get(inputFile.getAbsolutePath()));
 
-        listaCodigoFonte = new ArrayList<ParseSourceLine>();
-        table = new Table();
-        memoria = new Memory();
-        vars = new Variables();
-        reg = new Register();
-
-        Scanner in = new Scanner(new FileReader(inputFile));
-        while (in.hasNextLine()) {
-            String linhaDoArquivo = in.nextLine();
-            ParseSourceLine cfl = new ParseSourceLine(line, endereco, linhaDoArquivo);
-            line++;
-            listaCodigoFonte.add(cfl);
-
-            table.addLine(cfl.getValues());
+        //clears the MemoryView window if a new file is loaded
+        if ((App.addressStringList != null) & ((App.dataStringList != null))) {
+            App.memoryViewController.clearMemory();
         }
     }
 }

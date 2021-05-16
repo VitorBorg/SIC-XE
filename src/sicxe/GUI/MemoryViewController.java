@@ -10,9 +10,12 @@ import sicxe.App;
 
 public class MemoryViewController {
 
-    @FXML TableView<MemoryObjectGenerator> memoryViewTableView;
-    @FXML TableColumn<MemoryObjectGenerator, String> address;
-    @FXML TableColumn<MemoryObjectGenerator, String> data;
+    @FXML
+    TableView<MemoryObjectGenerator> memoryViewTableView;
+    @FXML
+    TableColumn<MemoryObjectGenerator, String> address;
+    @FXML
+    TableColumn<MemoryObjectGenerator, String> data;
 
     final ObservableList<MemoryObjectGenerator> tableData = FXCollections.observableArrayList();
 
@@ -27,5 +30,12 @@ public class MemoryViewController {
         data.setCellValueFactory(new PropertyValueFactory<MemoryObjectGenerator, String>("Data"));
 
         memoryViewTableView.setItems(tableData);
+    }
+
+    public void clearMemory() {
+
+        tableData.clear();
+        App.addressStringList.clear();
+        App.dataStringList.clear();
     }
 }

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import sicxe.App;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,6 +28,18 @@ public class CPUViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        textFieldA.setText("0");
+        textFieldS.setText("0");
+        textFieldT.setText("0");
+        textFieldL.setText("0");
+        textFieldB.setText("0");
+        textFieldX.setText("0");
+        textFieldSW.setText("0");
+        textFieldF1.setText("0");
+        textFieldF2.setText("0");
+        textFieldPC1.setText("0");
+        textFieldPC2.setText("0");
+        cpuViewTextArea.setText("Press start on the main window to run the program.");
         textFieldA.setEditable(false);
         textFieldS.setEditable(false);
         textFieldT.setEditable(false);
@@ -41,51 +54,35 @@ public class CPUViewController implements Initializable {
         cpuViewTextArea.setEditable(false);
     }
 
-    public TextArea getCpuViewTextArea() {
-        return cpuViewTextArea;
+    public void updateCPUView() {
+
+        textFieldA.setText(App.reg.getRegisterValue("A"));
+        textFieldS.setText(App.reg.getRegisterValue("S"));
+        textFieldT.setText(App.reg.getRegisterValue("T"));
+        textFieldL.setText(App.reg.getRegisterValue("L"));
+        textFieldB.setText(App.reg.getRegisterValue("B"));
+        textFieldX.setText(App.reg.getRegisterValue("X"));
+        textFieldSW.setText(App.reg.getRegisterValue("SW"));
+        textFieldF1.setText(App.reg.getRegisterValue("F"));
+        textFieldF2.setText(App.reg.getRegisterValue("F"));
+        textFieldPC1.setText(App.reg.getRegisterValue("PC"));
+        textFieldPC2.setText(App.reg.getRegisterValue("PC"));
+        cpuViewTextArea.setText("?");
     }
 
-    public TextField getTextFieldA() {
-        return textFieldA;
-    }
+    public void clearCPUView() {
 
-    public TextField getTextFieldS() {
-        return textFieldS;
-    }
-
-    public TextField getTextFieldT() {
-        return textFieldT;
-    }
-
-    public TextField getTextFieldL() {
-        return textFieldL;
-    }
-
-    public TextField getTextFieldB() {
-        return textFieldB;
-    }
-
-    public TextField getTextFieldX() {
-        return textFieldX;
-    }
-
-    public TextField getTextFieldSW() {
-        return textFieldSW;
-    }
-
-    public TextField getTextFieldF1() {
-        return textFieldF1;
-    }
-
-    public TextField getTextFieldF2() {
-        return textFieldF2;
-    }
-
-    public TextField getTextFieldPC1() {
-        return textFieldPC1;
-    }
-
-    public TextField getTextFieldPC2() {
-        return textFieldPC2;
+        textFieldA.setText("0");
+        textFieldS.setText("0");
+        textFieldT.setText("0");
+        textFieldL.setText("0");
+        textFieldB.setText("0");
+        textFieldX.setText("0");
+        textFieldSW.setText("0");
+        textFieldF1.setText("0");
+        textFieldF2.setText("0");
+        textFieldPC1.setText("0");
+        textFieldPC2.setText("0");
+        cpuViewTextArea.setText("Press start on the main window to run the program.");
     }
 }

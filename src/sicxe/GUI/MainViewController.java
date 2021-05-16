@@ -4,9 +4,19 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import sicxe.App;
 import sicxe.Carregador.Carregador;
+import sicxe.Helpers.ParseSourceLine;
+import sicxe.Memory.Memory;
+import sicxe.Memory.Register;
+import sicxe.Memory.Variables;
 import sicxe.Montador.Montador;
+import sicxe.Table.Table;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class MainViewController {
 
@@ -50,7 +60,34 @@ public class MainViewController {
 
     //executes the machine and updates CPUView and MemoryView
     @FXML
-    private void handleStartButton() {
+    private void handleStartButton() throws FileNotFoundException {
+        if ((App.addressStringList != null) & ((App.dataStringList != null))) {
+            App.memoryViewController.clearMemory();
+        }
+
+        App.cpuViewController.clearCPUView();
+
+        App.listaCodigoFonte = new ArrayList<ParseSourceLine>();
+        App.table = new Table();
+        App.memoria = new Memory();
+        App.vars = new Variables();
+        App.reg = new Register();
+
+        Scanner in = new Scanner(new FileReader(App.inputFile));
+        while (in.hasNextLine()) {
+            String linhaDoArquivo = in.nextLine();
+            ParseSourceLine cfl = new ParseSourceLine(App.line, App.endereco, linhaDoArquivo);
+            App.line++;
+            App.listaCodigoFonte.add(cfl);
+
+            App.table.addLine(cfl.getValues());
+        }
+
+        //clears CPU and memory windows
+        if ((App.addressStringList != null) & ((App.dataStringList != null))) {
+            App.memoryViewController.clearMemory();
+        }
+
         //App.table.printTable();
 
         App.montador = new Montador(App.memoria, App.listaCodigoFonte, App.reg, App.vars);
@@ -82,6 +119,9 @@ public class MainViewController {
         App.dataStringList = App.memoria.getValueList();;
 
         App.memoryViewController.updateMemory();
+
+        //update CPUView TextFields and TextArea
+        App.cpuViewController.updateCPUView();
     }
 
     @FXML
