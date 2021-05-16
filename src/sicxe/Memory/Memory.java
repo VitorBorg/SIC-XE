@@ -58,16 +58,27 @@ public class Memory {
         }
     }
 
-    public List<String> getAddress(){
-        List<String> address = new ArrayList<String>();
+    public String getAddress(String addressFind){
 
+        for(HashMap<String, MemoryBlock> line: memory){
+            for (String address : line.keySet()) {
+                if(address.equals(addressFind)){
+                    return line.get(address).toString();
+                }
+            }
+        }
+        return "";
+    }
+
+    public List<String> getAddressList(){
+        List<String> address = new ArrayList<String>();
         for(HashMap<String, MemoryBlock> line: memory){
             for (String sigla : line.keySet()) { address.add(sigla); }
         }
         return address;
     }
 
-    public List<String> getDatas(){
+    public List<String> getValueList(){
         List<String> datas = new ArrayList<String>();
 
         for (HashMap<String, MemoryBlock> mem : memory) {
@@ -82,5 +93,67 @@ public class Memory {
 
     public  List<HashMap<String, MemoryBlock>> getMemory() {
         return memory;
+    }
+
+    public void updateValueFromAddres(String currentAddres, String value) {
+        MemoryBlock newData = new MemoryBlock(value);
+
+
+        for (HashMap<String, MemoryBlock> mem : memory) {
+            mem.put(currentAddres, newData);
+        }
+
+
+    }
+
+    public Boolean hasNext(String currentAddres){
+
+        int i = 0;
+        int currentPos = 0;
+        for(HashMap<String, MemoryBlock> line: memory){
+            for (String address : line.keySet()) {
+                if(address.equals(currentAddres)){
+                    currentPos = i;
+                }
+                i++;
+            }
+
+        }
+        try {
+            if(currentPos + 1 != memory.size()){
+                return true;
+            }
+        } catch (Error err){
+            return false;
+        }
+        return false;
+    }
+
+    public String getNextValue(String currentAddres){
+        int i = 0;
+        int currentPos = 0;
+        for(HashMap<String, MemoryBlock> line: memory){
+            for (String address : line.keySet()) {
+                if(address.equals(currentAddres)){
+                    currentPos = i;
+                }
+                i++;
+            }
+
+        }
+        i = 0;
+
+
+        for(HashMap<String, MemoryBlock> line: memory){
+            for (String address : line.keySet()) {
+                if(i == currentPos + 1){
+                    return line.get(address).toString();
+                }
+                i++;
+            }
+
+        }
+
+        return "";
     }
 }
