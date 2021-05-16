@@ -4,9 +4,10 @@ import java.util.HashMap;
 
 public class Operador {
 
-    private final HashMap<String, Integer> operadores = new HashMap<>();
+    public static HashMap<String, Integer> operadores = new HashMap<>();
 
     public Operador() {
+
         operadores.put("ADD", 3);
 
         operadores.put("+ADD", 4);
@@ -152,7 +153,8 @@ public class Operador {
         operadores.put("+WD", 4);
     }
 
-    public int getFormat(String opcode) {
+    public static int getFormat(String opcode) {
+
         String operador = getOperatorFromOpcode(opcode.replace("+", ""));
         if (opcode.contains("+")) {
             return operadores.get("+" + operador).intValue();
@@ -162,6 +164,7 @@ public class Operador {
     }
 
     public static String getOperatorFromOpcode(String operator) {
+
         switch (operator.toUpperCase()) {
             case "18":
                 return "ADD";
@@ -244,11 +247,10 @@ public class Operador {
             default:
                 return "";
         }
-
-
     }
 
     public static String getOpcodeFromOperator(String operator) {
+
         switch (operator.toUpperCase()) {
             case "ADD":
                 return "18";
@@ -329,8 +331,5 @@ public class Operador {
             default:
                 return "null";
         }
-
     }
-
-
 }

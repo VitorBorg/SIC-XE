@@ -5,6 +5,7 @@ import sicxe.Translate.Translate;
 public class Helpers {
 
     public static String printIfNotNull(String value) {
+
         return value == null ? "" : value;
     }
 
@@ -12,7 +13,7 @@ public class Helpers {
 
         if (valor.length() > fillNumber) {
             int bitsExtras = valor.length() - fillNumber;
-            return valor.substring(bitsExtras);
+            return valor.substring(bitsExtras, valor.length());
         }
 
         StringBuilder valorPreenchido = new StringBuilder();
@@ -129,5 +130,12 @@ public class Helpers {
         }
 
         return "";
+    }
+
+    static public String addPcToNextAddress(String address){
+        int addressInt = Integer.parseInt(address);
+        addressInt += 24;
+
+        return Helpers.fillXBits(String.valueOf(addressInt), 5);
     }
 }

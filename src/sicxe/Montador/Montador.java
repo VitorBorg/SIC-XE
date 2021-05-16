@@ -3,33 +3,40 @@ package sicxe.Montador;
 // INPUT: LDA #3
 // OUTPUT: 2ARB
 
-import sicxe.Carregador.Carregador;
 import sicxe.Helpers.Helpers;
 import sicxe.Helpers.ParseSourceLine;
 import sicxe.Memory.Memory;
+import sicxe.Memory.Register;
+import sicxe.Memory.Variables;
 import sicxe.Operador.Operador;
 import sicxe.Translate.Translate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Montador {
 
     private String opcode = "";
-    private final Operador operador;
-    private final Memory memoria;
+    private Operador operador;
+    private Memory memoria;
+    private Register register;
+    private Variables variables;
+    private List<ParseSourceLine> listaCodigoFonte;
+    private ParseSourceLine parseSourceLine;
 
-    List<ParseSourceLine> tabelaCodigoFonte;
 
-    public Montador(List<ParseSourceLine> tcf, Memory memoria) {
-        this.tabelaCodigoFonte = tcf;
+    public Montador(Memory memoria, List<ParseSourceLine> listaCodigoFonte, Register register, Variables variables) {
+
         this.operador = new Operador();
         this.memoria = memoria;
+        this.register = register;
+        this.variables = variables;
+        this.listaCodigoFonte = listaCodigoFonte;
     }
 
     public void start() {
-        for (ParseSourceLine codigoFonteLinha : tabelaCodigoFonte) {
 
+        for (ParseSourceLine codigoFonteLinha : listaCodigoFonte) {
+            this.parseSourceLine = codigoFonteLinha;
             this.opcode = getCodMachine(codigoFonteLinha.getOperador());
 
             int formatOfInstruction = this.operador.getFormat(opcode);
@@ -41,16 +48,16 @@ public class Montador {
             } else if (formatOfInstruction == 3 || formatOfInstruction == 4) { // format 3 (opcode) X Y - 3 BYTES - 24BITS
                 decodeFormat3or4(opcode, codigoFonteLinha.getOperando1(), codigoFonteLinha.getOperando2(), codigoFonteLinha.getOperador().contains("+"));
             }
-
-
         }
     }
 
     private String getCodMachine(String instruction) {
+
         return Operador.getOpcodeFromOperator(instruction);
     }
 
     private String decodeFormat1(String code) {
+
         String[] codeSplit = code.split("");
         StringBuilder binaryOpCode = new StringBuilder();
 
@@ -82,13 +89,10 @@ public class Montador {
         String part1 = fullBinary16bits.substring(0, 8);
         String part2 = fullBinary16bits.substring(8, 16);
 
+        String address = memoria.save(Helpers.getCodObjeto(part1 + part2));
+        this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
 
-
-
-        memoria.save(Helpers.getCodObjeto(part1 + part2));
-        // System.out.println("Full binary 16 bits: " + fullBinary16bits);
-        // System.out.println("Codigo objeto: " + instruction.get(0) + r1 + r2);
-
+        parseSourceLine.setEndereco(Integer.parseInt(address));
     }
 
     void decodeFormat3or4(String operatorOpcode, String op1, String op2, Boolean format4) {
@@ -97,9 +101,9 @@ public class Montador {
         StringBuilder opcodeBuilder = new StringBuilder();
         String n = "0"; // Indireto
         String i = "0"; // Imediato
-        String x = "0";
-        String b = "0";
-        String p = "0";
+        String x = "0"; // Indexado
+        String b = "0"; // Base
+        String p = "0"; // PC
         String e = "0";
         String deslocamento = "";
 
@@ -133,36 +137,6 @@ public class Montador {
             e = "1";
         }
 
-//        int PC  = baseAddress + (n.equals("1") ? 4 : 3);
-//
-//        if(isLabel(instruction.get(1))){
-//            int displacement = Translate.HexToDec("0030") -  Translate.HexToDec("0003");
-//            String displacementHex = Translate.DecToHex(displacement);
-//
-//            deslocamento = Helper.fillXBits(displacementHex, 4);
-//
-//
-//            // System.out.println(displacement);
-//            // System.out.println(Translate.DecToHex(displacement));
-//            // if (isPCRelative(displacement)) {
-//            //     b = '0';
-//            //     p = '1';
-//            //     return String.valueOf(b) + p + e;
-//            // }
-//        }
-
-        /*
-         * if(){ // ??? FAZER VERIFICAÇÃO DE QUANDO É PRA CALCULAR USANDO A BASE E
-         * QUANDO É PARA CALCULAR USANDO PC
-         *
-         * }
-         *
-         * if(){ // ??? quando colocar N para 1
-         *
-         * }
-         */
-
-
         String[] flags = {n, i, x, b, p, e};
         String addressType = getAddressType(flags);
 
@@ -171,20 +145,20 @@ public class Montador {
         }
 
         if (addressType.equals("n")) { // se for indireto
-            //deslocamento = calculaDeslocamentoIndireto(instruction.get(1));
+            deslocamento = calculaDeslocamentoIndireto(op1);
         }
 
         if (addressType.equals("x")) { // se for indexado
-            //deslocamento = calculaDeslocamentoIndexado(instruction.get(1));
+            deslocamento = calculaDeslocamentoIndexado(op1);
         }
 
         if (addressType.equals("b")) { // se for calculo de base
-            //deslocamento = calculaDeslocamentoBase(instruction.get(1));
+            deslocamento = calculaDeslocamentoBase(op1);
         }
 
 
         if (addressType.equals("p")) { // se for calculo de pc
-            //deslocamento = calculaDeslocamentoPc(instruction.get(1));
+            deslocamento = calculaDeslocamentoPc(op1);
         }
 
         // System.out.println("opcode: " + opcode.toString() );
@@ -197,26 +171,24 @@ public class Montador {
         // System.out.println("deslocamento: " + deslocamento);
         // System.out.println(opcode.toString()+ n+i+x+b+p+e+deslocamento);
 
-        // System.out.println("FORMATO 3: " + instruction);
+        StringBuilder fullBinary24or32bits = new StringBuilder();
+        fullBinary24or32bits.append(opcode.toString());
+        fullBinary24or32bits.append(n);
+        fullBinary24or32bits.append(i);
+        fullBinary24or32bits.append(x);
+        fullBinary24or32bits.append(b);
+        fullBinary24or32bits.append(p);
+        fullBinary24or32bits.append(e);
+        fullBinary24or32bits.append(deslocamento);
 
-        // store in memory
-            StringBuilder fullBinary24or32bits = new StringBuilder();
-            fullBinary24or32bits.append(opcode);
-            fullBinary24or32bits.append(n);
-            fullBinary24or32bits.append(i);
-            fullBinary24or32bits.append(x);
-            fullBinary24or32bits.append(b);
-            fullBinary24or32bits.append(p);
-            fullBinary24or32bits.append(e);
-            fullBinary24or32bits.append(deslocamento);
+        String address = memoria.save(Helpers.getCodObjeto(fullBinary24or32bits.toString()));
+        this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
 
-            memoria.save(Helpers.getCodObjeto(fullBinary24or32bits.toString()));
-
-        // storeMemory(part1, part2, part3);
-
+        parseSourceLine.setEndereco(Integer.parseInt(address));
     }
 
     String getAddressType(String[] flags) {
+
         String n = flags[0];
         String i = flags[1];
         String x = flags[2];
@@ -251,17 +223,40 @@ public class Montador {
         return "n/a";
     }
 
-    String calculaDeslocamentoImediato(String imediato, String typeOfInstruction){
+    String calculaDeslocamentoIndireto(String label) {
+        // DESLOC = TA - PC          TA = TARGET ADDRESS
+        return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("PC")));
+    }
+
+    String calculaDeslocamentoImediato(String imediato, String typeOfInstruction) {
         String imediatoBinario = Translate.DecToBin(imediato.replace("#","")); // AJUSTAR PARA QUANDO FOR 11 ou mais de um INTEIRO
 
-        if(typeOfInstruction.equals("0")){ // type 3
+        if(typeOfInstruction.equals("0")) { // type 3
             return Helpers.fillXBits(imediatoBinario, 12);
         }
-        else if(typeOfInstruction.equals("1")){ // type 4
+        else if(typeOfInstruction.equals("1")) { // type 4
             return Helpers.fillXBits(imediatoBinario, 20);
         }
 
         return "";
     }
 
+    String calculaDeslocamentoIndexado(String label) {
+
+        // DESLOC = TA - B         TA = TARGET ADDRESS
+        return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("B")));
+    }
+
+    String calculaDeslocamentoBase(String label) {
+
+        // DESLOC = TA - B         TA = TARGET ADDRESS
+        return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("B")));
+    }
+
+    String calculaDeslocamentoPc(String label) {
+
+        // DESLOC = TA - PC        TA = TARGET ADDRESS
+        return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("PC")));
+    }
 }
+

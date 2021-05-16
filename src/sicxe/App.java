@@ -15,6 +15,8 @@ import sicxe.GUI.MainViewController;
 import sicxe.GUI.MemoryViewController;
 import sicxe.Helpers.ParseSourceLine;
 import sicxe.Memory.Memory;
+import sicxe.Memory.Register;
+import sicxe.Memory.Variables;
 import sicxe.Montador.Montador;
 import sicxe.Table.Table;
 
@@ -34,6 +36,8 @@ public class App extends Application {
     public static Montador montador;
     public static Carregador carregador;
     public static Memory memoria;
+    public static Register reg;
+    public static Variables vars;
 
     public static Table table;
     
@@ -168,14 +172,15 @@ public class App extends Application {
 
         listaCodigoFonte = new ArrayList<ParseSourceLine>();
         table = new Table();
-        memoria = new Memory();listaCodigoFonte = new ArrayList<ParseSourceLine>();
-        table = new Table();
         memoria = new Memory();
+        vars = new Variables();
+        reg = new Register();
 
         Scanner in = new Scanner(new FileReader(inputFile));
         while (in.hasNextLine()) {
             String linhaDoArquivo = in.nextLine();
             ParseSourceLine cfl = new ParseSourceLine(line, endereco, linhaDoArquivo);
+            line++;
             listaCodigoFonte.add(cfl);
 
             table.addLine(cfl.getValues());

@@ -51,17 +51,35 @@ public class MainViewController {
     //executes the machine and updates CPUView and MemoryView
     @FXML
     private void handleStartButton() {
-        App.table.printTable();
+        //App.table.printTable();
 
-        App.montador = new Montador(App.listaCodigoFonte, App.memoria);
+        App.montador = new Montador(App.memoria, App.listaCodigoFonte, App.reg, App.vars);
         App.montador.start();
 
-        //carregador
+        // CARREGADOR
         App.carregador = new Carregador(App.memoria);
+        //System.out.println("**------ Print Memory -------**");
+        //App.memoria.printMemory();
+        //System.out.println("**------ ------------ -------**");
+        //memoria.updateValueFromAddres("00168","010001");
+        //System.out.println(memoria.getNextValue("00144"));
+
+        // ADD VARIABLES
+        App.vars.start(App.listaCodigoFonte);
+        //vars.printVariables();
+
+        //HashMap<String, String> var = new HashMap<String, String>();
+        //var.put("VAR1","123");
+
+        //vars.addVariable(var);
+        //System.out.println(vars.getAddressFromVarName("VAR1"));
+
+        // MAQUINA
+        // maquina = new Maquina(memoria);
 
         //update MemoryView columns
-        App.addressStringList = App.memoria.getAddress();
-        App.dataStringList = App.memoria.getDatas();;
+        App.addressStringList = App.memoria.getAddressList();
+        App.dataStringList = App.memoria.getValueList();;
 
         App.memoryViewController.updateMemory();
     }
