@@ -92,4 +92,55 @@ public class Memory {
     public  List<HashMap<String, MemoryBlock>> getMemory() {
        return memory;
     }
+
+    public Boolean hasNext(String currentAddres){
+
+        int i = 0;
+        int currentPos = 0;
+        for(HashMap<String, MemoryBlock> line: memory){
+            for (String address : line.keySet()) {
+                if(address.equals(currentAddres)){
+                   currentPos = i;
+                }
+                i++;
+            }
+
+        }
+        try {
+            if(currentPos + 1 != memory.size()){
+                return true;
+            }
+        } catch (Error err){
+            return false;
+        }
+        return false;
+    }
+
+    public String getNextValue(String currentAddres){
+        int i = 0;
+        int currentPos = 0;
+        for(HashMap<String, MemoryBlock> line: memory){
+            for (String address : line.keySet()) {
+                if(address.equals(currentAddres)){
+                    currentPos = i;
+                }
+                i++;
+            }
+
+        }
+        i = 0;
+
+
+        for(HashMap<String, MemoryBlock> line: memory){
+            for (String address : line.keySet()) {
+                if(i == currentPos + 1){
+                    return line.get(address).toString();
+                }
+                i++;
+            }
+
+        }
+
+        return "";
+    }
 }
