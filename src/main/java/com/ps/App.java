@@ -56,7 +56,9 @@ public class App {
         System.out.println("**------ Print Memory -------**");
         memoria.printMemory();
         System.out.println("**------ ------------ -------**");
-        System.out.println(memoria.getNextValue("00144"));
+//        memoria.updateValueFromAddres("00168","010001");
+//        System.out.println(memoria.getNextValue("00144"));
+
 
         // ADD VARIABLES
         vars.start(listaCodigoFonte);

@@ -69,7 +69,6 @@ public class Memory {
 
     public List<String> getAddressList(){
         List<String> address = new ArrayList<String>();
-
         for(HashMap<String, MemoryBlock> line: memory){
             for (String sigla : line.keySet()) { address.add(sigla); }
         }
@@ -91,6 +90,17 @@ public class Memory {
 
     public  List<HashMap<String, MemoryBlock>> getMemory() {
        return memory;
+    }
+
+    public void updateValueFromAddres(String currentAddres, String value) {
+        MemoryBlock newData = new MemoryBlock(value);
+
+
+        for (HashMap<String, MemoryBlock> mem : memory) {
+            mem.put(currentAddres, newData);
+        }
+
+
     }
 
     public Boolean hasNext(String currentAddres){
