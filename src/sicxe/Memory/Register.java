@@ -9,7 +9,6 @@ public class Register {
     private String[] registrador = {"", "", "", ""}; // POS 0 -> Nome   POS 1 -> NUMERO    POS 2 -> TAMANHO    POS 3 -> Valor
 
     public Register() {
-
         this.registradores = new ArrayList<String[]>();
 
         createRegisters("A", "0", "24", "");
@@ -22,33 +21,31 @@ public class Register {
     }
 
     void createRegisters(String nome, String numero, String tamanho, String valor) {
-
         this.registrador = new String[]{nome, numero, tamanho, valor};
         this.registradores.add(registrador);
     }
 
     public String[] getRegisterByName(String name) {
-
         for (String[] reg : registradores) {
-            if (reg[0] == name) {
+            if (reg[0] == name.toUpperCase()) {
                 return reg;
             }
         }
         return new String[]{"", "", "", ""};
     }
 
-    public String getRegisterValue(String name) {
 
-        String[] reg = getRegisterByName(name);
+    public String getRegisterValue(String name) {
+        String[] reg = getRegisterByName(name.toUpperCase());
         return reg[3];
     }
 
-    public String[] setRegisterValue(String name, String value) {
-
-        String[] reg = getRegisterByName(name);
+    public void setRegisterValue(String name, String value) {
+        String[] reg = getRegisterByName(name.toUpperCase());
 
         reg[3] = value;
 
-        return reg;
     }
+
+
 }

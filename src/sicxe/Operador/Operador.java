@@ -245,7 +245,7 @@ public class Operador {
             case "4":
                 return "LDX";
             default:
-                return "";
+                return null;
         }
     }
 
@@ -329,7 +329,7 @@ public class Operador {
             case "TIXR":
                 return "B8";
             default:
-                return "null";
+                return null;
         }
     }
 }

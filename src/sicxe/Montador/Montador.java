@@ -25,7 +25,6 @@ public class Montador {
 
 
     public Montador(Memory memoria, List<ParseSourceLine> listaCodigoFonte, Register register, Variables variables) {
-
         this.operador = new Operador();
         this.memoria = memoria;
         this.register = register;
@@ -34,7 +33,6 @@ public class Montador {
     }
 
     public void start() {
-
         for (ParseSourceLine codigoFonteLinha : listaCodigoFonte) {
             this.parseSourceLine = codigoFonteLinha;
             this.opcode = getCodMachine(codigoFonteLinha.getOperador());
@@ -48,16 +46,16 @@ public class Montador {
             } else if (formatOfInstruction == 3 || formatOfInstruction == 4) { // format 3 (opcode) X Y - 3 BYTES - 24BITS
                 decodeFormat3or4(opcode, codigoFonteLinha.getOperando1(), codigoFonteLinha.getOperando2(), codigoFonteLinha.getOperador().contains("+"));
             }
+
+
         }
     }
 
     private String getCodMachine(String instruction) {
-
         return Operador.getOpcodeFromOperator(instruction);
     }
 
     private String decodeFormat1(String code) {
-
         String[] codeSplit = code.split("");
         StringBuilder binaryOpCode = new StringBuilder();
 
@@ -72,7 +70,7 @@ public class Montador {
     void decodeFormat2(String operator, String reg1, String reg2) {
         String[] codeSplit = operator.split("");
         String r1 = Helpers.getRegisterNumber(reg1).toString();
-        String r2 = Helpers.getRegisterNumber(reg2).toString();
+        String r2 = reg2.equals("") ? "" : Helpers.getRegisterNumber(reg2).toString();
         StringBuilder fullBinary16bits = new StringBuilder();
 
         for (String cs : codeSplit) {
@@ -81,7 +79,7 @@ public class Montador {
         }
 
         String binaryR1 = Helpers.parseTo4Bits(Translate.HexToBin(r1));
-        String binaryR2 = Helpers.parseTo4Bits(Translate.HexToBin(r2));
+        String binaryR2 = reg2.equals("") ? "0000" : Helpers.parseTo4Bits(Translate.HexToBin(r2));
 
         fullBinary16bits.append(binaryR1);
         fullBinary16bits.append(binaryR2);
@@ -89,10 +87,14 @@ public class Montador {
         String part1 = fullBinary16bits.substring(0, 8);
         String part2 = fullBinary16bits.substring(8, 16);
 
+
+
+
         String address = memoria.save(Helpers.getCodObjeto(part1 + part2));
         this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
 
         parseSourceLine.setEndereco(Integer.parseInt(address));
+
     }
 
     void decodeFormat3or4(String operatorOpcode, String op1, String op2, Boolean format4) {
@@ -137,6 +139,7 @@ public class Montador {
             e = "1";
         }
 
+
         String[] flags = {n, i, x, b, p, e};
         String addressType = getAddressType(flags);
 
@@ -171,6 +174,7 @@ public class Montador {
         // System.out.println("deslocamento: " + deslocamento);
         // System.out.println(opcode.toString()+ n+i+x+b+p+e+deslocamento);
 
+
         StringBuilder fullBinary24or32bits = new StringBuilder();
         fullBinary24or32bits.append(opcode.toString());
         fullBinary24or32bits.append(n);
@@ -181,14 +185,17 @@ public class Montador {
         fullBinary24or32bits.append(e);
         fullBinary24or32bits.append(deslocamento);
 
+
+
         String address = memoria.save(Helpers.getCodObjeto(fullBinary24or32bits.toString()));
         this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
 
         parseSourceLine.setEndereco(Integer.parseInt(address));
+
+
     }
 
     String getAddressType(String[] flags) {
-
         String n = flags[0];
         String i = flags[1];
         String x = flags[2];
@@ -223,40 +230,41 @@ public class Montador {
         return "n/a";
     }
 
-    String calculaDeslocamentoIndireto(String label) {
+    String calculaDeslocamentoIndireto(String label){
         // DESLOC = TA - PC          TA = TARGET ADDRESS
         return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("PC")));
     }
 
-    String calculaDeslocamentoImediato(String imediato, String typeOfInstruction) {
+    String calculaDeslocamentoImediato(String imediato, String typeOfInstruction){
         String imediatoBinario = Translate.DecToBin(imediato.replace("#","")); // AJUSTAR PARA QUANDO FOR 11 ou mais de um INTEIRO
 
-        if(typeOfInstruction.equals("0")) { // type 3
+        if(typeOfInstruction.equals("0")){ // type 3
             return Helpers.fillXBits(imediatoBinario, 12);
         }
-        else if(typeOfInstruction.equals("1")) { // type 4
+        else if(typeOfInstruction.equals("1")){ // type 4
             return Helpers.fillXBits(imediatoBinario, 20);
         }
 
         return "";
     }
 
-    String calculaDeslocamentoIndexado(String label) {
-
+    String calculaDeslocamentoIndexado(String label){
         // DESLOC = TA - B         TA = TARGET ADDRESS
         return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("B")));
     }
 
-    String calculaDeslocamentoBase(String label) {
-
+    String calculaDeslocamentoBase(String label){
         // DESLOC = TA - B         TA = TARGET ADDRESS
         return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("B")));
     }
 
-    String calculaDeslocamentoPc(String label) {
-
+    String calculaDeslocamentoPc(String label){
         // DESLOC = TA - PC        TA = TARGET ADDRESS
         return String.valueOf(Integer.parseInt(variables.getAddressFromVarName(label)) - Integer.parseInt(register.getRegisterValue("PC")));
     }
+
+
+
 }
+
 

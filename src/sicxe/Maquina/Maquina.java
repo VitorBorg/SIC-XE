@@ -14,20 +14,30 @@ public class Maquina {
         int localI;
         boolean bool;//
 
-        while(App.memoria.hasNext(localS)){
+        String currentLocalS;
 
+        do {
             localI = Integer.parseInt(localS);//para execuçao de operaçoes
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String s: App.memoria.getAddress(localS).split("")) {
+                stringBuilder.append(Helpers.fillXBits(String.valueOf(Translate.HexToBin(s)),4));
+            }
 
-            switch (App.memoria.getAddress((localS))) {
+            String format = stringBuilder.substring(11,12).equals("0") ? "3" : "4";
+            String opCode6bits = stringBuilder.substring(0,6);
+            String opCode = Translate.BinToHex(opCode6bits);
+
+            System.out.println(opCode.toUpperCase());
+            switch (opCode) { //String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))
                 case "18": //ADD
-                    App.reg.setRegisterValue("A", Translate.IntToString((Integer.parseInt(App.reg.getRegisterValue("A"))) + ((Integer.parseInt(App.memoria.getAddress(Translate.DecToHex(localI+24)))))));
+                    App.reg.setRegisterValue("A", String.valueOf((Integer.parseInt(App.reg.getRegisterValue("A"))) + ((Integer.parseInt((getDeslocamento(localS, format)))))));
                     break;
                 case "90"://ADDR
                     App.reg.setRegisterValue(RetornaR2(localS),String.valueOf(Integer.parseInt(RetornaR2Value(localS)) + Integer.parseInt(RetornaR1value(localS))));
                     break;
                 case "40"://"AND": //valores de getA e m tem q estar em int
                     App.reg.getRegisterValue("A");
-                    bool = App.reg.getRegisterValue("A").equals (App.memoria.getAddress(Translate.DecToHex(localI+24)));
+                    bool = App.reg.getRegisterValue("A").equals (String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))));
                     if(bool & Integer.parseInt(App.reg.getRegisterValue("A")) > 0)
                         App.reg.setRegisterValue("A", "1");       //n tenho certeza de como and funciona
                     else
@@ -35,11 +45,12 @@ public class Maquina {
                     break;
                 case "B4":// "CLEAR"
                     App.reg.setRegisterValue(RetornaR1(localS), "0");
+                    System.out.println("Teste");
                     break;
                 case "28"://"COMP":
-                    if((Integer.parseInt(App.reg.getRegisterValue("A"))) > Integer.parseInt((App.memoria.getAddress(Translate.DecToHex(localI+24))))) {
+                    if((Integer.parseInt(App.reg.getRegisterValue("A"))) > Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))) {
                         App.reg.setRegisterValue("SW", "1"); // 1 para A maior
-                    }else if((Integer.parseInt(App.reg.getRegisterValue("A"))) < Integer.parseInt((App.memoria.getAddress(Translate.DecToHex(localI+24))))) {
+                    }else if((Integer.parseInt(App.reg.getRegisterValue("A"))) < Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))) {
                         App.reg.setRegisterValue("SW", "2");// 2 para entrada maior
                     }else{
                         App.reg.setRegisterValue("SW", "3");// se forem iguais
@@ -56,7 +67,7 @@ public class Maquina {
                     }
                     break;
                 case "24"://"DIV":
-                    App.reg.setRegisterValue("A", String.valueOf((Integer.parseInt(App.reg.getRegisterValue("A"))) / (Integer.parseInt((App.memoria.getAddress(Translate.DecToHex(localI+24)))))));
+                    App.reg.setRegisterValue("A", String.valueOf((Integer.parseInt(App.reg.getRegisterValue("A"))) / (Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))))));
                     //A : (A) / (m..m+24)
                 case "9C"://"DIVR":
                     App.reg.setRegisterValue(RetornaR2(localS), String.valueOf(Integer.parseInt(App.reg.getRegisterValue(RetornaR2Value(localS))) / Integer.parseInt(App.reg.getRegisterValue(RetornaR1value(localS)))));
@@ -74,16 +85,16 @@ public class Maquina {
                     break;
                 case "38"://"JLT":
                     if(Objects.equals(App.reg.getRegisterValue("SW"), "2"))
-                        App.reg.setRegisterValue("PC", String.valueOf(App.memoria.getAddress(Translate.DecToHex(localI+24))));
+                        App.reg.setRegisterValue("PC", (String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))));
                     break;
                 case "48"://"JSUB":
                     //L ← (PC); PC ← m < //////  JSUB jumps to the subroutine, placing the return address in register L ////acho q é isso
                     break;
                 case "0"://"LDA":
-                    App.reg.setRegisterValue("A", (App.memoria.getAddress(Translate.DecToHex(localI+24))));
+                    App.reg.setRegisterValue("A", String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))));
                     break;
-                case "LDB"://"LDB":
-                    App.reg.setRegisterValue("B", (App.memoria.getAddress(Translate.DecToHex(localI+24))));
+                case "68"://"LDB":
+                    App.reg.setRegisterValue("B", (String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))));
                     break;
                 case "50"://"LDCH":
                     transferM = App.memoria.getAddress(Translate.DecToHex(localI));
@@ -93,30 +104,30 @@ public class Maquina {
                     ////A [byte mais a direita] ← (m) // sera q da certo ?? ninguem sabe, o @Vitor falo q é isso mesmo, se der merda é na dele!
                     break;
                 case "8"://"LDL":
-                    App.reg.setRegisterValue("L", (App.memoria.getAddress(Translate.DecToHex(localI+24))));
+                    App.reg.setRegisterValue("L", (String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))));
                     break;
                 case "6C"://"LDS":
-                    App.reg.setRegisterValue("S", (App.memoria.getAddress(Translate.DecToHex(localI+24))));
+                    App.reg.setRegisterValue("S", (String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))));
                     break;
                 case "74"://"LDT":
-                    App.reg.setRegisterValue("T", (App.memoria.getAddress(Translate.DecToHex(localI+24))));
+                    App.reg.setRegisterValue("T", (String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))));
                     break;
                 case "4"://"LDX":
-                    App.reg.setRegisterValue("X", (App.memoria.getAddress(Translate.DecToHex(localI+24))));
+                    App.reg.setRegisterValue("X", (String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))));
                     break;
                 case "20"://"MUL":
-                    App.reg.setRegisterValue("A", Translate.IntToString((Integer.parseInt(App.reg.getRegisterValue("A"))) * (Integer.parseInt(App.memoria.getAddress(Translate.DecToHex(localI+24))))));
+                    App.reg.setRegisterValue("A", Translate.IntToString((Integer.parseInt(App.reg.getRegisterValue("A"))) * (Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))))));
                     break;
                 case "98"://"MULR":
                     App.reg.setRegisterValue(RetornaR2(localS), String.valueOf(Integer.parseInt(App.reg.getRegisterValue(RetornaR2Value(localS))) * Integer.parseInt(App.reg.getRegisterValue(RetornaR1value(localS)))));
                     break;
                 case "44"://"OR":
-                    if((Integer.parseInt(App.reg.getRegisterValue("A"))) > 0 || 0 < (Integer.parseInt(App.memoria.getAddress(Translate.DecToHex(localI+24)))))
-                        App.reg.setRegisterValue("A", "1");
-                    else{
-                        App.reg.setRegisterValue("A", "0");
-                    }
-                    break;
+                    if((Integer.parseInt(App.reg.getRegisterValue("A"))) > 0 || 0 < (Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))))) {
+                    App.reg.setRegisterValue("A", "1");
+                    }else{
+                    App.reg.setRegisterValue("A", "0");
+                }
+                break;
                 case "AC"://"RMO":
                     App.reg.setRegisterValue(RetornaR2(localS), App.reg.getRegisterValue(RetornaR1value(localS)));
                     break;
@@ -125,49 +136,49 @@ public class Maquina {
                     break;
                 case "A4"://"SHIFTL":
                     //Deslocamento a esquerda de n bit
-                    n = String.valueOf(Translate.HexToBin((App.memoria.getAddress(Translate.DecToHex(localI+24)))));
+                    n = String.valueOf(Translate.HexToBin((String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))));
                     n = n.substring(8,12);
                     App.reg.setRegisterValue(RetornaR1(localS), String.valueOf(Integer.parseInt(App.reg.getRegisterValue(RetornaR1value(localS))) << Integer.parseInt(n)));
                     break;
                 case "A8"://"SHIFTR":
-                    //Deslocamento a direita de n bit
-                    n = String.valueOf(Translate.HexToBin((App.memoria.getAddress(Translate.DecToHex(localI+24)))));
+                    //Deslocamento a esquerda de n bit
+                    n = String.valueOf(Translate.HexToBin(((getDeslocamento(localS, format)))));
                     n = n.substring(8,12);
                     App.reg.setRegisterValue(RetornaR1(localS), String.valueOf(Integer.parseInt(App.reg.getRegisterValue(RetornaR1value(localS))) >> Integer.parseInt(n)));
                     break;
                 case "0C"://"STA":
-                    App.memoria.updateValueFromAddres(String.valueOf(Integer.parseInt(localS)+48),App.reg.getRegisterValue("A"));
+                    App.memoria.updateValueFromAddres(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))),App.reg.getRegisterValue("A"));
                     break;
                 case "78"://"STB":
-                    App.memoria.updateValueFromAddres(String.valueOf(Integer.parseInt(localS)+48),App.reg.getRegisterValue("B"));
+                    App.memoria.updateValueFromAddres(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))),App.reg.getRegisterValue("B"));
                     break;
                 case "54"://"STCH":
                     transferA = App.reg.getRegisterValue("A").substring(16,24);
                     App.memoria.updateValueFromAddres(String.valueOf(Integer.parseInt(localS)),transferA);
                     break;
                 case "7C"://"STS":
-                    App.memoria.updateValueFromAddres(String.valueOf(Integer.parseInt(localS)+48),App.reg.getRegisterValue("S"));
+                    App.memoria.updateValueFromAddres(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))),App.reg.getRegisterValue("S"));
                     break;
                 case "14"://"STL":
-                    App.memoria.updateValueFromAddres(String.valueOf(Integer.parseInt(localS)+48),App.reg.getRegisterValue("L"));
+                    App.memoria.updateValueFromAddres(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))),App.reg.getRegisterValue("L"));
                     break;
                 case "84"://"STT":
-                    App.memoria.updateValueFromAddres(String.valueOf(Integer.parseInt(localS)+48),App.reg.getRegisterValue("T"));
+                    App.memoria.updateValueFromAddres(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))),App.reg.getRegisterValue("T"));
                     break;
                 case "10"://"STX":
-                    App.memoria.updateValueFromAddres(String.valueOf(Integer.parseInt(localS)+48),App.reg.getRegisterValue("X"));
+                    App.memoria.updateValueFromAddres(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))),App.reg.getRegisterValue("X"));
                     break;
                 case "1C"://"SUB":
-                    App.reg.setRegisterValue("A", Translate.IntToString((Integer.parseInt(App.reg.getRegisterValue("A"))) - ((Integer.parseInt(App.memoria.getAddress(Translate.DecToHex(localI+24)))))));
+                    App.reg.setRegisterValue("A", String.valueOf((Integer.parseInt(App.reg.getRegisterValue("A"))) - ((Integer.parseInt((getDeslocamento(localS, format)))))));
                     break;
                 case "94"://"SUBR":
                     App.reg.setRegisterValue(RetornaR2(localS), (Translate.IntToString((Integer.parseInt(App.reg.getRegisterValue(RetornaR2Value(localS)))) - (Integer.parseInt(App.reg.getRegisterValue(RetornaR1value(localS)))))));
                     break;
                 case "2C"://"TIX":
                     App.reg.setRegisterValue("X",String.valueOf(Integer.parseInt(App.reg.getRegisterValue("X")+1)));
-                    if((Integer.parseInt(App.reg.getRegisterValue("X"))) > Integer.parseInt((App.memoria.getAddress(Translate.DecToHex(localI+24))))){
+                    if((Integer.parseInt(App.reg.getRegisterValue("X"))) > Integer.parseInt((App.memoria.getAddress(Translate.DecToHex(localI+24))))) {
                         App.reg.setRegisterValue("SW", "1"); // 1 para A maior
-                    }else if((Integer.parseInt(App.reg.getRegisterValue("X"))) < Integer.parseInt((App.memoria.getAddress(Translate.DecToHex(localI+24))))){
+                    }else if((Integer.parseInt(App.reg.getRegisterValue("X"))) < Integer.parseInt((App.memoria.getAddress(Translate.DecToHex(localI+24))))) {
                         App.reg.setRegisterValue("SW", "2");// 2 para entrada maior
                     }else{
                         App.reg.setRegisterValue("SW", "3");// se forem iguais
@@ -177,9 +188,9 @@ public class Maquina {
                 case "B8"://"TIXR":
                     //X ← (X) + 1; (X) : (r1) NAO OQ ESSA PORRA FAZ TBM!!
                     App.reg.setRegisterValue("X",String.valueOf(Integer.parseInt(App.reg.getRegisterValue("X")+1)));
-                    if(Integer.parseInt(App.reg.getRegisterValue("X")) > Integer.parseInt(App.reg.getRegisterValue(RetornaR1value(localS)))){
+                    if(Integer.parseInt(App.reg.getRegisterValue("X")) > Integer.parseInt(App.reg.getRegisterValue(RetornaR1value(localS)))) {
                         App.reg.setRegisterValue("SW", "1"); // 1 para A maior
-                    }else if(Integer.parseInt(App.reg.getRegisterValue("X")) < Integer.parseInt(App.reg.getRegisterValue(RetornaR1value(localS)))){
+                    }else if(Integer.parseInt(App.reg.getRegisterValue("X")) < Integer.parseInt(App.reg.getRegisterValue(RetornaR1value(localS)))) {
                         App.reg.setRegisterValue("SW", "2");// 2 para R2 maior
                     }else{
                         App.reg.setRegisterValue("SW", "3");// se forem iguais
@@ -188,24 +199,15 @@ public class Maquina {
                 default:
                     System.out.println("\nDeu ruim galera\n");// return 69420;//ou "null";
             }
-            //incrementar PC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            currentLocalS = localS;
             localS = Helpers.fillXBits(String.valueOf(localI+24), 5);
-        }
-        System.out.println(App.reg.getRegisterValue("A"));
-        System.out.println(App.reg.getRegisterValue("X"));
-        System.out.println(App.reg.getRegisterValue("L"));
-        System.out.println(App.reg.getRegisterValue("T"));
-        System.out.println(App.reg.getRegisterValue("F"));
-        System.out.println(App.reg.getRegisterValue("X"));
-        System.out.println(App.reg.getRegisterValue("SW"));
-        System.out.println(App.reg.getRegisterValue("PC"));
-
+        } while(App.memoria.hasNext(currentLocalS));
     }
-    static private String RetornaR2(String localS){ // só pro Hartur :)
+    private static String RetornaR2(String localS) {
         String hexa = App.memoria.getAddress(localS);
         StringBuilder fullBinario = new StringBuilder();
 
-        for (String h: hexa.split("")){
+        for (String h: hexa.split("")) {
             String bina = String.valueOf(Translate.HexToBin(hexa));
             fullBinario.append(bina);
         }
@@ -217,11 +219,11 @@ public class Maquina {
         return R2;
     }
 
-    private static String RetornaR1(String localS){
+    private static String RetornaR1(String localS) {
         String hexa = App.memoria.getAddress(localS);
         StringBuilder fullBinario = new StringBuilder();
 
-        for (String h: hexa.split("")){
+        for (String h: hexa.split("")) {
             String bina = String.valueOf(Translate.HexToBin(hexa));
             fullBinario.append(bina);
         }
@@ -237,7 +239,7 @@ public class Maquina {
         String hexa = App.memoria.getAddress(localS);
         StringBuilder fullBinario = new StringBuilder();
 
-        for (String h: hexa.split("")){
+        for (String h: hexa.split("")) {
             String bina = String.valueOf(Translate.HexToBin(hexa));
             fullBinario.append(bina);
         }
@@ -262,5 +264,16 @@ public class Maquina {
         String valorR2 = App.reg.getRegisterValue(R2);
         String valorR1 = App.reg.getRegisterValue(R1);
         return valorR2;
+    }
+
+    public String getDeslocamento(String address, String format) {
+        StringBuilder stringBuilderInstrucao = new StringBuilder();
+        for (String s: App.memoria.getAddress(address).split("")) {
+            stringBuilderInstrucao.append(Helpers.fillXBits(String.valueOf(Translate.HexToBin(s)),4));
+        }
+        String deslocamentoBits = format.equals("3") ? stringBuilderInstrucao.substring(12,24) : stringBuilderInstrucao.substring(12,32);
+        String deslocamento = Translate.BinToHex(deslocamentoBits);
+
+        return deslocamento;
     }
 }

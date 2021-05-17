@@ -88,28 +88,16 @@ public class MainViewController {
             App.memoryViewController.clearMemory();
         }
 
-        //App.table.printTable();
-
         App.montador = new Montador(App.memoria, App.listaCodigoFonte, App.reg, App.vars);
         App.montador.start();
 
         // CARREGADOR
         App.carregador = new Carregador(App.memoria);
-        //System.out.println("**------ Print Memory -------**");
-        //App.memoria.printMemory();
-        //System.out.println("**------ ------------ -------**");
-        //memoria.updateValueFromAddres("00168","010001");
-        //System.out.println(memoria.getNextValue("00144"));
 
         // ADD VARIABLES
         App.vars.start(App.listaCodigoFonte);
-        //vars.printVariables();
 
-        //HashMap<String, String> var = new HashMap<String, String>();
-        //var.put("VAR1","123");
-
-        //vars.addVariable(var);
-        //System.out.println(vars.getAddressFromVarName("VAR1"));
+        App.table.printTable();
 
         // MAQUINA
         App.maquina = new Maquina();

@@ -22,13 +22,10 @@ import sicxe.Montador.Montador;
 import sicxe.Table.Table;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class App extends Application {
     public static Integer line = 1;
