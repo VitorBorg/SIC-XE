@@ -2,6 +2,7 @@ package com.ps;
 
 import com.ps.Carregador.Carregador;
 import com.ps.Helpers.ParseSourceLine;
+//import com.ps.Maquina.Maquina;
 import com.ps.Memory.Memory;
 import com.ps.Memory.Register;
 import com.ps.Memory.Variables;
@@ -24,7 +25,7 @@ public class App {
     static Memory memoria;
     static Variables vars;
     static Register reg;
-//    static Maquina maquina
+//    static Maquina maquina;
 
     static Table table;
 
@@ -57,11 +58,15 @@ public class App {
         memoria.printMemory();
         System.out.println("**------ ------------ -------**");
 //        memoria.updateValueFromAddres("00168","010001");
-//        System.out.println(memoria.getNextValue("00144"));
+        System.out.println(memoria.getAddress("00144"));
 
 
         // ADD VARIABLES
         vars.start(listaCodigoFonte);
+
+        // SET REGISTER
+        reg.setRegisterValue("A","123");
+        System.out.println(reg.getRegisterValue("A"));
 //        vars.printVariables();
 
 //        HashMap<String, String> var = new HashMap<String, String>();
@@ -74,6 +79,8 @@ public class App {
         // maquina = new Maquina(memoria);
 
 //        printTable();
+//        maquina = new Maquina();
+
 
     }
 

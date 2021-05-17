@@ -2,6 +2,7 @@ package com.ps.Memory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Register {
     private List<String[]> registradores;
@@ -26,20 +27,21 @@ public class Register {
 
     public String[] getRegisterByName(String name) {
         for (String[] reg : registradores) {
-            if (reg[0] == name) {
+            if (reg[0] == name.toUpperCase()) {
                 return reg;
             }
         }
         return new String[]{"", "", "", ""};
     }
 
+
     public String getRegisterValue(String name) {
-        String[] reg = getRegisterByName(name);
+        String[] reg = getRegisterByName(name.toUpperCase());
         return reg[3];
     }
 
     public String[] setRegisterValue(String name, String value) {
-        String[] reg = getRegisterByName(name);
+        String[] reg = getRegisterByName(name.toUpperCase());
 
         reg[3] = value;
 

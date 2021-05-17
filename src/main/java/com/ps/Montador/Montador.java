@@ -72,7 +72,7 @@ public class Montador {
     void decodeFormat2(String operator, String reg1, String reg2) {
         String[] codeSplit = operator.split("");
         String r1 = Helpers.getRegisterNumber(reg1).toString();
-        String r2 = Helpers.getRegisterNumber(reg2).toString();
+        String r2 = reg2.equals("") ? "" : Helpers.getRegisterNumber(reg2).toString();
         StringBuilder fullBinary16bits = new StringBuilder();
 
         for (String cs : codeSplit) {
@@ -81,7 +81,7 @@ public class Montador {
         }
 
         String binaryR1 = Helpers.parseTo4Bits(Translate.HexToBin(r1));
-        String binaryR2 = Helpers.parseTo4Bits(Translate.HexToBin(r2));
+        String binaryR2 = reg2.equals("") ? "0000" : Helpers.parseTo4Bits(Translate.HexToBin(r2));
 
         fullBinary16bits.append(binaryR1);
         fullBinary16bits.append(binaryR2);
