@@ -9,11 +9,10 @@ import com.ps.Memory.Variables;
 import com.ps.Montador.Montador;
 import com.ps.Table.Table;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 public class App {
@@ -35,6 +34,8 @@ public class App {
         memoria = new Memory();
         vars = new Variables();
         reg = new Register();
+
+        createFile();
 
         Scanner in = new Scanner(new FileReader("D:\\workspace\\ps\\simulador\\simulador\\src\\main\\java\\com\\ps\\Inputs\\exemplo.txt"));
         while (in.hasNextLine()) {
@@ -68,7 +69,6 @@ public class App {
         reg.setRegisterValue("A","123");
         System.out.println(reg.getRegisterValue("A"));
 //        vars.printVariables();
-
 //        HashMap<String, String> var = new HashMap<String, String>();
 //        var.put("VAR1","123");
 //
@@ -93,4 +93,32 @@ public class App {
         table.printTable();
     }
 
+    public static void whrite()
+            throws IOException {
+        String str = "ABX2\n22A8\nDWQ1\n4C";
+        BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\workspace\\ps\\simulador\\simulador\\src\\main\\java\\com\\ps\\Outputs\\tuamae.obj"));
+        writer.write(str);
+
+        writer.close();
+    }
+
+    private static void createFile() {
+        File file = new File("D:\\workspace\\ps\\simulador\\simulador\\src\\main\\java\\com\\ps\\Outputs\\tuamae.txt");
+        boolean result;
+        try {
+            result = file.createNewFile();  //creates a new file
+            if (result)      // test if successfully created a new file
+            {
+                whrite();
+                System.out.println("file created " + file.getCanonicalPath()); //returns the path string
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
+
+

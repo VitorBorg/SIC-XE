@@ -1,1 +1,3 @@
 CLEAR A
+COMPR A S
+LDS #3

@@ -24,6 +24,7 @@ public class Montador {
     private Variables variables;
     private List<ParseSourceLine> listaCodigoFonte;
     private ParseSourceLine parseSourceLine;
+    private String codigosObjetos = "";
 
 
     public Montador(Memory memoria, List<ParseSourceLine> listaCodigoFonte, Register register, Variables variables) {
@@ -41,32 +42,18 @@ public class Montador {
 
             int formatOfInstruction = this.operador.getFormat(opcode);
 
-            if (formatOfInstruction == 1) { // formato 1 (opcode) - 1bye (8bits)
-                decodeFormat1(opcode);
-            } else if (formatOfInstruction == 2) { // format 2 (opcode) R1 R2 - 2 bytes (16bits)
+            if (formatOfInstruction == 2) { // format 2 (opcode) R1 R2 - 2 bytes (16bits)
                 decodeFormat2(opcode, codigoFonteLinha.getOperando1(), codigoFonteLinha.getOperando2());
             } else if (formatOfInstruction == 3 || formatOfInstruction == 4) { // format 3 (opcode) X Y - 3 BYTES - 24BITS
                 decodeFormat3or4(opcode, codigoFonteLinha.getOperando1(), codigoFonteLinha.getOperando2(), codigoFonteLinha.getOperador().contains("+"));
             }
-
-
         }
+
+        System.out.println("Lista de codigos objetos: \n" + codigosObjetos);
     }
 
     private String getCodMachine(String instruction) {
         return Operador.getOpcodeFromOperator(instruction);
-    }
-
-    private String decodeFormat1(String code) {
-        String[] codeSplit = code.split("");
-        StringBuilder binaryOpCode = new StringBuilder();
-
-        for (String cs : codeSplit) {
-            String boc = Helpers.parseTo4Bits(Translate.HexToBin(cs));
-            binaryOpCode.append(boc);
-        }
-
-        return Helpers.fillXBits(binaryOpCode.toString(), 8);
     }
 
     void decodeFormat2(String operator, String reg1, String reg2) {
@@ -75,10 +62,13 @@ public class Montador {
         String r2 = reg2.equals("") ? "" : Helpers.getRegisterNumber(reg2).toString();
         StringBuilder fullBinary16bits = new StringBuilder();
 
+        System.out.println("codeSplit" + codeSplit);
         for (String cs : codeSplit) {
+            System.out.println("cs" + cs);
             String binaryOpCode = Helpers.parseTo4Bits(Translate.HexToBin(cs));
             fullBinary16bits.append(binaryOpCode);
         }
+
 
         String binaryR1 = Helpers.parseTo4Bits(Translate.HexToBin(r1));
         String binaryR2 = reg2.equals("") ? "0000" : Helpers.parseTo4Bits(Translate.HexToBin(r2));
@@ -88,11 +78,9 @@ public class Montador {
 
         String part1 = fullBinary16bits.substring(0, 8);
         String part2 = fullBinary16bits.substring(8, 16);
-
-
-
-
         String address = memoria.save(Helpers.getCodObjeto(part1 + part2));
+
+        this.codigosObjetos += Helpers.getCodObjeto(part1 + part2) + "\n";
         this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
 
         parseSourceLine.setEndereco(Integer.parseInt(address));
@@ -115,7 +103,9 @@ public class Montador {
             String binaryOpCode = Helpers.parseTo4Bits(Translate.HexToBin(cs));
             opcodeBuilder.append(binaryOpCode);
         }
+        System.out.println("opcode: " + opcodeBuilder);
         String opcode = Helpers.fillXBits(opcodeBuilder.toString(), 6);
+        System.out.println("opcode 6 bits: " + opcode);
 
         if (op1.toUpperCase().contains("@")) { // se o operando contem @ é um endereçamento INDIRETO
             n = "1";
@@ -186,6 +176,8 @@ public class Montador {
             fullBinary24or32bits.append(p);
             fullBinary24or32bits.append(e);
             fullBinary24or32bits.append(deslocamento);
+
+            System.out.println("fullBinary24or32bits: " + fullBinary24or32bits);
 
 
 

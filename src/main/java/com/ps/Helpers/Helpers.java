@@ -12,7 +12,7 @@ public class Helpers {
 
         if (valor.length() > fillNumber) {
             int bitsExtras = valor.length() - fillNumber;
-            return valor.substring(bitsExtras, valor.length());
+            return valor.substring(0, valor.length() - bitsExtras);
         }
 
         StringBuilder valorPreenchido = new StringBuilder();
