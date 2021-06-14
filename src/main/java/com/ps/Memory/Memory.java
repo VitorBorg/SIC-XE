@@ -50,9 +50,11 @@ public class Memory {
     }
 
     public void printMemory() {
+        System.out.println("**------ Print Memory -------**");
         for (HashMap<String, MemoryBlock> mem : memory) {
             System.out.println(mem);
         }
+        System.out.println("**------ ------------ -------**");
     }
 
     public String getAddress(String addressFind){

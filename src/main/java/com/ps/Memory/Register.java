@@ -2,7 +2,6 @@ package com.ps.Memory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Register {
     private List<String[]> registradores;
@@ -41,11 +40,24 @@ public class Register {
     }
 
     public String[] setRegisterValue(String name, String value) {
+        System.out.println("name "+name);
+        System.out.println("value "+value);
         String[] reg = getRegisterByName(name.toUpperCase());
 
         reg[3] = value;
 
         return reg;
+    }
+
+    public void printAllRegister(){
+        System.out.println("A: " + getRegisterValue("A"));
+        System.out.println("X: " + getRegisterValue("X"));
+        System.out.println("L: " + getRegisterValue("L"));
+        System.out.println("B: " + getRegisterValue("B"));
+        System.out.println("F: " + getRegisterValue("F"));
+        System.out.println("PC: " + getRegisterValue("PC"));
+        System.out.println("SW: " + getRegisterValue("SW"));
+
     }
 
 

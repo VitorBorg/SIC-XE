@@ -2,7 +2,7 @@ package com.ps;
 
 import com.ps.Carregador.Carregador;
 import com.ps.Helpers.ParseSourceLine;
-//import com.ps.Maquina.Maquina;
+import com.ps.Maquina.Maquina;
 import com.ps.Memory.Memory;
 import com.ps.Memory.Register;
 import com.ps.Memory.Variables;
@@ -16,15 +16,15 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class App {
-    static Integer line = 1;
-    static Integer endereco = 0;
-    static List<ParseSourceLine> listaCodigoFonte;
-    static Montador montador;
-    static Carregador carregador;
-    static Memory memoria;
-    static Variables vars;
-    static Register reg;
-//    static Maquina maquina;
+    public static Integer line = 1;
+    public static Integer endereco = 0;
+    public static List<ParseSourceLine> listaCodigoFonte;
+    public static Montador montador;
+    public static Carregador carregador;
+    public static Memory memoria;
+    public static Variables vars;
+    public static Register reg;
+    public static Maquina maquina;
 
     static Table table;
 
@@ -34,8 +34,6 @@ public class App {
         memoria = new Memory();
         vars = new Variables();
         reg = new Register();
-
-        createFile();
 
         Scanner in = new Scanner(new FileReader("D:\\workspace\\ps\\simulador\\simulador\\src\\main\\java\\com\\ps\\Inputs\\exemplo.txt"));
         while (in.hasNextLine()) {
@@ -55,19 +53,15 @@ public class App {
 
         // CARREGADOR
         carregador = new Carregador(memoria);
-        System.out.println("**------ Print Memory -------**");
         memoria.printMemory();
-        System.out.println("**------ ------------ -------**");
 //        memoria.updateValueFromAddres("00168","010001");
-        System.out.println(memoria.getAddress("00144"));
 
 
         // ADD VARIABLES
         vars.start(listaCodigoFonte);
 
         // SET REGISTER
-        reg.setRegisterValue("A","123");
-        System.out.println(reg.getRegisterValue("A"));
+//        reg.setRegisterValue("A","123");
 //        vars.printVariables();
 //        HashMap<String, String> var = new HashMap<String, String>();
 //        var.put("VAR1","123");
@@ -76,11 +70,12 @@ public class App {
 //        System.out.println(vars.getAddressFromVarName("VAR1"));
 
         // MAQUINA
-        // maquina = new Maquina(memoria);
+         maquina = new Maquina();
 
 //        printTable();
 //        maquina = new Maquina();
 
+        reg.printAllRegister();
 
     }
 

@@ -49,7 +49,6 @@ public class Montador {
             }
         }
 
-        System.out.println("Lista de codigos objetos: \n" + codigosObjetos);
     }
 
     private String getCodMachine(String instruction) {
@@ -62,9 +61,7 @@ public class Montador {
         String r2 = reg2.equals("") ? "" : Helpers.getRegisterNumber(reg2).toString();
         StringBuilder fullBinary16bits = new StringBuilder();
 
-        System.out.println("codeSplit" + codeSplit);
         for (String cs : codeSplit) {
-            System.out.println("cs" + cs);
             String binaryOpCode = Helpers.parseTo4Bits(Translate.HexToBin(cs));
             fullBinary16bits.append(binaryOpCode);
         }
@@ -89,7 +86,7 @@ public class Montador {
 
     void decodeFormat3or4(String operatorOpcode, String op1, String op2, Boolean format4) {
 
-        String[] opcodeSplit = operatorOpcode.split("");
+        String[] opcodeSplit = operatorOpcode.split(""); // 18
         StringBuilder opcodeBuilder = new StringBuilder();
         String n = "0"; // Indireto
         String i = "0"; // Imediato
@@ -100,11 +97,29 @@ public class Montador {
         String deslocamento = "";
 
         for (String cs : opcodeSplit) {
-            String binaryOpCode = Helpers.parseTo4Bits(Translate.HexToBin(cs));
+            String binaryOpCode = String.valueOf(Translate.HexToBin(cs));
             opcodeBuilder.append(binaryOpCode);
         }
-        System.out.println("opcode: " + opcodeBuilder);
-        String opcode = Helpers.fillXBits(opcodeBuilder.toString(), 6);
+
+        String opcode = opcodeBuilder.toString();
+        System.out.println("OPCODEBUILDER "+opcodeBuilder.toString());
+        if(opcode.length() <= 5){
+            opcode = Helpers.fillXBits(opcode, 3);
+            opcode = Helpers.fillXBits(opcode, 6);
+        }
+        else if(opcode.length() == 6){
+            opcode = Helpers.fillXBits(opcode.toString(), 8); // adiciona dois zeros a esquerda
+            opcode = Helpers.fillXBits(opcode.toString(), 6); // apaga os dois ultimos numeros a direita
+        }
+        else if(opcode.length() == 7){
+            opcode = Helpers.fillXBits(opcode.toString(), 8); // adiciona um zero a esquerda
+            opcode = Helpers.fillXBits(opcode.toString(), 6); // apaga os dois ultimos numeros a direita
+        }
+        else if(opcode.length() == 8){
+            opcode = Helpers.fillXBits(opcode.toString(), 6); // remove os 2 numeros finais a direita
+        }
+//        System.out.println("opcode: " + opcodeBuilder);
+//        String opcode = Helpers.fillXBits(opcodeBuilder.toString(), 6);
         System.out.println("opcode 6 bits: " + opcode);
 
         if (op1.toUpperCase().contains("@")) { // se o operando contem @ é um endereçamento INDIRETO
@@ -177,7 +192,6 @@ public class Montador {
             fullBinary24or32bits.append(e);
             fullBinary24or32bits.append(deslocamento);
 
-            System.out.println("fullBinary24or32bits: " + fullBinary24or32bits);
 
 
 

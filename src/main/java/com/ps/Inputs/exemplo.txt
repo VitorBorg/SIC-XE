@@ -1,3 +1,2 @@
-CLEAR A
-COMPR A S
-LDS #3
+LDA #9
+ADD #10
