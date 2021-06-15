@@ -18,11 +18,11 @@ import java.util.List;
 public class Montador {
 
     private String opcode = "";
-    private Operador operador;
-    private Memory memoria;
-    private Register register;
-    private Variables variables;
-    private List<ParseSourceLine> listaCodigoFonte;
+    private final Operador operador;
+    private final Memory memoria;
+    private final Register register;
+    private final Variables variables;
+    private final List<ParseSourceLine> listaCodigoFonte;
     private ParseSourceLine parseSourceLine;
     private String codigosObjetos = "";
 
@@ -102,21 +102,25 @@ public class Montador {
         }
 
         String opcode = opcodeBuilder.toString();
-        System.out.println("OPCODEBUILDER "+opcodeBuilder.toString());
-        if(opcode.length() <= 5){
+        System.out.println("OPCODEBUILDER "+ opcodeBuilder);
+        if(opcode.length() <= 4){
+            opcode = Helpers.fillXBits(opcode, 2);
+            opcode = Helpers.fillXBits(opcode, 6);
+        }
+        else if(opcode.length() == 5){
             opcode = Helpers.fillXBits(opcode, 3);
             opcode = Helpers.fillXBits(opcode, 6);
         }
         else if(opcode.length() == 6){
-            opcode = Helpers.fillXBits(opcode.toString(), 8); // adiciona dois zeros a esquerda
-            opcode = Helpers.fillXBits(opcode.toString(), 6); // apaga os dois ultimos numeros a direita
+            opcode = Helpers.fillXBits(opcode, 8); // adiciona dois zeros a esquerda
+            opcode = Helpers.fillXBits(opcode, 6); // apaga os dois ultimos numeros a direita
         }
         else if(opcode.length() == 7){
-            opcode = Helpers.fillXBits(opcode.toString(), 8); // adiciona um zero a esquerda
-            opcode = Helpers.fillXBits(opcode.toString(), 6); // apaga os dois ultimos numeros a direita
+            opcode = Helpers.fillXBits(opcode, 8); // adiciona um zero a esquerda
+            opcode = Helpers.fillXBits(opcode, 6); // apaga os dois ultimos numeros a direita
         }
         else if(opcode.length() == 8){
-            opcode = Helpers.fillXBits(opcode.toString(), 6); // remove os 2 numeros finais a direita
+            opcode = Helpers.fillXBits(opcode, 6); // remove os 2 numeros finais a direita
         }
 //        System.out.println("opcode: " + opcodeBuilder);
 //        String opcode = Helpers.fillXBits(opcodeBuilder.toString(), 6);
@@ -183,7 +187,7 @@ public class Montador {
 
 
             StringBuilder fullBinary24or32bits = new StringBuilder();
-            fullBinary24or32bits.append(opcode.toString());
+            fullBinary24or32bits.append(opcode);
             fullBinary24or32bits.append(n);
             fullBinary24or32bits.append(i);
             fullBinary24or32bits.append(x);

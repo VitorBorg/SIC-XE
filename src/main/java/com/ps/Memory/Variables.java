@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Variables {
     //label name, adress
-    private List<HashMap<String,String>> vars;
+    private final List<HashMap<String,String>> vars;
 
     public Variables(){
         this.vars = new ArrayList<HashMap<String,String>>();

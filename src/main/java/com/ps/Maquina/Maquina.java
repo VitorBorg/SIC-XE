@@ -22,7 +22,11 @@ public class Maquina {
 
         do {
             localI = Integer.parseInt(localS);//para execuçao de operaçoes
+
             StringBuilder stringBuilder = new StringBuilder();
+
+            System.out.println("localS " + localS);
+
             for (String s: App.memoria.getAddress(localS).split("")) {
                 stringBuilder.append(Helpers.fillXBits(String.valueOf(Translate.HexToBin(s)),4));
             }
@@ -33,22 +37,20 @@ public class Maquina {
             opCode8bits.append(opCode6bits);
             opCode8bits.append("00");
 
-            System.out.println("pt1 = "+ opCode8bits.toString().substring(0,4));
-            System.out.println("pt2 = "+ opCode8bits.toString().substring(4,8));
+            System.out.println("pt1 = "+ opCode8bits.substring(0,4));
+            System.out.println("pt2 = "+ opCode8bits.substring(4,8));
 
-            System.out.println("pt1 translate = "+ Translate.BinToHex(opCode8bits.toString().substring(0,4)));
-            System.out.println("pt2 translate = "+ Translate.BinToHex(opCode8bits.toString().substring(4,8)));
-            String hexa1 = Translate.BinToHex(opCode8bits.toString().substring(0,4));
-            String hexa2 = Translate.BinToHex(opCode8bits.toString().substring(4,8));
+            String hexa1 = Translate.BinToHex(opCode8bits.substring(0,4));
+            String hexa2 = Translate.BinToHex(opCode8bits.substring(4,8));
             String fullHexa = hexa1.equals("0") ? hexa2 : hexa1 + hexa2;
 
-            System.out.println("fullHexa" + fullHexa);
+            System.out.println(">> fullHexa" + fullHexa);
+
+            String registerAvalue = App.reg.getRegisterValue("A");
+            String deslocamentoValue = String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)));
 
             switch (fullHexa) { //String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))
                 case "18": //ADD
-                    String registerAvalue = App.reg.getRegisterValue("A");
-                    String deslocamentoValue = String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)));
-
                     App.reg.setRegisterValue("A",
                             String.valueOf(Integer.parseInt(registerAvalue) + Integer.parseInt(deslocamentoValue))
                     );
@@ -68,7 +70,8 @@ public class Maquina {
                     App.reg.setRegisterValue(RetornaR1(localS), "0");
                     break;
                 case "28"://"COMP":
-                    if((Integer.parseInt(App.reg.getRegisterValue("A"))) > Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))) {
+
+                    if(Integer.parseInt(registerAvalue) > Integer.parseInt(deslocamentoValue)) {
                         App.reg.setRegisterValue("SW", "1"); // 1 para A maior
                     }else if((Integer.parseInt(App.reg.getRegisterValue("A"))) < Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))) {
                         App.reg.setRegisterValue("SW", "2");// 2 para entrada maior

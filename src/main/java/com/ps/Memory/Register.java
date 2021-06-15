@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Register {
-    private List<String[]> registradores;
+    private final List<String[]> registradores;
     private String[] registrador = {"", "", "", ""}; // POS 0 -> Nome   POS 1 -> NUMERO    POS 2 -> TAMANHO    POS 3 -> Valor
 
     public Register() {

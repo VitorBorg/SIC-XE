@@ -5,7 +5,7 @@ import com.ps.Memory.Memory;
 import java.util.List;
 
 public class Carregador {
-    private Memory memoria;
+    private final Memory memoria;
 
     public Carregador(Memory memoria) {
         this.memoria = memoria;
