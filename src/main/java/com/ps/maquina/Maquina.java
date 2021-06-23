@@ -76,9 +76,8 @@ public class Maquina {
                 String hexa1 = Translate.BinToHex(stringBuilder.substring(0,4));
                 String hexa2 = Translate.BinToHex(stringBuilder.substring(4,8));
                 fullHexa = hexa1.equals("0") ? hexa2 : hexa1 + hexa2;
-                System.out.println("TIPO 2");
             }
-            System.out.println("fULLhEXA: "+fullHexa);
+
             switch (fullHexa) { //String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))
                 case "18": //ADD
                     App.reg.setRegisterValue("A",
