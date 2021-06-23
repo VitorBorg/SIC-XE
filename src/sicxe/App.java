@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -20,6 +21,7 @@ import sicxe.Memory.Register;
 import sicxe.Memory.Variables;
 import sicxe.Montador.Montador;
 import sicxe.Table.Table;
+import sicxe.Macro.MacroDefine;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,9 +36,10 @@ public class App extends Application {
     public static Montador montador;
     public static Carregador carregador;
     public static Memory memoria;
-    public static Register reg;
     public static Variables vars;
+    public static Register reg;
     public static Maquina maquina;
+    public static MacroDefine macro;
 
     public static Table table;
     
@@ -73,6 +76,7 @@ public class App extends Application {
         //input file window configuration
         App.inputViewStage = new Stage();
         App.inputViewStage.setTitle("Input File");
+        App.inputViewStage.getIcons().add(new Image("file:src/sicxe/GUI/icon.png"));
         inputViewStage.initModality(Modality.WINDOW_MODAL);
 
         FXMLLoader inputViewLoader = new FXMLLoader();
@@ -84,6 +88,7 @@ public class App extends Application {
         //cpu window configuration
         App.cpuViewStage = new Stage();
         App.cpuViewStage.setTitle("CPU");
+        App.cpuViewStage.getIcons().add(new Image("file:src/sicxe/GUI/icon.png"));
         inputViewStage.initModality(Modality.WINDOW_MODAL);
 
         FXMLLoader cpuViewLoader = new FXMLLoader();
@@ -95,6 +100,7 @@ public class App extends Application {
         //memory window configuration
         App.memoryViewStage = new Stage();
         App.memoryViewStage.setTitle("Memory View");
+        App.memoryViewStage.getIcons().add(new Image("file:src/sicxe/GUI/icon.png"));
         inputViewStage.initModality(Modality.WINDOW_MODAL);
 
         FXMLLoader memoryViewLoader = new FXMLLoader();
@@ -106,6 +112,7 @@ public class App extends Application {
         //memory window configuration
         App.primaryStage = primaryStage;
         App.primaryStage.setTitle("SIC/XE");
+        App.primaryStage.getIcons().add(new Image("file:src/sicxe/GUI/icon.png"));
         FXMLLoader mainViewLoader = new FXMLLoader();
         mainViewLoader.setLocation(App.class.getResource("GUI/mainView.fxml"));
         BorderPane mainLayout = mainViewLoader.load();
@@ -153,6 +160,7 @@ public class App extends Application {
 
         Stage aboutStage = new Stage();
         aboutStage.setTitle("About");
+        App.inputViewStage.getIcons().add(new Image("file:src/sicxe/GUI/icon.png"));
         aboutStage.initModality(Modality.WINDOW_MODAL);
         aboutStage.initOwner(primaryStage);
         Scene scene = new Scene(aboutWindow);

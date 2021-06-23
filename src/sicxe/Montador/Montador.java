@@ -4,24 +4,25 @@ package sicxe.Montador;
 // OUTPUT: 2ARB
 
 import sicxe.Helpers.Helpers;
-import sicxe.Helpers.ParseSourceLine;
 import sicxe.Memory.Memory;
 import sicxe.Memory.Register;
 import sicxe.Memory.Variables;
 import sicxe.Operador.Operador;
 import sicxe.Translate.Translate;
+import sicxe.Helpers.ParseSourceLine;
 
 import java.util.List;
 
 public class Montador {
 
     private String opcode = "";
-    private Operador operador;
-    private Memory memoria;
-    private Register register;
-    private Variables variables;
-    private List<ParseSourceLine> listaCodigoFonte;
+    private final Operador operador;
+    private final Memory memoria;
+    private final Register register;
+    private final Variables variables;
+    private final List<ParseSourceLine> listaCodigoFonte;
     private ParseSourceLine parseSourceLine;
+    private String codigosObjetos = "";
 
 
     public Montador(Memory memoria, List<ParseSourceLine> listaCodigoFonte, Register register, Variables variables) {
@@ -39,32 +40,17 @@ public class Montador {
 
             int formatOfInstruction = this.operador.getFormat(opcode);
 
-            if (formatOfInstruction == 1) { // formato 1 (opcode) - 1bye (8bits)
-                decodeFormat1(opcode);
-            } else if (formatOfInstruction == 2) { // format 2 (opcode) R1 R2 - 2 bytes (16bits)
+            if (formatOfInstruction == 2) { // format 2 (opcode) R1 R2 - 2 bytes (16bits)
                 decodeFormat2(opcode, codigoFonteLinha.getOperando1(), codigoFonteLinha.getOperando2());
             } else if (formatOfInstruction == 3 || formatOfInstruction == 4) { // format 3 (opcode) X Y - 3 BYTES - 24BITS
                 decodeFormat3or4(opcode, codigoFonteLinha.getOperando1(), codigoFonteLinha.getOperando2(), codigoFonteLinha.getOperador().contains("+"));
             }
-
-
         }
+
     }
 
     private String getCodMachine(String instruction) {
         return Operador.getOpcodeFromOperator(instruction);
-    }
-
-    private String decodeFormat1(String code) {
-        String[] codeSplit = code.split("");
-        StringBuilder binaryOpCode = new StringBuilder();
-
-        for (String cs : codeSplit) {
-            String boc = Helpers.parseTo4Bits(Translate.HexToBin(cs));
-            binaryOpCode.append(boc);
-        }
-
-        return Helpers.fillXBits(binaryOpCode.toString(), 8);
     }
 
     void decodeFormat2(String operator, String reg1, String reg2) {
@@ -78,6 +64,7 @@ public class Montador {
             fullBinary16bits.append(binaryOpCode);
         }
 
+
         String binaryR1 = Helpers.parseTo4Bits(Translate.HexToBin(r1));
         String binaryR2 = reg2.equals("") ? "0000" : Helpers.parseTo4Bits(Translate.HexToBin(r2));
 
@@ -86,11 +73,9 @@ public class Montador {
 
         String part1 = fullBinary16bits.substring(0, 8);
         String part2 = fullBinary16bits.substring(8, 16);
-
-
-
-
         String address = memoria.save(Helpers.getCodObjeto(part1 + part2));
+
+        this.codigosObjetos += Helpers.getCodObjeto(part1 + part2) + "\n";
         this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
 
         parseSourceLine.setEndereco(Integer.parseInt(address));
@@ -99,7 +84,7 @@ public class Montador {
 
     void decodeFormat3or4(String operatorOpcode, String op1, String op2, Boolean format4) {
 
-        String[] opcodeSplit = operatorOpcode.split("");
+        String[] opcodeSplit = operatorOpcode.split(""); // 18
         StringBuilder opcodeBuilder = new StringBuilder();
         String n = "0"; // Indireto
         String i = "0"; // Imediato
@@ -110,10 +95,33 @@ public class Montador {
         String deslocamento = "";
 
         for (String cs : opcodeSplit) {
-            String binaryOpCode = Helpers.parseTo4Bits(Translate.HexToBin(cs));
+            String binaryOpCode = String.valueOf(Translate.HexToBin(cs));
             opcodeBuilder.append(binaryOpCode);
         }
-        String opcode = Helpers.fillXBits(opcodeBuilder.toString(), 6);
+
+        String opcode = opcodeBuilder.toString();
+
+        if(opcode.length() <= 4){
+            opcode = Helpers.fillXBits(opcode, 2);
+            opcode = Helpers.fillXBits(opcode, 6);
+        }
+        else if(opcode.length() == 5){
+            opcode = Helpers.fillXBits(opcode, 3);
+            opcode = Helpers.fillXBits(opcode, 6);
+        }
+        else if(opcode.length() == 6){
+            opcode = Helpers.fillXBits(opcode, 8); // adiciona dois zeros a esquerda
+            opcode = Helpers.fillXBits(opcode, 6); // apaga os dois ultimos numeros a direita
+        }
+        else if(opcode.length() == 7){
+            opcode = Helpers.fillXBits(opcode, 8); // adiciona um zero a esquerda
+            opcode = Helpers.fillXBits(opcode, 6); // apaga os dois ultimos numeros a direita
+        }
+        else if(opcode.length() == 8){
+            opcode = Helpers.fillXBits(opcode, 6); // remove os 2 numeros finais a direita
+        }
+//        System.out.println("opcode: " + opcodeBuilder);
+//        String opcode = Helpers.fillXBits(opcodeBuilder.toString(), 6);
 
         if (op1.toUpperCase().contains("@")) { // se o operando contem @ é um endereçamento INDIRETO
             n = "1";
@@ -175,15 +183,16 @@ public class Montador {
         // System.out.println(opcode.toString()+ n+i+x+b+p+e+deslocamento);
 
 
-        StringBuilder fullBinary24or32bits = new StringBuilder();
-        fullBinary24or32bits.append(opcode.toString());
-        fullBinary24or32bits.append(n);
-        fullBinary24or32bits.append(i);
-        fullBinary24or32bits.append(x);
-        fullBinary24or32bits.append(b);
-        fullBinary24or32bits.append(p);
-        fullBinary24or32bits.append(e);
-        fullBinary24or32bits.append(deslocamento);
+            StringBuilder fullBinary24or32bits = new StringBuilder();
+            fullBinary24or32bits.append(opcode);
+            fullBinary24or32bits.append(n);
+            fullBinary24or32bits.append(i);
+            fullBinary24or32bits.append(x);
+            fullBinary24or32bits.append(b);
+            fullBinary24or32bits.append(p);
+            fullBinary24or32bits.append(e);
+            fullBinary24or32bits.append(deslocamento);
+
 
 
 
@@ -266,5 +275,3 @@ public class Montador {
 
 
 }
-
-

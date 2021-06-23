@@ -17,24 +17,24 @@ public class MemoryViewController {
     @FXML
     TableColumn<MemoryObjectGenerator, String> data;
 
-    final ObservableList<MemoryObjectGenerator> tableData = FXCollections.observableArrayList();
+    final ObservableList<MemoryObjectGenerator> memoryTableData = FXCollections.observableArrayList();
 
     public void updateMemory() {
 
         for (int i = 0; i < App.addressStringList.size(); i++) {
             MemoryObjectGenerator currentSlot = new MemoryObjectGenerator(App.addressStringList.get(i), App.dataStringList.get(i));
-            tableData.add(currentSlot);
+            memoryTableData.add(currentSlot);
         }
 
         address.setCellValueFactory(new PropertyValueFactory<MemoryObjectGenerator, String>("Address"));
         data.setCellValueFactory(new PropertyValueFactory<MemoryObjectGenerator, String>("Data"));
 
-        memoryViewTableView.setItems(tableData);
+        memoryViewTableView.setItems(memoryTableData);
     }
 
     public void clearMemory() {
 
-        tableData.clear();
+        memoryTableData.clear();
         App.addressStringList.clear();
         App.dataStringList.clear();
     }

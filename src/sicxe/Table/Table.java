@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
-
     private List<Line> table;
     private Line line;
 
@@ -16,13 +15,11 @@ public class Table {
     }
 
     public void addLine(String... columns) {
-
         this.line = new Line(columns);
         this.table.add(this.line);
     }
 
     public void printTable() {
-
         String leftAlignFormat = "|%15s|%15s|%15s|%15s|%15s|%15s|%n";
         System.out.format("+-----------------------------------------------------------------------------------------------+%n");
         System.out.format("|     Linha     |   Endereco    |     Rotulo    |    Operador   |   Operando1   |   Operando2   |%n");
@@ -34,7 +31,8 @@ public class Table {
     }
 
     public void clear(){
-
         this.table = new ArrayList<Line>();
     }
+
+
 }

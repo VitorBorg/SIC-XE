@@ -8,6 +8,10 @@ import java.util.Objects;
 
 public class Maquina {
 
+    public Maquina(){
+        maquinaExecucao();
+    }
+
     public void maquinaExecucao() {
 
         String localS = "00000",n, transferM,transferA;// local inicial da memoria Sring, n qtd para ser deslocada nos shift
@@ -18,19 +22,31 @@ public class Maquina {
 
         do {
             localI = Integer.parseInt(localS);//para execuçao de operaçoes
+
             StringBuilder stringBuilder = new StringBuilder();
+
             for (String s: App.memoria.getAddress(localS).split("")) {
                 stringBuilder.append(Helpers.fillXBits(String.valueOf(Translate.HexToBin(s)),4));
             }
 
             String format = stringBuilder.substring(11,12).equals("0") ? "3" : "4";
             String opCode6bits = stringBuilder.substring(0,6);
-            String opCode = Translate.BinToHex(opCode6bits);
+            StringBuilder opCode8bits = new StringBuilder();
+            opCode8bits.append(opCode6bits);
+            opCode8bits.append("00");
 
-            System.out.println(opCode.toUpperCase());
-            switch (opCode) { //String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))
+            String hexa1 = Translate.BinToHex(opCode8bits.substring(0,4));
+            String hexa2 = Translate.BinToHex(opCode8bits.substring(4,8));
+            String fullHexa = hexa1.equals("0") ? hexa2 : hexa1 + hexa2;
+
+            String registerAvalue = App.reg.getRegisterValue("A");
+            String deslocamentoValue = String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)));
+
+            switch (fullHexa) { //String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))
                 case "18": //ADD
-                    App.reg.setRegisterValue("A", String.valueOf((Integer.parseInt(App.reg.getRegisterValue("A"))) + ((Integer.parseInt((getDeslocamento(localS, format)))))));
+                    App.reg.setRegisterValue("A",
+                            String.valueOf(Integer.parseInt(registerAvalue) + Integer.parseInt(deslocamentoValue))
+                    );
                     break;
                 case "90"://ADDR
                     App.reg.setRegisterValue(RetornaR2(localS),String.valueOf(Integer.parseInt(RetornaR2Value(localS)) + Integer.parseInt(RetornaR1value(localS))));
@@ -45,10 +61,10 @@ public class Maquina {
                     break;
                 case "B4":// "CLEAR"
                     App.reg.setRegisterValue(RetornaR1(localS), "0");
-                    System.out.println("Teste");
                     break;
                 case "28"://"COMP":
-                    if((Integer.parseInt(App.reg.getRegisterValue("A"))) > Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))) {
+
+                    if(Integer.parseInt(registerAvalue) > Integer.parseInt(deslocamentoValue)) {
                         App.reg.setRegisterValue("SW", "1"); // 1 para A maior
                     }else if((Integer.parseInt(App.reg.getRegisterValue("A"))) < Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))) {
                         App.reg.setRegisterValue("SW", "2");// 2 para entrada maior
@@ -91,7 +107,14 @@ public class Maquina {
                     //L ← (PC); PC ← m < //////  JSUB jumps to the subroutine, placing the return address in register L ////acho q é isso
                     break;
                 case "0"://"LDA":
-                    App.reg.setRegisterValue("A", String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))));
+//                    System.out.println("localS " + localS);
+//                    System.out.println("Format" + format);
+//                    System.out.println("getDeslocamento(localS, format)" + getDeslocamento(localS, format));
+                    App.reg.setRegisterValue("A",
+                            String.valueOf(
+                                    Translate.HexToDec(getDeslocamento(localS, format))
+                            )
+                    );
                     break;
                 case "68"://"LDB":
                     App.reg.setRegisterValue("B", (String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))));
@@ -123,11 +146,11 @@ public class Maquina {
                     break;
                 case "44"://"OR":
                     if((Integer.parseInt(App.reg.getRegisterValue("A"))) > 0 || 0 < (Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))))) {
-                    App.reg.setRegisterValue("A", "1");
+                        App.reg.setRegisterValue("A", "1");
                     }else{
-                    App.reg.setRegisterValue("A", "0");
-                }
-                break;
+                        App.reg.setRegisterValue("A", "0");
+                    }
+                    break;
                 case "AC"://"RMO":
                     App.reg.setRegisterValue(RetornaR2(localS), App.reg.getRegisterValue(RetornaR1value(localS)));
                     break;

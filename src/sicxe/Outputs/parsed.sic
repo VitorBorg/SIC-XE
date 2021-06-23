@@ -1,0 +1,7 @@
+LDA #9
+ADD #9
+ADD #8
+LDA #10
+LDB #15
+LDL #30
+LDX #10

@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Register {
-
-    private List<String[]> registradores;
+    private final List<String[]> registradores;
     private String[] registrador = {"", "", "", ""}; // POS 0 -> Nome   POS 1 -> NUMERO    POS 2 -> TAMANHO    POS 3 -> Valor
 
     public Register() {
@@ -40,10 +39,22 @@ public class Register {
         return reg[3];
     }
 
-    public void setRegisterValue(String name, String value) {
+    public String[] setRegisterValue(String name, String value) {
         String[] reg = getRegisterByName(name.toUpperCase());
 
         reg[3] = value;
+
+        return reg;
+    }
+
+    public void printAllRegister(){
+        System.out.println("A: " + getRegisterValue("A"));
+        System.out.println("X: " + getRegisterValue("X"));
+        System.out.println("L: " + getRegisterValue("L"));
+        System.out.println("B: " + getRegisterValue("B"));
+        System.out.println("F: " + getRegisterValue("F"));
+        System.out.println("PC: " + getRegisterValue("PC"));
+        System.out.println("SW: " + getRegisterValue("SW"));
 
     }
 

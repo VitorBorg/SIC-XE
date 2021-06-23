@@ -1,17 +1,33 @@
 package sicxe.GUI;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import sicxe.App;
+import sicxe.Helpers.Helpers;
+import sicxe.Helpers.ParseSourceLine;
+import sicxe.Table.Line;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CPUViewController implements Initializable {
 
-    @FXML TextArea cpuViewTextArea = new TextArea();
+    final ObservableList<CPUObjectGenerator> cpuTableData = FXCollections.observableArrayList();
+
+    @FXML TableColumn<CPUObjectGenerator, String> address;
+    @FXML TableColumn<CPUObjectGenerator, String> label;
+    @FXML TableColumn<CPUObjectGenerator, String> operator;
+    @FXML TableColumn<CPUObjectGenerator, String> operand1;
+    @FXML TableColumn<CPUObjectGenerator, String> operand2;
+
+    @FXML TableView cpuViewTableView = new TableView();
     @FXML TextField textFieldA = new TextField();
     @FXML TextField textFieldS = new TextField();
     @FXML TextField textFieldT = new TextField();
@@ -21,7 +37,6 @@ public class CPUViewController implements Initializable {
     @FXML TextField textFieldSW = new TextField();
     @FXML TextField textFieldF = new TextField();
     @FXML TextField textFieldPC = new TextField();
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -37,7 +52,6 @@ public class CPUViewController implements Initializable {
         textFieldF.setText("0");
         textFieldPC.setText("0");
         textFieldPC.setText("0");
-        cpuViewTextArea.setText("Press start on the main window to run the program.");
         textFieldA.setEditable(false);
         textFieldS.setEditable(false);
         textFieldT.setEditable(false);
@@ -47,10 +61,23 @@ public class CPUViewController implements Initializable {
         textFieldSW.setEditable(false);
         textFieldF.setEditable(false);
         textFieldPC.setEditable(false);
-        cpuViewTextArea.setEditable(false);
+        cpuViewTableView.setEditable(false);
     }
 
     public void updateCPUView() {
+
+        for (ParseSourceLine psl : App.listaCodigoFonte) {
+            CPUObjectGenerator currentSlot = new CPUObjectGenerator(psl.getEndereco(), psl.getRotulo(), psl.getOperador(), psl.getOperando1(), psl.getOperando2());
+            cpuTableData.add(currentSlot);
+        }
+
+        address.setCellValueFactory(new PropertyValueFactory<CPUObjectGenerator, String>("Address"));
+        label.setCellValueFactory(new PropertyValueFactory<CPUObjectGenerator, String>("Label"));
+        operator.setCellValueFactory(new PropertyValueFactory<CPUObjectGenerator, String>("Operator"));
+        operand1.setCellValueFactory(new PropertyValueFactory<CPUObjectGenerator, String>("Operand1"));
+        operand2.setCellValueFactory(new PropertyValueFactory<CPUObjectGenerator, String>("Operand2"));
+
+        cpuViewTableView.setItems(cpuTableData);
 
         textFieldA.setText(App.reg.getRegisterValue("A"));
         textFieldS.setText(App.reg.getRegisterValue("S"));
@@ -61,7 +88,6 @@ public class CPUViewController implements Initializable {
         textFieldSW.setText(App.reg.getRegisterValue("SW"));
         textFieldF.setText(App.reg.getRegisterValue("F"));
         textFieldPC.setText(App.reg.getRegisterValue("PC"));
-        cpuViewTextArea.setText("?");
     }
 
     public void clearCPUView() {
@@ -75,6 +101,5 @@ public class CPUViewController implements Initializable {
         textFieldSW.setText("0");
         textFieldF.setText("0");
         textFieldPC.setText("0");
-        cpuViewTextArea.setText("Press start on the main window to run the program.");
     }
 }

@@ -7,7 +7,6 @@ public class Operador {
     public static HashMap<String, Integer> operadores = new HashMap<>();
 
     public Operador() {
-
         operadores.put("ADD", 3);
 
         operadores.put("+ADD", 4);
@@ -154,7 +153,6 @@ public class Operador {
     }
 
     public static int getFormat(String opcode) {
-
         String operador = getOperatorFromOpcode(opcode.replace("+", ""));
         if (opcode.contains("+")) {
             return operadores.get("+" + operador).intValue();
@@ -164,7 +162,6 @@ public class Operador {
     }
 
     public static String getOperatorFromOpcode(String operator) {
-
         switch (operator.toUpperCase()) {
             case "18":
                 return "ADD";
@@ -245,12 +242,13 @@ public class Operador {
             case "4":
                 return "LDX";
             default:
-                return null;
+                return "";
         }
+
+
     }
 
     public static String getOpcodeFromOperator(String operator) {
-
         switch (operator.toUpperCase()) {
             case "ADD":
                 return "18";
@@ -329,7 +327,10 @@ public class Operador {
             case "TIXR":
                 return "B8";
             default:
-                return null;
+                return "null";
         }
+
     }
+
+
 }

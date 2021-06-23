@@ -1,0 +1,3 @@
+LDA #9
+LDL #5
+COMP #8

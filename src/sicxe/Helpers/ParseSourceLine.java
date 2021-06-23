@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ParseSourceLine {
-
     Integer linha;
     Integer endereco;
     String rotulo;
@@ -32,7 +31,6 @@ public class ParseSourceLine {
     }
 
     public void exibeCodigoFonteLinha() {
-
         String leftAlignFormat = "|%15d|%15d|%15s|%15s|%15s|%15s|%n";
         System.out.format("+-----------------------------------------------------------------------------------------------+%n");
         System.out.format("|     Linha     |   Endereco    |     Rotulo    |    Operador   |   Operando1   |   Operando2   |%n");
@@ -42,7 +40,6 @@ public class ParseSourceLine {
     }
 
     public void quebraPartesDoTexto(String[] partes) {
-
         // PARTE [0] DO TEXTO
         if (partes.length > 1) {
             Boolean isRotulo = !this.listaDeOperadores.contains(partes[0].toUpperCase());
@@ -75,7 +72,6 @@ public class ParseSourceLine {
     }
 
     public void insereListaDeOperadores() {
-
         this.listaDeOperadores.addAll(Arrays.asList("ADD","ADDR","AND","CLEAR","COMP","COMPR","DIV",
                 "J","JEQ","JGT","JLT","JSUB","LDA","+LDA","LDB","LDCH","LDL","LDS","LDT","LDX",
                 "MUL","MULR","OR","RMO","RSUB","SHIFTL","SHIFTR","STA","STB","STCH","STL",
@@ -85,68 +81,55 @@ public class ParseSourceLine {
     }
 
     public String[] getValues() {
-
         String[] str = {this.linha.toString(), this.endereco.toString(), this.rotulo, this.operador, this.operando1, this.operando2};
         return str;
     }
 
     public String getLinha() {
-
         return linha != null ? linha.toString() : "";
     }
 
     public String getEndereco() {
-
         return endereco != null ? endereco.toString() : "";
     }
 
     public String getRotulo() {
-
-        return Helpers.printIfNotNull(rotulo);
+        return sicxe.Helpers.Helpers.printIfNotNull(rotulo);
     }
 
     public String getOperador() {
-
-        return Helpers.printIfNotNull(operador);
+        return sicxe.Helpers.Helpers.printIfNotNull(operador);
     }
 
     public String getOperando1() {
-
-        return Helpers.printIfNotNull(operando1);
+        return sicxe.Helpers.Helpers.printIfNotNull(operando1);
     }
 
     public String getOperando2() {
-
-        return Helpers.printIfNotNull(operando2);
+        return sicxe.Helpers.Helpers.printIfNotNull(operando2);
     }
 
     public void setLinha(Integer linha) {
-
         this.linha = linha;
     }
 
     public void setEndereco(Integer endereco) {
-
         this.endereco = endereco;
     }
 
     public void setRotulo(String rotulo) {
-
         this.rotulo = rotulo;
     }
 
     public void setOperador(String operador) {
-
         this.operador = operador;
     }
 
     public void setOperando1(String operando1) {
-
         this.operando1 = operando1;
     }
 
     public void setOperando2(String operando2) {
-
         this.operando2 = operando2;
     }
 }

@@ -11,7 +11,9 @@ import sicxe.Memory.Register;
 import sicxe.Memory.Variables;
 import sicxe.Montador.Montador;
 import sicxe.Table.Table;
+import sicxe.Macro.MacroDefine;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -72,22 +74,31 @@ public class MainViewController {
         App.memoria = new Memory();
         App.vars = new Variables();
         App.reg = new Register();
+        App.macro = new MacroDefine();
 
-        Scanner in = new Scanner(new FileReader(App.inputFile));
-        while (in.hasNextLine()) {
-            String linhaDoArquivo = in.nextLine();
+        // MACRO
+        File input = (new File(String.valueOf(App.inputFile))); // <<<<--- arquivo entrada
+        MacroDefine magic = new MacroDefine();
+        magic.macroInitialize(input.getAbsolutePath());
+
+        Scanner parsed = new Scanner(new FileReader("src/sicxe/Outputs/parsed.sic"));
+
+        while (parsed.hasNextLine()) {
+            String linhaDoArquivo = parsed.nextLine();
             ParseSourceLine cfl = new ParseSourceLine(App.line, App.endereco, linhaDoArquivo);
             App.line++;
             App.listaCodigoFonte.add(cfl);
-
             App.table.addLine(cfl.getValues());
         }
+
+        App.table.printTable();
 
         //clears CPU and memory windows
         if ((App.addressStringList != null) & ((App.dataStringList != null))) {
             App.memoryViewController.clearMemory();
         }
 
+        // MONTADOR
         App.montador = new Montador(App.memoria, App.listaCodigoFonte, App.reg, App.vars);
         App.montador.start();
 
@@ -97,7 +108,7 @@ public class MainViewController {
         // ADD VARIABLES
         App.vars.start(App.listaCodigoFonte);
 
-        App.table.printTable();
+        //App.table.printTable();
 
         // MAQUINA
         App.maquina = new Maquina();

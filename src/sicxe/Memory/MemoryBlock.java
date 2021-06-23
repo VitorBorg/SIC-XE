@@ -3,7 +3,6 @@ package sicxe.Memory;
 import sicxe.Helpers.Helpers;
 
 public class MemoryBlock {
-
     String[] block = {"", "", "", "", "", ""}; // CADA ESPACO TEM 1 HEXA E CADA HEXA TEM 4 BITS
 
     public MemoryBlock(String data) {
@@ -29,13 +28,12 @@ public class MemoryBlock {
     }
 
     public void printMemoryBlock() {
-
         System.out.println(block[0] + block[1] + " " + block[2] + block[3] + " " + block[4] + block[5]);
+
     }
 
     @Override
     public String toString() {
-
         return block[0] + block[1] + block[2] + block[3] + block[4] + block[5];
     }
 }

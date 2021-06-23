@@ -2,7 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -96,10 +97,21 @@
         </VBox>
    </top>
    <center>
-      <TextArea fx:id="cpuViewTextArea" prefHeight="324.0" prefWidth="550.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </BorderPane.margin>
-      </TextArea>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="cpuViewTableView" prefHeight="344.0" prefWidth="642.0" HBox.hgrow="ALWAYS">
+              <columns>
+                <TableColumn fx:id="address" editable="false" prefWidth="127.0" sortable="false" text="Address" />
+                <TableColumn fx:id="label" editable="false" minWidth="0.0" prefWidth="110.0" sortable="false" text="Label" />
+                  <TableColumn fx:id="operator" editable="false" prefWidth="112.0" sortable="false" text="Operator" />
+                  <TableColumn fx:id="operand1" editable="false" prefWidth="100.0" sortable="false" text="Operand1" />
+                  <TableColumn fx:id="operand2" editable="false" prefWidth="100.0" sortable="false" text="Operand2" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </HBox>
    </center>
 </BorderPane>
