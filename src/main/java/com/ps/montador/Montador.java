@@ -54,29 +54,62 @@ public class Montador {
     }
 
     void decodeFormat2(String operator, String reg1, String reg2) {
+        System.out.println("op" + operator);
+//        System.out.println("reg1" + reg1);
+//        System.out.println("reg1" + reg2);
+
         String[] codeSplit = operator.split("");
+
+
         String r1 = Helpers.getRegisterNumber(reg1).toString();
         String r2 = reg2.equals("") ? "" : Helpers.getRegisterNumber(reg2).toString();
-        StringBuilder fullBinary16bits = new StringBuilder();
+
+//        System.out.println("reg1converter" + Helpers.parseTo4Bits(Translate.HexToBin(r1)));
+//        System.out.println("reg1converter" + Helpers.parseTo4Bits(Translate.HexToBin(r2)));
+
+        StringBuilder opConverter = new StringBuilder();
+
+        String converterR1 = Helpers.parseTo4Bits(Translate.HexToBin(r1));
+        String converterR2 = Helpers.parseTo4Bits(Translate.HexToBin(r2));
 
         for (String cs : codeSplit) {
             String binaryOpCode = Helpers.parseTo4Bits(Translate.HexToBin(cs));
-            fullBinary16bits.append(binaryOpCode);
+            opConverter.append(binaryOpCode);
         }
 
+        System.out.println("opConverter" + opConverter.toString());
 
-        String binaryR1 = Helpers.parseTo4Bits(Translate.HexToBin(r1));
-        String binaryR2 = reg2.equals("") ? "0000" : Helpers.parseTo4Bits(Translate.HexToBin(r2));
+        StringBuilder fullBinary16bits = new StringBuilder();
+        fullBinary16bits.append( opConverter.toString());
+        fullBinary16bits.append( converterR1);
+        fullBinary16bits.append( converterR2);
+        System.out.println("fullBinary" + fullBinary16bits.toString());
 
-        fullBinary16bits.append(binaryR1);
-        fullBinary16bits.append(binaryR2);
 
-        String part1 = fullBinary16bits.substring(0, 8);
-        String part2 = fullBinary16bits.substring(8, 16);
-        String address = memoria.save(Helpers.getCodObjeto(part1 + part2));
 
-        this.codigosObjetos += Helpers.getCodObjeto(part1 + part2) + "\n";
-        this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
+//        StringBuilder fullBinary16bits = new StringBuilder();
+//
+//        for (String cs : codeSplit) {
+//            String binaryOpCode = Helpers.parseTo4Bits(Translate.HexToBin(cs));
+//            fullBinary16bits.append(binaryOpCode);
+//        }
+//
+//
+//        String binaryR1 = Helpers.parseTo4Bits(Translate.HexToBin(r1));
+//        String binaryR2 = reg2.equals("") ? "0000" : Helpers.parseTo4Bits(Translate.HexToBin(r2));
+//
+//        fullBinary16bits.append(binaryR1);
+//        fullBinary16bits.append(binaryR2);
+//
+//
+//        String part1 = fullBinary16bits.substring(0, 8);
+//        String part2 = fullBinary16bits.substring(8, 16);
+//        System.out.println("Helpers.getCodObjeto(part1 + part2)"+Helpers.getCodObjeto(part1 + part2));
+        System.out.println("TEST"+ Helpers.getCodObjeto(fullBinary16bits.toString()));
+         String address = memoria.save(Helpers.getCodObjeto(fullBinary16bits.toString()));
+
+//        this.codigosObjetos += Helpers.getCodObjeto(part1 + part2) + "\n";
+//        this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC
 
         parseSourceLine.setEndereco(Integer.parseInt(address));
 
@@ -167,7 +200,6 @@ public class Montador {
             deslocamento = calculaDeslocamentoBase(op1);
         }
 
-
         if (addressType.equals("p")) { // se for calculo de pc
             deslocamento = calculaDeslocamentoPc(op1);
         }
@@ -179,7 +211,7 @@ public class Montador {
         // System.out.println("b: " + b);
         // System.out.println("p: " + p);
         // System.out.println("e: " + e);
-        // System.out.println("deslocamento: " + deslocamento);
+         // System.out.println("deslocamento2: " + deslocamento);
         // System.out.println(opcode.toString()+ n+i+x+b+p+e+deslocamento);
 
 
@@ -194,7 +226,17 @@ public class Montador {
             fullBinary24or32bits.append(deslocamento);
 
 
+//        System.out.println("opcode: " + opcode);
+//        System.out.println("N: " + n);
+//        System.out.println("I: " + i);
+//        System.out.println("X: " + x);
+//        System.out.println("B: " + b);
+//        System.out.println("P: " + p);
+//        System.out.println("E: " + e);
+//        System.out.println("deslocamento: " + deslocamento);
 
+        // COMP A
+        // [ opcode ] N I X B P E [ DESLOCAMENTO ]
 
         String address = memoria.save(Helpers.getCodObjeto(fullBinary24or32bits.toString()));
         this.register.setRegisterValue("PC", Helpers.addPcToNextAddress(address)); //SET PC

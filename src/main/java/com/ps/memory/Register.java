@@ -39,6 +39,45 @@ public class Register {
         return reg[3];
     }
 
+    public String getRegisterValueByNumber(String numero) {
+        String name = "";
+        createRegisters("A", "0", "24", "");
+        createRegisters("X", "1", "24", "");
+        createRegisters("L", "2", "24", "");
+        createRegisters("B", "3", "24", "");
+        createRegisters("F", "6", "48", "");
+        createRegisters("PC", "8", "24", "");
+        createRegisters("SW", "9", "24", "");
+        switch (numero) {
+            case "0":
+                name = "A";
+                break;
+            case "1":
+                name = "X";
+                break;
+            case "2":
+                name = "L";
+                break;
+            case "3":
+                name = "B";
+                break;
+            case "6":
+                name = "F";
+                break;
+            case "8":
+                name = "PC";
+                break;
+            case "9":
+                name = "SW";
+                break;
+            default:
+                name = "";
+                break;
+        }
+        String[] reg = getRegisterByName(name.toUpperCase());
+        return reg[3];
+    }
+
     public String[] setRegisterValue(String name, String value) {
         String[] reg = getRegisterByName(name.toUpperCase());
 
