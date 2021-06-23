@@ -28,6 +28,7 @@ public class Maquina {
             for (String s: App.memoria.getAddress(localS).split("")) {
                 stringBuilder.append(Helpers.fillXBits(String.valueOf(Translate.HexToBin(s)),4));
             }
+            System.out.println("stringBuilder: "+stringBuilder);
 
             String format = stringBuilder.substring(11,12).equals("0") ? "3" : "4";
             if(stringBuilder.length() == 16){
@@ -36,16 +37,37 @@ public class Maquina {
             String fullHexa = "";
             String registerAvalue = "";
             String deslocamentoValue = "";
+
             if(format != "2"){
                 String opCode6bits = stringBuilder.substring(0,6);
-                StringBuilder opCode8bits = new StringBuilder();
+                StringBuilder opCode8bits;
+                String hexa1;
+                String hexa2;
 
-                opCode8bits.append(opCode6bits);
-                opCode8bits.append("00");
+                if(opCode6bits.equals("000010")){
+                    opCode6bits = stringBuilder.substring(0,6);
+                    opCode8bits = new StringBuilder();
 
-                String hexa1 = Translate.BinToHex(opCode8bits.substring(0,4));
-                String hexa2 = Translate.BinToHex(opCode8bits.substring(4,8));
-                fullHexa = hexa1.equals("0") ? hexa2 : hexa1 + hexa2;
+                    opCode8bits.append(opCode6bits);
+                    opCode8bits.append("00");
+
+                    String test2 = opCode8bits.substring(2,6) + "0000";
+
+                    hexa1 = Translate.BinToHex(test2.substring(0,4));
+                    hexa2 = Translate.BinToHex(test2.substring(4,6));
+                    fullHexa = hexa1.equals("0") ? hexa2 : hexa1 + hexa2;
+                } else {
+                    opCode6bits = stringBuilder.substring(0,6);
+                    opCode8bits = new StringBuilder();
+
+                    opCode8bits.append(opCode6bits);
+                    opCode8bits.append("00");
+
+                    hexa1 = Translate.BinToHex(opCode8bits.substring(0,4));
+                    hexa2 = Translate.BinToHex(opCode8bits.substring(4,8));
+                    fullHexa = hexa1.equals("0") ? hexa2 : hexa1 + hexa2;
+
+                }
 
                 registerAvalue = App.reg.getRegisterValue("A");
                 deslocamentoValue = String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)));
@@ -54,8 +76,9 @@ public class Maquina {
                 String hexa1 = Translate.BinToHex(stringBuilder.substring(0,4));
                 String hexa2 = Translate.BinToHex(stringBuilder.substring(4,8));
                 fullHexa = hexa1.equals("0") ? hexa2 : hexa1 + hexa2;
+                System.out.println("TIPO 2");
             }
-
+            System.out.println("fULLhEXA: "+fullHexa);
             switch (fullHexa) { //String.valueOf(Translate.HexToDec(getDeslocamento(localS, format))))
                 case "18": //ADD
                     App.reg.setRegisterValue("A",
@@ -152,6 +175,7 @@ public class Maquina {
                     App.reg.setRegisterValue("X", (String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))));
                     break;
                 case "20"://"MUL":
+                    System.out.println("MUUUL");
                     App.reg.setRegisterValue("A", Translate.IntToString((Integer.parseInt(App.reg.getRegisterValue("A"))) * (Integer.parseInt(String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)))))));
                     break;
                 case "98"://"MULR":

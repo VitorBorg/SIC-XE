@@ -78,7 +78,7 @@ public class App {
         // printTable();
         // maquina = new Maquina();
 
-        // reg.printAllRegister();
+        reg.printAllRegister();
 
     }
 

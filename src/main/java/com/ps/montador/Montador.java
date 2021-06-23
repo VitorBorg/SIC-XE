@@ -127,6 +127,7 @@ public class Montador {
         String e = "0";
         String deslocamento = "";
 
+
         for (String cs : opcodeSplit) {
             String binaryOpCode = String.valueOf(Translate.HexToBin(cs));
             opcodeBuilder.append(binaryOpCode);
