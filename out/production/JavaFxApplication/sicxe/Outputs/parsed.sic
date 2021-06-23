@@ -1,6 +1,9 @@
-LDB #1
+LDA #5
+LDB #7
+LDL #1
+ADD #10
+ADD #2
 LDA #3
-MUL #3
 MUL #3
 MUL #3
 COMPR A B

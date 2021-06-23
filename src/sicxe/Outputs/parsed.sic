@@ -1,7 +1,6 @@
 LDA #5
 LDB #7
 LDL #1
-LDX #11
 ADD #10
 ADD #2
 LDA #3

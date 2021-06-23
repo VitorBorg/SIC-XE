@@ -1,3 +1,4 @@
-LDB #1
+INITREGIST #5, #7, #1
+ADDVAR #10, #2 
 CUBO #3
 COMPR A B

@@ -1,8 +1,0 @@
-LDA #9
-LDL #5
-COMP #10
-ADD #1
-JLT #11
-LDX #23
-LDA #15
-ADD #2
