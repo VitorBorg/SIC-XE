@@ -92,6 +92,9 @@ public class CPUViewController implements Initializable {
 
     public void clearCPUView() {
 
+        cpuTableData.clear();
+        App.listaCodigoFonte.clear();
+
         textFieldA.setText("0");
         textFieldS.setText("0");
         textFieldT.setText("0");

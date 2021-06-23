@@ -67,7 +67,9 @@ public class MainViewController {
             App.memoryViewController.clearMemory();
         }
 
-        App.cpuViewController.clearCPUView();
+        if (App.listaCodigoFonte != null) {
+            App.cpuViewController.clearCPUView();
+        }
 
         App.listaCodigoFonte = new ArrayList<>();
         App.table = new Table();
@@ -90,8 +92,6 @@ public class MainViewController {
             App.listaCodigoFonte.add(cfl);
             App.table.addLine(cfl.getValues());
         }
-
-        App.table.printTable();
 
         //clears CPU and memory windows
         if ((App.addressStringList != null) & ((App.dataStringList != null))) {

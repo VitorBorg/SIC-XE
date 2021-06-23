@@ -181,5 +181,9 @@ public class App extends Application {
         if ((App.addressStringList != null) & ((App.dataStringList != null))) {
             App.memoryViewController.clearMemory();
         }
+
+        if (App.listaCodigoFonte != null) {
+            App.cpuViewController.clearCPUView();
+        }
     }
 }
