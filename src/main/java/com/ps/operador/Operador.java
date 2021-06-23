@@ -1,4 +1,4 @@
-package com.ps.Operador;
+package com.ps.operador;
 
 import java.util.HashMap;
 

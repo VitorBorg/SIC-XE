@@ -1,8 +1,6 @@
-package com.ps.Memory;
+package com.ps.memory;
 
-import com.ps.Helpers.Helpers;
-
-import java.util.Arrays;
+import com.ps.helpers.Helpers;
 
 public class MemoryBlock {
     String[] block = {"", "", "", "", "", ""}; // CADA ESPACO TEM 1 HEXA E CADA HEXA TEM 4 BITS

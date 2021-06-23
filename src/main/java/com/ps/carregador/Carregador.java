@@ -1,6 +1,6 @@
-package com.ps.Carregador;
+package com.ps.carregador;
 
-import com.ps.Memory.Memory;
+import com.ps.memory.Memory;
 
 import java.util.List;
 

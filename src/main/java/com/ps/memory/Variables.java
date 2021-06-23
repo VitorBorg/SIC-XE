@@ -1,6 +1,6 @@
-package com.ps.Memory;
+package com.ps.memory;
 
-import com.ps.Helpers.ParseSourceLine;
+import com.ps.helpers.ParseSourceLine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
