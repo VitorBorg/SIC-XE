@@ -1,4 +1,4 @@
-package com.ps.Table;
+package com.ps.table;
 
 import java.util.ArrayList;
 import java.util.Arrays;

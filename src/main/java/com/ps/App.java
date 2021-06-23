@@ -1,16 +1,16 @@
 package com.ps;
 
-import com.ps.Carregador.Carregador;
-import com.ps.Helpers.ParseSourceLine;
-import com.ps.Maquina.Maquina;
-import com.ps.Memory.Memory;
-import com.ps.Memory.Register;
-import com.ps.Memory.Variables;
-import com.ps.Montador.Montador;
-import com.ps.Table.Table;
+import com.ps.carregador.Carregador;
+import com.ps.helpers.ParseSourceLine;
+import com.ps.macro.Macro;
+import com.ps.maquina.Maquina;
+import com.ps.memory.Memory;
+import com.ps.memory.Register;
+import com.ps.memory.Variables;
+import com.ps.montador.Montador;
+import com.ps.table.Table;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ public class App {
     public static Variables vars;
     public static Register reg;
     public static Maquina maquina;
+    public static Macro macro;
 
     static Table table;
 
@@ -34,18 +35,22 @@ public class App {
         memoria = new Memory();
         vars = new Variables();
         reg = new Register();
+        macro = new Macro();
 
         Scanner in = new Scanner(new FileReader("D:\\workspace\\ps\\simulador\\simulador\\src\\main\\java\\com\\ps\\Inputs\\exemplo.txt"));
+
         while (in.hasNextLine()) {
             String linhaDoArquivo = in.nextLine();
             ParseSourceLine cfl = new ParseSourceLine(line, endereco, linhaDoArquivo);
             line++;
             listaCodigoFonte.add(cfl);
-
             table.addLine(cfl.getValues());
         }
 
-        printTable();
+        // printTable();
+
+        // MACRO
+        // macro.start(table);
 
         // MONTADOR
         montador = new Montador(memoria, listaCodigoFonte, reg, vars);
@@ -53,29 +58,27 @@ public class App {
 
         // CARREGADOR
         carregador = new Carregador(memoria);
-        memoria.printMemory();
-//        memoria.updateValueFromAddres("00168","010001");
-
+        // memoria.printMemory();
+        // memoria.updateValueFromAddres("00168","010001");
 
         // ADD VARIABLES
         vars.start(listaCodigoFonte);
 
         // SET REGISTER
-//        reg.setRegisterValue("A","123");
-//        vars.printVariables();
-//        HashMap<String, String> var = new HashMap<String, String>();
-//        var.put("VAR1","123");
-//
-//        vars.addVariable(var);
-//        System.out.println(vars.getAddressFromVarName("VAR1"));
+        // reg.setRegisterValue("A","123");
+        // vars.printVariables();
+        // HashMap<String, String> var = new HashMap<String, String>();
+        // var.put("VAR1","123");
+        // vars.addVariable(var);
+        // System.out.println(vars.getAddressFromVarName("VAR1"));
 
         // MAQUINA
          maquina = new Maquina();
 
-//        printTable();
-//        maquina = new Maquina();
+        // printTable();
+        // maquina = new Maquina();
 
-        reg.printAllRegister();
+        // reg.printAllRegister();
 
     }
 

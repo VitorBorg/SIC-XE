@@ -1,4 +1,4 @@
-package com.ps.Translate;
+package com.ps.translate;
 
 public class Translate {
 

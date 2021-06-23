@@ -1,18 +1,16 @@
-package com.ps.Montador;
+package com.ps.montador;
 
 // INPUT: LDA #3
 // OUTPUT: 2ARB
 
-import com.ps.Carregador.Carregador;
-import com.ps.Helpers.Helpers;
-import com.ps.Helpers.ParseSourceLine;
-import com.ps.Memory.Memory;
-import com.ps.Memory.Register;
-import com.ps.Memory.Variables;
-import com.ps.Operador.Operador;
-import com.ps.Translate.Translate;
+import com.ps.helpers.Helpers;
+import com.ps.memory.Memory;
+import com.ps.memory.Register;
+import com.ps.memory.Variables;
+import com.ps.operador.Operador;
+import com.ps.translate.Translate;
+import com.ps.helpers.ParseSourceLine;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Montador {
@@ -102,7 +100,7 @@ public class Montador {
         }
 
         String opcode = opcodeBuilder.toString();
-        System.out.println("OPCODEBUILDER "+ opcodeBuilder);
+
         if(opcode.length() <= 4){
             opcode = Helpers.fillXBits(opcode, 2);
             opcode = Helpers.fillXBits(opcode, 6);
@@ -124,7 +122,6 @@ public class Montador {
         }
 //        System.out.println("opcode: " + opcodeBuilder);
 //        String opcode = Helpers.fillXBits(opcodeBuilder.toString(), 6);
-        System.out.println("opcode 6 bits: " + opcode);
 
         if (op1.toUpperCase().contains("@")) { // se o operando contem @ é um endereçamento INDIRETO
             n = "1";

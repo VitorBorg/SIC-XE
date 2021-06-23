@@ -1,6 +1,6 @@
-package com.ps.Memory;
+package com.ps.memory;
 
-import com.ps.Helpers.Helpers;
+import com.ps.helpers.Helpers;
 
 import java.util.*;
 

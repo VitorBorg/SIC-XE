@@ -1,4 +1,4 @@
-package com.ps.Helpers;
+package com.ps.helpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,19 +94,19 @@ public class ParseSourceLine {
     }
 
     public String getRotulo() {
-        return Helpers.printIfNotNull(rotulo);
+        return com.ps.helpers.Helpers.printIfNotNull(rotulo);
     }
 
     public String getOperador() {
-        return Helpers.printIfNotNull(operador);
+        return com.ps.helpers.Helpers.printIfNotNull(operador);
     }
 
     public String getOperando1() {
-        return Helpers.printIfNotNull(operando1);
+        return com.ps.helpers.Helpers.printIfNotNull(operando1);
     }
 
     public String getOperando2() {
-        return Helpers.printIfNotNull(operando2);
+        return com.ps.helpers.Helpers.printIfNotNull(operando2);
     }
 
     public void setLinha(Integer linha) {

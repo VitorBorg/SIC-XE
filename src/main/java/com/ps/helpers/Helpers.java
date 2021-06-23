@@ -1,6 +1,6 @@
-package com.ps.Helpers;
+package com.ps.helpers;
 
-import com.ps.Translate.Translate;
+import com.ps.translate.Translate;
 
 public class Helpers {
 

@@ -1,4 +1,4 @@
-package com.ps.Helpers;
+package com.ps.helpers;
 
 import java.util.*;
 

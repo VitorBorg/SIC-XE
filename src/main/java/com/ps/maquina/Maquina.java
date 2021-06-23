@@ -1,8 +1,8 @@
-package com.ps.Maquina;
+package com.ps.maquina;
 
 import com.ps.App;
-import com.ps.Helpers.Helpers;
-import com.ps.Translate.Translate;
+import com.ps.helpers.Helpers;
+import com.ps.translate.Translate;
 
 import java.util.Objects;
 
@@ -25,8 +25,6 @@ public class Maquina {
 
             StringBuilder stringBuilder = new StringBuilder();
 
-            System.out.println("localS " + localS);
-
             for (String s: App.memoria.getAddress(localS).split("")) {
                 stringBuilder.append(Helpers.fillXBits(String.valueOf(Translate.HexToBin(s)),4));
             }
@@ -37,14 +35,9 @@ public class Maquina {
             opCode8bits.append(opCode6bits);
             opCode8bits.append("00");
 
-            System.out.println("pt1 = "+ opCode8bits.substring(0,4));
-            System.out.println("pt2 = "+ opCode8bits.substring(4,8));
-
             String hexa1 = Translate.BinToHex(opCode8bits.substring(0,4));
             String hexa2 = Translate.BinToHex(opCode8bits.substring(4,8));
             String fullHexa = hexa1.equals("0") ? hexa2 : hexa1 + hexa2;
-
-            System.out.println(">> fullHexa" + fullHexa);
 
             String registerAvalue = App.reg.getRegisterValue("A");
             String deslocamentoValue = String.valueOf(Translate.HexToDec(getDeslocamento(localS, format)));
@@ -117,7 +110,6 @@ public class Maquina {
 //                    System.out.println("localS " + localS);
 //                    System.out.println("Format" + format);
 //                    System.out.println("getDeslocamento(localS, format)" + getDeslocamento(localS, format));
-                    System.out.println("TIPO LDA");
                     App.reg.setRegisterValue("A",
                             String.valueOf(
                                     Translate.HexToDec(getDeslocamento(localS, format))

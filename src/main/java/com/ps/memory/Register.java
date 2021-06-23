@@ -1,4 +1,4 @@
-package com.ps.Memory;
+package com.ps.memory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +40,6 @@ public class Register {
     }
 
     public String[] setRegisterValue(String name, String value) {
-        System.out.println("name "+name);
-        System.out.println("value "+value);
         String[] reg = getRegisterByName(name.toUpperCase());
 
         reg[3] = value;

@@ -1,6 +1,6 @@
-package com.ps.Table;
+package com.ps.table;
 
-import com.ps.Helpers.Helpers;
+import com.ps.helpers.Helpers;
 
 import java.util.ArrayList;
 import java.util.List;
